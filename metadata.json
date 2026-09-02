@@ -1,0 +1,7 @@
+{
+  "name": "NovaStack",
+  "description": "A premium creative technology agency combining UI/UX design, modern engineering, automation, and AI workflows.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

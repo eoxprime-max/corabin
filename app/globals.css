@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest: #1F3D3A;
+  --color-forest-deep: #142B29;
+  --color-forest-light: #2A514D;
+  --color-sage: #A7B89E;
+  --color-sage-light: #C5D3BD;
+  --color-sand: #E7D9C3;
+  --color-sand-light: #F4EFE8;
+  --color-stone: #D8CDC0;
+  --color-terracotta: #C07A5A;
+  --color-copper: #B56E4D;
+  --color-gold: #C9A06A;
+  --color-midnight: #111827;
+  --color-ink-900: #0D1112;
+  --color-ink-950: #080A0B;
+  --color-cream-50: #FCF9F4;
+  --color-cream-100: #F4EFE8;
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #080A0B;
+    color: #F4EFE8;
+    font-family: var(--font-sans);
+  }
+
+  ::selection {
+    background-color: #C07A5A;
+    color: #FCF9F4;
+  }
+}
+
+/* Custom subtle architectural contour lines pattern */
+.bg-topo-dark {
+  background-image: radial-gradient(rgba(167, 184, 158, 0.07) 1px, transparent 1px),
+    radial-gradient(rgba(192, 122, 90, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px, 80px 80px;
+  background-position: 0 0, 20px 20px;
+}
+
+.bg-topo-light {
+  background-image: radial-gradient(rgba(31, 61, 58, 0.06) 1px, transparent 1px),
+    radial-gradient(rgba(192, 122, 90, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px, 80px 80px;
+  background-position: 0 0, 20px 20px;
+}
+
+/* Subtle architectural grid lines */
+.bg-grid-subtle-dark {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(231, 217, 195, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(231, 217, 195, 0.04) 1px, transparent 1px);
+}
+
+.bg-grid-subtle-light {
+  background-size: 60px 60px;
+  background-image: 
+    linear-gradient(to right, rgba(31, 61, 58, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(31, 61, 58, 0.05) 1px, transparent 1px);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #080A0B;
+}
+::-webkit-scrollbar-thumb {
+  background: #1F3D3A;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C07A5A;
+}
