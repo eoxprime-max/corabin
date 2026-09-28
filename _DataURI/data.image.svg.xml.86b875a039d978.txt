@@ -1,0 +1,1 @@
+data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2214%22 height=%2214%22><path d=%22m1.5 8 7-7M9 5.5l-3 3%22 stroke=%22%23999%22 stroke-width=%221.5%22 stroke-linecap=%22round%22></path></svg>
