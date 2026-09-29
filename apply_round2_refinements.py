@@ -99,6 +99,21 @@ corabin_css_override = """<style id="corabin-custom-overrides">
         max-width: 480px !important;
         margin: 0 auto !important;
     }
+
+    /* Hero section viewport fold alignment (preserves OPUS clean fold without text peeking) */
+    @media (min-width: 1440px) {
+        .framer-xtFIq .framer-1jyj1l4 {
+            margin-bottom: clamp(88px, calc(100vh - 746px), 260px) !important;
+        }
+    }
+    .framer-72rtr7 .framer-1jyj1l4 {
+        margin-bottom: clamp(88px, calc(100vh - 746px), 260px) !important;
+    }
+    @media (min-width: 700px) and (max-width: 1439.98px) {
+        .framer-1fvi3ca .framer-1jyj1l4 {
+            margin-bottom: clamp(63px, calc(100vh - 660px), 200px) !important;
+        }
+    }
 </style>"""
 
 html_files = [

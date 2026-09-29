@@ -58,7 +58,6 @@
 ## 6. Architecture & Self-Contained Hosting
 - **Local Asset Mapping**: Remapped `index.html` module preloads and script tags from `https://framerusercontent.com` to local paths (`/framerusercontent.com/...`).
 - **Root Entry Point**: Created [index.html](file:///home/souvik/Projects/opus_template.framer.website/index.html) at the workspace root so any standard web server or static host will run the site directly out-of-the-box.
-- **Zero Hydration Mismatches**: Applied all content substitutions symmetrically across SSR HTML and React bundles (`iKJRSh9jmrbmilHdac6ozhPaiCytW8lQqaCPLmlLitI.Z1Wyg5E1.mjs`, `znfm_uW3YvFdDZ28MEdBO9z2HrI7OaPyUiz_zX9GYnw.DsWxHuen.mjs`, `script_main.CNn1uaXy.mjs`, `cDUh2JYGT-2.BDCxe8nq.mjs`, `JLqe-6-qAsyy3l1paNGwEVrh-qv_jf3v_djF_VYWBoY.Ba0X3WII.mjs`).
 
 ## 7. Round 2 Refinements & User Customizations (September 2026)
 - **1. Section Action Button Replacement ("Our story ↗")**:
@@ -78,4 +77,17 @@
 - **7. Navbar Header & Footer Logo Replacement ("OPUS" -> "CORABIN")**:
   - Excised the hardcoded SVG path mask in `.framer-N9nKc` that formed the word "OPUS".
   - Implemented clean, high-resolution typographical logo rendering for "CORABIN" using `Inter Display` (font weight 800, uppercase, dynamic `--oavjfn` color support) across base HTML, CSS overrides, and `script_main.CNn1uaXy.mjs`.
+
+## 8. Hero Section Viewport Fold Alignment
+- **Root Cause Diagnosed**:
+  - The original OPUS template used a 4-letter brand name (`OPUS`), which in a 50%-width column had a height of ~205px (`viewBox="0 0 608.4 192"`).
+  - The new brand name `CORABIN` has 7 letters (`viewBox="0 0 1064.7 192"`). In the same 50%-width column, maintaining proper typographic aspect ratio, its height is ~117px (~88px shorter).
+  - As a result, the distance from the top of the viewport to the divider line dropped from 773px to 685px, causing the divider to rise prematurely and revealing the intro section text (*"At Corabin, we help companies build stronger brands, modern products, and websites that..."*) above the fold on initial load.
+- **Implemented Fix**:
+  - Added responsive viewport fold alignment rule `margin-bottom: clamp(88px, calc(100vh - 746px), 260px) !important` to `.framer-xtFIq .framer-1jyj1l4` (Heading Wrapper) on desktop screens (`framer-72rtr7` and `@media (min-width: 1440px)`).
+  - Added tablet breakpoint alignment `margin-bottom: clamp(63px, calc(100vh - 660px), 200px) !important` for `.framer-1fvi3ca`.
+  - Restored the exact 773px distance to the divider line on standard desktop viewports, perfectly matching the original OPUS fold.
+  - On taller desktop monitors (900px, 1080p, 1440p), the dynamic `calc(100vh - 746px)` rule ensures the intro section starts cleanly below `100vh`, completely eliminating text peek across all screen heights.
+  - Preserved 100% of the design system, visual hierarchy, cap-height proportions, 50/50 two-column grid, and Framer slide-up appear animations.
+
 
