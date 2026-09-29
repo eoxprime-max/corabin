@@ -3779,7 +3779,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                     height: "100%",
                                                     id: "aoMNWIbN4",
                                                     layoutId: "aoMNWIbN4",
-                                                    PYCSKtmKV: "Meet the team",
+                                                    PYCSKtmKV: "Our story",
                                                     variant: matchVariant("aFGI9eaSz"),
                                                     width: "100%"
                                                 })

@@ -236,7 +236,7 @@ export const richText = /*#__PURE__*/ i(r.Fragment, {
         }), /*#__PURE__*/ e("li", {
             "data-preset-tag": "p",
             children: /*#__PURE__*/ e("p", {
-                children: "Phone: (555) 123-4567"
+                children: "Phone: +918101685159"
             })
         })]
     })]

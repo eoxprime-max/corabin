@@ -331,7 +331,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 className: "framer-styles-preset-1gjhefo",
                                                 "data-styles-preset": "pLdfyfLcz",
                                                 children: /*#__PURE__*/ _jsx(Link, {
-                                                    href: "tel:+1 (555) 123-4567",
+                                                    href: "tel:+918101685159",
                                                     motionChild: true,
                                                     nodeId: "SvrHyuxmn",
                                                     openInNewTab: true,
@@ -341,13 +341,13 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                     children: /*#__PURE__*/ _jsx(motion.a, {
                                                         className: "framer-styles-preset-851vzl",
                                                         "data-styles-preset": "ByHdovmDL",
-                                                        children: "+1 (555) 123-4567"
+                                                        children: "+918101685159"
                                                     })
                                                 })
                                             })
                                         }),
                                         className: "framer-b6e8qe",
-                                        "data-framer-name": "+1 (555) 123-4567",
+                                        "data-framer-name": "+918101685159",
                                         fonts: ["Inter"],
                                         verticalAlignment: "top",
                                         withExternalLayout: true
@@ -378,11 +378,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             children: /*#__PURE__*/ _jsx("p", {
                                                 className: "framer-styles-preset-1gjhefo",
                                                 "data-styles-preset": "pLdfyfLcz",
-                                                children: "42 Pixel Place, Suite 404, New York, NY 10012"
+                                                children: "Kolkata, India, 700001"
                                             })
                                         }),
                                         className: "framer-1tafcyo",
-                                        "data-framer-name": "42 Pixel Place, Suite 404, New York, NY 10012",
+                                        "data-framer-name": "Kolkata, India, 700001",
                                         fonts: ["Inter"],
                                         verticalAlignment: "top",
                                         withExternalLayout: true

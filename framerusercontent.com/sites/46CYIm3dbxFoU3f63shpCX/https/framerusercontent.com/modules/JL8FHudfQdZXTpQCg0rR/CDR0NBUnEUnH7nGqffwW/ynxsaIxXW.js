@@ -371,7 +371,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                 })
                             }),
                             className: "framer-11mb9iu",
-                            "data-framer-name": "Meet the team",
+                            "data-framer-name": "Our story",
                             fonts: ["Inter"],
                             layoutDependency: layoutDependency,
                             layoutId: "YY_qnXE9K",

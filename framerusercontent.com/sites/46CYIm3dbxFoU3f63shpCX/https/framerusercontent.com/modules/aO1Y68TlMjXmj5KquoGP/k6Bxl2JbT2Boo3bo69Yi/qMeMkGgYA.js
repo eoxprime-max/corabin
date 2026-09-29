@@ -325,7 +325,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             style: {
                                                 "--framer-text-alignment": "center"
                                             },
-                                            children: "Jan 15, 2025"
+                                            children: "September 2026"
                                         })
                                     }),
                                     className: "framer-d5ntgm",

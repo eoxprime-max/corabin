@@ -165,7 +165,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                             })
                         }),
                         className: "framer-vuzi6n",
-                        "data-framer-name": "Meet the team",
+                        "data-framer-name": "Our story",
                         fonts: ["Inter"],
                         layoutDependency: layoutDependency,
                         layoutId: "pmwpNnxCV",
