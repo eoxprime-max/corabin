@@ -397,11 +397,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                         children: /*#__PURE__*/ _jsx("p", {
                                             className: "framer-styles-preset-15o9ve6",
                                             "data-styles-preset": "V_DfU9Xne",
-                                            children: "At OPUS, we're more than just a digital agency - we're a team of creative problem-solvers who believe in the power of thoughtful digital solutions to transform businesses."
+                                            children: "At Corabin, we're more than just a digital agency - we're a team of creative problem-solvers who believe in the power of thoughtful digital solutions to transform businesses."
                                         })
                                     }),
                                     className: "framer-doe67t",
-                                    "data-framer-name": "At OPUS, we're more than just a digital agency - we're a team of creative problem-solvers who believe in the power of thoughtful digital solutions to transform businesses.",
+                                    "data-framer-name": "At Corabin, we're more than just a digital agency - we're a team of creative problem-solvers who believe in the power of thoughtful digital solutions to transform businesses.",
                                     fonts: ["Inter"],
                                     verticalAlignment: "top",
                                     withExternalLayout: true
@@ -521,11 +521,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                         className: "framer-styles-preset-1dzuwqo",
                                         "data-styles-preset": "l6fBe7Wqi",
                                         dir: "auto",
-                                        children: "When we founded OPUS, we had a simple vision - to help businesses succeed in the digital world by combining technical excellence with genuine care for our clients' success. That vision still drives everything we do today."
+                                        children: "When I founded Corabin, we had a simple vision - to help businesses succeed in the digital world by combining technical excellence with genuine care for our clients' success. That vision still drives everything we do today."
                                     })
                                 }),
                                 className: "framer-hubb1m",
-                                "data-framer-name": "When we founded OPUS, we had a simple vision - to help businesses succeed in the digital world by combining technical excellence with genuine care for our clients' success. That vision still drives everything we do today.",
+                                "data-framer-name": "When I founded Corabin, we had a simple vision - to help businesses succeed in the digital world by combining technical excellence with genuine care for our clients' success. That vision still drives everything we do today.",
                                 fonts: ["Inter"],
                                 verticalAlignment: "top",
                                 withExternalLayout: true
@@ -587,11 +587,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 style: {
                                                     "--framer-text-color": "var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(0, 0, 0))"
                                                 },
-                                                children: "Markus Chen"
+                                                children: "Souvik"
                                             })
                                         }),
                                         className: "framer-1canr1z",
-                                        "data-framer-name": "Markus Chen",
+                                        "data-framer-name": "Souvik",
                                         fonts: ["Inter"],
                                         verticalAlignment: "top",
                                         withExternalLayout: true
@@ -601,11 +601,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             children: /*#__PURE__*/ _jsx("p", {
                                                 className: "framer-styles-preset-15o9ve6",
                                                 "data-styles-preset": "V_DfU9Xne",
-                                                children: "CEO & Co-founder"
+                                                children: "Founder, Corabin"
                                             })
                                         }),
                                         className: "framer-7x9y2f",
-                                        "data-framer-name": "CEO & Co-founder",
+                                        "data-framer-name": "Founder, Corabin",
                                         fonts: ["Inter"],
                                         verticalAlignment: "top",
                                         withExternalLayout: true
@@ -866,8 +866,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 }
                                             },
                                             children: /*#__PURE__*/ _jsx(TeamMemberCard, {
-                                                cM9MIykpp: "CEO & Co-founder",
-                                                frI1cQi7o: "Markus Chen",
+                                                cM9MIykpp: "Founder, Corabin",
+                                                frI1cQi7o: "Souvik",
                                                 height: "100%",
                                                 id: "toEXq0UAD",
                                                 layoutId: "toEXq0UAD",
@@ -1388,7 +1388,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             layoutId: "jXFGDulcZ",
                                             variant: matchVariant("tUmy6unfC"),
                                             width: "100%",
-                                            yPEmQ6t3_: "Life at Opus"
+                                            yPEmQ6t3_: "Our Story"
                                         })
                                     })
                                 })
@@ -1620,11 +1620,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                         children: /*#__PURE__*/ _jsx("p", {
                                             className: "framer-styles-preset-15o9ve6",
                                             "data-styles-preset": "V_DfU9Xne",
-                                            children: "At OPUS, we foster a culture of continuous learning and innovation. Our team members are encouraged to experiment, share ideas, and push the boundaries of what's possible in digital solutions."
+                                            children: "At Corabin, we foster a culture of continuous learning and innovation. Our team members are encouraged to experiment, share ideas, and push the boundaries of what's possible in digital solutions."
                                         })
                                     }),
                                     className: "framer-1q3qjvb",
-                                    "data-framer-name": "At OPUS, we foster a culture of continuous learning and innovation. Our team members are encouraged to experiment, share ideas, and push the boundaries of what's possible in digital solutions.",
+                                    "data-framer-name": "At Corabin, we foster a culture of continuous learning and innovation. Our team members are encouraged to experiment, share ideas, and push the boundaries of what's possible in digital solutions.",
                                     fonts: ["Inter"],
                                     verticalAlignment: "top",
                                     withExternalLayout: true

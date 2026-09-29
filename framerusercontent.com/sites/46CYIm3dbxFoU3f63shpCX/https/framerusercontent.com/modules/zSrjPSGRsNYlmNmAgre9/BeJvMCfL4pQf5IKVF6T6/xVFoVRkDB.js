@@ -408,11 +408,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                     style: {
                                                         "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                     },
-                                                    children: "OPUS "
+                                                    children: "CORABIN "
                                                 })
                                             }),
                                             className: "framer-1jnj8au",
-                                            "data-framer-name": "OPUS",
+                                            "data-framer-name": "CORABIN",
                                             fonts: ["Inter"],
                                             layoutDependency: layoutDependency,
                                             layoutId: "f3yN1gApS",
@@ -516,7 +516,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                         "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                     },
                                                     children: /*#__PURE__*/ _jsx(Link, {
-                                                        href: "mailto: contact@opushq.com",
+                                                        href: "mailto: hello@corabin.com",
                                                         motionChild: true,
                                                         nodeId: "weVqxGA7J",
                                                         openInNewTab: true,
@@ -526,13 +526,13 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                         children: /*#__PURE__*/ _jsx(motion.a, {
                                                             className: "framer-styles-preset-1k8uo92",
                                                             "data-styles-preset": "diqAQm8b4",
-                                                            children: "contact@opushq.com"
+                                                            children: "hello@corabin.com"
                                                         })
                                                     })
                                                 })
                                             }),
                                             className: "framer-xj6qxl",
-                                            "data-framer-name": "contact@opushq.com",
+                                            "data-framer-name": "hello@corabin.com",
                                             fonts: ["Inter"],
                                             layoutDependency: layoutDependency,
                                             layoutId: "weVqxGA7J",
@@ -554,7 +554,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                             },
                                                             children: /*#__PURE__*/ _jsx(Link, {
-                                                                href: "mailto: contact@opushq.com",
+                                                                href: "mailto: hello@corabin.com",
                                                                 motionChild: true,
                                                                 nodeId: "weVqxGA7J",
                                                                 openInNewTab: true,
@@ -564,7 +564,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 children: /*#__PURE__*/ _jsx(motion.a, {
                                                                     className: "framer-styles-preset-1k8uo92",
                                                                     "data-styles-preset": "diqAQm8b4",
-                                                                    children: "contact@opushq.com"
+                                                                    children: "hello@corabin.com"
                                                                 })
                                                             })
                                                         })
@@ -581,7 +581,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                             },
                                                             children: /*#__PURE__*/ _jsx(Link, {
-                                                                href: "mailto: contact@opushq.com",
+                                                                href: "mailto: hello@corabin.com",
                                                                 motionChild: true,
                                                                 nodeId: "weVqxGA7J",
                                                                 openInNewTab: true,
@@ -591,7 +591,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 children: /*#__PURE__*/ _jsx(motion.a, {
                                                                     className: "framer-styles-preset-1k8uo92",
                                                                     "data-styles-preset": "diqAQm8b4",
-                                                                    children: "contact@opushq.com"
+                                                                    children: "hello@corabin.com"
                                                                 })
                                                             })
                                                         })
@@ -970,11 +970,11 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             style: {
                                                 "--framer-text-color": "var(--extracted-r6o4lv, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                             },
-                                            children: "@2026 Opus, All Rights Reserved"
+                                            children: "@2026 Corabin, All Rights Reserved"
                                         })
                                     }),
                                     className: "framer-13isfbs",
-                                    "data-framer-name": "@2025 Opus, All Rights Reserved",
+                                    "data-framer-name": "@2026 Corabin, All Rights Reserved",
                                     fonts: ["Inter"],
                                     layoutDependency: layoutDependency,
                                     layoutId: "dHw81Q9lT",

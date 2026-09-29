@@ -283,7 +283,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 className: "framer-styles-preset-1gjhefo",
                                                 "data-styles-preset": "pLdfyfLcz",
                                                 children: /*#__PURE__*/ _jsx(Link, {
-                                                    href: "mailto: contact@opushq.com",
+                                                    href: "mailto: hello@corabin.com",
                                                     motionChild: true,
                                                     nodeId: "pYxtoSB_2",
                                                     openInNewTab: true,
@@ -293,13 +293,13 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                     children: /*#__PURE__*/ _jsx(motion.a, {
                                                         className: "framer-styles-preset-851vzl",
                                                         "data-styles-preset": "ByHdovmDL",
-                                                        children: "contact@opushq.com"
+                                                        children: "hello@corabin.com"
                                                     })
                                                 })
                                             })
                                         }),
                                         className: "framer-pb04hk",
-                                        "data-framer-name": "contact@opushq.com",
+                                        "data-framer-name": "hello@corabin.com",
                                         fonts: ["Inter"],
                                         verticalAlignment: "top",
                                         withExternalLayout: true

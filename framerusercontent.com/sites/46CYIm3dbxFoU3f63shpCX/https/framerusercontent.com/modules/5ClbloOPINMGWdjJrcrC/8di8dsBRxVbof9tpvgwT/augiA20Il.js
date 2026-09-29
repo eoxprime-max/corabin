@@ -1387,7 +1387,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                         "--framer-line-height": "80%",
                                                         "--framer-text-color": "var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))"
                                                     },
-                                                    children: "OPUS"
+                                                    children: "CORABIN"
                                                 })
                                             }),
                                             viewBox: "0 0 182.32 58"
@@ -1405,7 +1405,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                         "--framer-line-height": "80%",
                                                         "--framer-text-color": "var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))"
                                                     },
-                                                    children: "OPUS"
+                                                    children: "CORABIN"
                                                 })
                                             }),
                                             viewBox: "0 0 152.6 48"
@@ -1426,7 +1426,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                     "--framer-line-height": "80%",
                                                     "--framer-text-color": "var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))"
                                                 },
-                                                children: "OPUS"
+                                                children: "CORABIN"
                                             })
                                         }),
                                         className: "framer-19r8z02",
@@ -1516,7 +1516,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             className: "framer-styles-preset-1dzuwqo",
                                             "data-styles-preset": "l6fBe7Wqi",
                                             dir: "auto",
-                                            children: "At Opus, we help companies build stronger brands, better products, and websites that actually perform."
+                                            children: "At Corabin, we help companies build stronger brands, better products, and websites that actually perform."
                                         })
                                     }),
                                     className: "framer-1n554pn",

@@ -7,7 +7,7 @@ export const richText = /*#__PURE__*/ i(r.Fragment, {
     children: [ /*#__PURE__*/ e("h2", {
         children: "Introduction"
     }), /*#__PURE__*/ e("p", {
-        children: 'At OPUS Digital Agency ("OPUS," "we," "us," or "our"), we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your information when you engage with our services or visit our website.'
+        children: 'At Corabin ("Corabin," "we," "us," or "our"), we take your privacy seriously. This Privacy Policy explains how we collect, use, and protect your information when you engage with our services or visit our website.'
     }), /*#__PURE__*/ e("h2", {
         children: "Information We Collect"
     }), /*#__PURE__*/ e("h3", {
@@ -231,7 +231,7 @@ export const richText = /*#__PURE__*/ i(r.Fragment, {
         children: [ /*#__PURE__*/ e("li", {
             "data-preset-tag": "p",
             children: /*#__PURE__*/ e("p", {
-                children: "Email: contact@opushq.com"
+                children: "Email: hello@corabin.com"
             })
         }), /*#__PURE__*/ e("li", {
             "data-preset-tag": "p",
@@ -245,7 +245,7 @@ export const richText1 = /*#__PURE__*/ i(r.Fragment, {
     children: [ /*#__PURE__*/ e("h2", {
         children: "1. Introduction"
     }), /*#__PURE__*/ e("p", {
-        children: 'These Terms of Service ("Terms") govern your engagement with OPUS Digital Agency ("OPUS," "we," "us," or "our"). By accessing our services, you agree to these terms in full.'
+        children: 'These Terms of Service ("Terms") govern your engagement with Corabin ("Corabin," "we," "us," or "our"). By accessing our services, you agree to these terms in full.'
     }), /*#__PURE__*/ e("h2", {
         children: "2. Services"
     }), /*#__PURE__*/ e("p", {
@@ -392,7 +392,7 @@ export const richText1 = /*#__PURE__*/ i(r.Fragment, {
     }), /*#__PURE__*/ e("p", {
         children: "We reserve the right to modify these terms. Changes will not apply to existing signed agreements."
     }), /*#__PURE__*/ e("p", {
-        children: "For questions about these terms, please email us at contact@opushq.com"
+        children: "For questions about these terms, please email us at hello@corabin.com"
     })]
 });
 export const __FramerMetadata__ = {
