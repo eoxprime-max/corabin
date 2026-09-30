@@ -90,4 +90,23 @@
   - On taller desktop monitors (900px, 1080p, 1440p), the dynamic `calc(100vh - 746px)` rule ensures the intro section starts cleanly below `100vh`, completely eliminating text peek across all screen heights.
   - Preserved 100% of the design system, visual hierarchy, cap-height proportions, 50/50 two-column grid, and Framer slide-up appear animations.
 
+## 9. Custom Projects Overhaul & Decoupled CMS Integration (September 2026)
+- **1. Replaced All 6 Projects Across Entire Platform**:
+  - Arrows -> **Kora** (*Scaling Revenue Architecture for Modern Enterprises*, 2025, 6 weeks, Client: Kora, Badges: Branding / Web Design / Motion)
+  - Chantalle -> **Himon** (*Precision Logistics & Intelligent Fleet Technology*, 2025, 5 weeks, Client: Himon, Badges: Branding / Product Design)
+  - Papyrus -> **Nordå** (*Scandinavian Architecture Shaping Urban Landscapes*, 2024, 7 weeks, Client: Nordå Architects, Badges: Branding / Product Design)
+  - London Museum -> **Ardène** (*Timeless Boutique Residences Across France*, 2025, 8 weeks, Client: Juliette Ardène, Badges: Branding / Motion / Product Design)
+  - Bullseye -> **Havyn** (*Curated Modern Real Estate with Local Depth*, 2025, 6 weeks, Client: Havyn Real Estate, Badges: Branding / Web Design / Development)
+  - Interference -> **Almare** (*Quiet Spatial Design & Roman Interior Architecture*, 2025, 4 weeks, Client: Almare Studio, Badges: Product Design)
+- **2. Preserved Original Visual Assets**:
+  - Retained all original responsive imagery (srcSet, resolutions, aspect ratios, crops, focal coordinates) exactly as requested.
+- **3. Dual-Layer CMS Architecture & Decoupling**:
+  - Re-encoded the Framer CMS binary chunk ARVkZnRTw-chunk-default-0.framercms with bit-exact serialisation for offline resilience.
+  - Embedded pre-decoded records in ARVkZnRTw.BOg_bqGO.mjs, enabling instant, zero-latency queries.
+  - Implemented bidirectional slug resolver mapping in At (both new and legacy slugs) to prevent 404s.
+- **4. Symmetrical HTML & SPA Route Alignment**:
+  - Updated card links and headings symmetrically in both index.html and opus-template.framer.website/index.html.
+  - Generated dedicated route entry points for /projects, /projects/:slug, /about, /contact, and /blog with exact route IDs and collection item bindings.
+- **5. Automated Validation & Zero Regressions**:
+  - Verified 100% clean hydration across all 8 routes (/, /projects, and all 6 detail pages) with zero error boundaries, zero layout shift, and full editorial integrity.
 
