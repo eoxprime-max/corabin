@@ -23,10 +23,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/yMakbsai917KGz1OD2TB8WnLO70.png?width=2688&height=1792",
-        "srcSet": "https://framerusercontent.com/images/yMakbsai917KGz1OD2TB8WnLO70.png?scale-down-to=512&width=2688&height=1792 512w,https://framerusercontent.com/images/yMakbsai917KGz1OD2TB8WnLO70.png?scale-down-to=1024&width=2688&height=1792 1024w,https://framerusercontent.com/images/yMakbsai917KGz1OD2TB8WnLO70.png?scale-down-to=2048&width=2688&height=1792 2048w,https://framerusercontent.com/images/yMakbsai917KGz1OD2TB8WnLO70.png?width=2688&height=1792 2688w",
-        "pixelWidth": 2688,
-        "pixelHeight": 1792
+        "src": "/assets/images/blogs/blog1.png",
+        "srcSet": "/assets/images/blogs/blog1.png 512w, /assets/images/blogs/blog1.png 1024w, /assets/images/blogs/blog1.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 941,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -83,10 +85,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?width=4500&height=3000",
-        "srcSet": "https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?scale-down-to=512&width=4500&height=3000 512w,https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?scale-down-to=1024&width=4500&height=3000 1024w,https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?scale-down-to=2048&width=4500&height=3000 2048w,https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?scale-down-to=4096&width=4500&height=3000 4096w,https://framerusercontent.com/images/Y7PHtzYTSufRkCKMboggvfTZ6bA.jpg?width=4500&height=3000 4500w",
-        "pixelWidth": 4500,
-        "pixelHeight": 3000
+        "src": "/assets/images/blogs/blog2.png",
+        "srcSet": "/assets/images/blogs/blog2.png 512w, /assets/images/blogs/blog2.png 1024w, /assets/images/blogs/blog2.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 941,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -143,10 +147,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/ljrughQNVnot3g4MdAkHARx3cU.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/ljrughQNVnot3g4MdAkHARx3cU.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/ljrughQNVnot3g4MdAkHARx3cU.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/ljrughQNVnot3g4MdAkHARx3cU.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog3.png",
+        "srcSet": "/assets/images/blogs/blog3.png 512w, /assets/images/blogs/blog3.png 1024w, /assets/images/blogs/blog3.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 941,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -203,10 +209,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/z42TNMMPzNRP8dVMKkV2UgPkgdg.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/z42TNMMPzNRP8dVMKkV2UgPkgdg.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/z42TNMMPzNRP8dVMKkV2UgPkgdg.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/z42TNMMPzNRP8dVMKkV2UgPkgdg.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog4.png",
+        "srcSet": "/assets/images/blogs/blog4.png 512w, /assets/images/blogs/blog4.png 1024w, /assets/images/blogs/blog4.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 940,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -263,10 +271,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/WX3wb3PTJvYi8m3fXzdBqE0aSKE.png?width=1296&height=928",
-        "srcSet": "https://framerusercontent.com/images/WX3wb3PTJvYi8m3fXzdBqE0aSKE.png?scale-down-to=512&width=1296&height=928 512w,https://framerusercontent.com/images/WX3wb3PTJvYi8m3fXzdBqE0aSKE.png?scale-down-to=1024&width=1296&height=928 1024w,https://framerusercontent.com/images/WX3wb3PTJvYi8m3fXzdBqE0aSKE.png?width=1296&height=928 1296w",
-        "pixelWidth": 1296,
-        "pixelHeight": 928
+        "src": "/assets/images/blogs/blog5.png",
+        "srcSet": "/assets/images/blogs/blog5.png 512w, /assets/images/blogs/blog5.png 1024w, /assets/images/blogs/blog5.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 940,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -323,10 +333,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/tdCvL1bMUTdc0IDRzqxVt90RX6I.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/tdCvL1bMUTdc0IDRzqxVt90RX6I.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/tdCvL1bMUTdc0IDRzqxVt90RX6I.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/tdCvL1bMUTdc0IDRzqxVt90RX6I.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog6.png",
+        "srcSet": "/assets/images/blogs/blog6.png 512w, /assets/images/blogs/blog6.png 1024w, /assets/images/blogs/blog6.png 1600w",
+        "pixelWidth": 1600,
+        "pixelHeight": 900,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -383,10 +395,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/8bD53ujhxPT5WQRWWtB8vfpw.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/8bD53ujhxPT5WQRWWtB8vfpw.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/8bD53ujhxPT5WQRWWtB8vfpw.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/8bD53ujhxPT5WQRWWtB8vfpw.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog7.png",
+        "srcSet": "/assets/images/blogs/blog7.png 512w, /assets/images/blogs/blog7.png 1024w, /assets/images/blogs/blog7.png 1600w",
+        "pixelWidth": 1600,
+        "pixelHeight": 900,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -443,10 +457,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/tH0TkQuNIAPV18APpKlpNbDgBRE.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/tH0TkQuNIAPV18APpKlpNbDgBRE.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/tH0TkQuNIAPV18APpKlpNbDgBRE.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/tH0TkQuNIAPV18APpKlpNbDgBRE.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog8.png",
+        "srcSet": "/assets/images/blogs/blog8.png 512w, /assets/images/blogs/blog8.png 1024w, /assets/images/blogs/blog8.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 941,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -503,10 +519,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/Izm90vSEt53EUzWp0Oxo487sgNc.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/Izm90vSEt53EUzWp0Oxo487sgNc.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/Izm90vSEt53EUzWp0Oxo487sgNc.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/Izm90vSEt53EUzWp0Oxo487sgNc.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog9.png",
+        "srcSet": "/assets/images/blogs/blog9.png 512w, /assets/images/blogs/blog9.png 1024w, /assets/images/blogs/blog9.png 1672w",
+        "pixelWidth": 1672,
+        "pixelHeight": 941,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
@@ -559,10 +577,12 @@
     "DYldC4ELI": {
       "type": "responsiveimage",
       "value": {
-        "src": "https://framerusercontent.com/images/nL51BfOfUucmErSHb7Kx7BlpYas.jpg?width=2000&height=1333",
-        "srcSet": "https://framerusercontent.com/images/nL51BfOfUucmErSHb7Kx7BlpYas.jpg?scale-down-to=512&width=2000&height=1333 512w,https://framerusercontent.com/images/nL51BfOfUucmErSHb7Kx7BlpYas.jpg?scale-down-to=1024&width=2000&height=1333 1024w,https://framerusercontent.com/images/nL51BfOfUucmErSHb7Kx7BlpYas.jpg?width=2000&height=1333 2000w",
-        "pixelWidth": 2000,
-        "pixelHeight": 1333
+        "src": "/assets/images/blogs/blog10.png",
+        "srcSet": "/assets/images/blogs/blog10.png 512w, /assets/images/blogs/blog10.png 1024w, /assets/images/blogs/blog10.png 1600w",
+        "pixelWidth": 1600,
+        "pixelHeight": 900,
+        "positionX": "50%",
+        "positionY": "50%"
       }
     },
     "pFOAL5b2B": {
