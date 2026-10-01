@@ -193,7 +193,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                 })
                             }),
                             className: "framer-13xkeb0",
-                            "data-framer-name": "Markus Chen",
+                            "data-framer-name": "Souvik",
                             fonts: ["Inter"],
                             layoutDependency: layoutDependency,
                             layoutId: "vBea6nkh3",
