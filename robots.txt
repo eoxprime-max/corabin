@@ -1,0 +1,23 @@
+# robots.txt — Corabin Studio (https://corabin.com)
+User-agent: *
+Allow: /
+
+# Allow all crawlers to access CSS, JS, fonts, and images needed for rendering
+Allow: /framerusercontent.com/
+Allow: /assets/
+Allow: /fonts.gstatic.com/
+Allow: /unpkg.com/
+Allow: /video.gumlet.io/
+
+# Disallow legacy slug fallbacks (canonical points to primary slugs)
+Disallow: /projects/arrows
+Disallow: /projects/chantalle
+Disallow: /projects/papyrus
+Disallow: /projects/london-museum
+Disallow: /projects/bullseye
+Disallow: /projects/interference
+
+# Disallow tools and internal directories
+Disallow: /tools/
+
+Sitemap: https://corabin.com/sitemap.xml
