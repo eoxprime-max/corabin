@@ -415,27 +415,37 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             className: "framer-80ibnp",
                                             children: [ /*#__PURE__*/ _jsx(motion.label, {
                                                 className: "framer-1xnuexn",
+                                                htmlFor: "contact-name",
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-jznxc",
+                                                    id: "contact-name",
                                                     inputName: "Name",
+                                                    "aria-label": "Your Name",
                                                     placeholder: "Name *",
                                                     required: true,
                                                     type: "text"
                                                 })
                                             }), /*#__PURE__*/ _jsx(motion.label, {
                                                 className: "framer-1k507qy",
+                                                htmlFor: "contact-email",
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-x4fs21",
+                                                    id: "contact-email",
                                                     inputName: "Email",
+                                                    "aria-label": "Your Email Address",
                                                     placeholder: "E-mail *",
+                                                    required: true,
                                                     type: "email"
                                                 })
                                             })]
                                         }), /*#__PURE__*/ _jsx(motion.label, {
                                             className: "framer-8pvs56",
+                                            htmlFor: "contact-message",
                                             children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                 className: "framer-zfzhh0",
+                                                id: "contact-message",
                                                 inputName: "Message",
+                                                "aria-label": "Project Information",
                                                 placeholder: "Project Information *",
                                                 required: true,
                                                 type: "textarea"

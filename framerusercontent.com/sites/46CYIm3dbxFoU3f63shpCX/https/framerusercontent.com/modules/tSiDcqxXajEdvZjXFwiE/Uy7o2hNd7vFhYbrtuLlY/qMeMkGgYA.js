@@ -28,7 +28,7 @@ export default function metadata(params, activeLocale) {
         },
         robots: "max-image-preview:large",
         serializationId: "framer-2XIia",
-        title: `${Pa9XHVvdv!==undefined?toString(Pa9XHVvdv):"{{Pa9XHVvdv}}"} - My Framer Site`,
+        title: `${Pa9XHVvdv!==undefined?toString(Pa9XHVvdv):"{{Pa9XHVvdv}}"} — Corabin`,
         viewport: "width=device-width"
     };
 }

@@ -4070,23 +4070,23 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             }
                                         },
                                         children: /*#__PURE__*/ _jsx(TestimonialSlider, {
-                                            D3b4QPMu7: "Founder @ Terrain Coffee",
-                                            GBJ7CJyXJ: "COO @ Stellar Analytics",
+                                            D3b4QPMu7: "Enterprise Revenue Architecture",
+                                            GBJ7CJyXJ: "Intelligent Logistics Platform",
                                             GZcxYxeSd: "Every feature they built was focused on driving results. They transformed how we think about digital.",
                                             height: "100%",
                                             id: "DHOlk97BE",
-                                            jsJYUzWEB: "Director @ Greenwave Solar",
+                                            jsJYUzWEB: "Architecture Studio Platform",
                                             layoutId: "DHOlk97BE",
-                                            ooDBJkxrl: "Tom Bennett",
+                                            ooDBJkxrl: "Kora",
                                             style: {
                                                 width: "100%"
                                             },
                                             SvRjDA57S: "Finally found a team that understands both design and business. Our brand now perfectly captures what makes us different.",
                                             thToWFUyi: "The level of strategic thinking they brought was unexpected. They didn't just build what we asked for - they made it better.",
-                                            TJkCYb5e3: "Sarah Chen",
+                                            TJkCYb5e3: "Himon",
                                             variant: matchVariant("OnRqLaC4m"),
                                             width: "100%",
-                                            X7yGS1xf7: "Marcus Rodriguez"
+                                            X7yGS1xf7: "Nordå"
                                         })
                                     })
                                 })

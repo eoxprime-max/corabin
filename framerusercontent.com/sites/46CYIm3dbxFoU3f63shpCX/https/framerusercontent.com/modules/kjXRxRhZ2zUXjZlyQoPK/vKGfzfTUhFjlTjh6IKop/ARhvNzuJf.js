@@ -424,13 +424,13 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                         isMixed: true
                                     },
                                     faqs: [{
-                                        answer: "We specialize in digital solutions including website development, web applications, e-commerce platforms, and enterprise software integrations. Our expertise spans diverse industries, delivering strategic technological solutions tailored to unique business challanges.",
+                                        answer: "We specialize in digital solutions including website development, web applications, e-commerce platforms, and enterprise software integrations. Our expertise spans diverse industries, delivering strategic technological solutions tailored to unique business challenges.",
                                         question: "What types of projects do you typically work on?"
                                     }, {
                                         answer: "Project timelines range from 4-6 weeks for small websites to 16-24 weeks for complex enterprise integrations. Each project is carefully scoped to balance efficiency with comprehensive development requirements.",
                                         question: "How long does a typical project take?"
                                     }, {
-                                        answer: "Vectura supports imports of vendor data, team budgets, historical expenses, and departmental codes. You can also connect directly to your ERP or finance tools to sync this data automatically. Our team is available to assist with imports during onboarding.",
+                                        answer: "Our engineering process follows four structured phases: Discovery & Architecture, Systems Design, Full-Stack Implementation, and Rigorous QA & Launch. We collaborate closely through sprints with transparent milestones and code reviews.",
                                         question: "What's your development process like?"
                                     }, {
                                         answer: "We offer 30-day post-launch support and optional maintenance packages that include performance monitoring, security updates, and technical assistance. Clients can choose from flexible support contracts to meet their long-term technological needs.",

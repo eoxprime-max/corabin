@@ -3,14 +3,15 @@
 SEO & Production Optimization Script for Corabin Studio Website
 Applies: unique per-page titles, descriptions, canonicals, OG tags,
          Twitter cards, structured data, security meta, framer-search-index removal,
-         og:image, og:site_name, viewport fix.
+         og:image, og:site_name, viewport fix, optimized favicon links,
+         exact publication and modified dates, and article/project-specific images.
 
 Run from project root:  python3 tools/apply_seo_pass.py
 """
 
-import re, os
+import re, os, json
 
-BASE = '/home/souvik/Projects/opus_template.framer.website'
+BASE = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 DOMAIN = 'https://corabin.com'
 OG_IMAGE = f'{DOMAIN}/assets/images/og-corabin.png'
 
@@ -52,6 +53,20 @@ PAGES = {
         "description": "Explore Corabin's portfolio of bespoke digital projects: Kora, Himon, Nordå, Ardène, Havyn, and Almare — spanning SaaS, logistics, architecture, and real estate.",
         "canonical": f"{DOMAIN}/projects",
         "og_url": f"{DOMAIN}/projects",
+        "og_type": "website",
+    },
+    "privacy": {
+        "title": "Privacy Policy — Corabin Studio",
+        "description": "Review Corabin's privacy policy and data governance practices. We protect your client data with absolute confidentiality and security.",
+        "canonical": f"{DOMAIN}/privacy",
+        "og_url": f"{DOMAIN}/privacy",
+        "og_type": "website",
+    },
+    "terms": {
+        "title": "Terms of Service — Corabin Studio",
+        "description": "Review Corabin's terms of service and client engagement standards. Bespoke web design and digital architecture services.",
+        "canonical": f"{DOMAIN}/terms",
+        "og_url": f"{DOMAIN}/terms",
         "og_type": "website",
     },
     # Blog detail pages
@@ -168,55 +183,70 @@ PAGES = {
         "og_url": f"{DOMAIN}/projects/almare",
         "og_type": "website",
     },
-    # Legacy slug redirects (canonicals point to primary slugs)
-    "projects/arrows": {
-        "title": "Kora — Scaling Revenue Architecture for Modern Enterprises | Corabin",
-        "description": "Corabin's case study on Kora: a bespoke digital architecture project focused on scaling revenue infrastructure for a modern enterprise client over 6 weeks.",
-        "canonical": f"{DOMAIN}/projects/kora",
-        "og_url": f"{DOMAIN}/projects/kora",
-        "og_type": "website",
-    },
-    "projects/chantalle": {
-        "title": "Himon — Precision Logistics & Intelligent Fleet Technology | Corabin",
-        "description": "How Corabin designed and built Himon's digital product: a precision logistics platform with intelligent fleet technology. Delivered in 5 weeks.",
-        "canonical": f"{DOMAIN}/projects/himon",
-        "og_url": f"{DOMAIN}/projects/himon",
-        "og_type": "website",
-    },
-    "projects/papyrus": {
-        "title": "Nordå — Scandinavian Architecture Shaping Urban Landscapes | Corabin",
-        "description": "Corabin's work on Nordå: a digital platform for a Scandinavian architecture studio shaping modern urban landscapes. Delivered in 7 weeks.",
-        "canonical": f"{DOMAIN}/projects/norda",
-        "og_url": f"{DOMAIN}/projects/norda",
-        "og_type": "website",
-    },
-    "projects/london-museum": {
-        "title": "Ardène — Timeless Boutique Residences Across France | Corabin",
-        "description": "Corabin designed the digital presence for Ardène, a French boutique residential real estate brand. An 8-week engagement focused on timeless visual craft.",
-        "canonical": f"{DOMAIN}/projects/ardene",
-        "og_url": f"{DOMAIN}/projects/ardene",
-        "og_type": "website",
-    },
-    "projects/bullseye": {
-        "title": "Havyn — Curated Modern Real Estate with Local Depth | Corabin",
-        "description": "Corabin's project for Havyn: curated modern real estate branding and digital platform designed to connect local depth with premium property presentation. 6 weeks.",
-        "canonical": f"{DOMAIN}/projects/havyn",
-        "og_url": f"{DOMAIN}/projects/havyn",
-        "og_type": "website",
-    },
-    "projects/interference": {
-        "title": "Almare — Quiet Spatial Design & Roman Interior Architecture | Corabin",
-        "description": "Corabin's 4-week engagement with Almare: a digital identity for a quiet, Roman-influenced spatial design and interior architecture studio.",
-        "canonical": f"{DOMAIN}/projects/almare",
-        "og_url": f"{DOMAIN}/projects/almare",
-        "og_type": "website",
-    },
 }
 
-# ──────────────────────────────────────────────────────────────────────────────
-# JSON-LD structured data per page key
-# ──────────────────────────────────────────────────────────────────────────────
-import json
+# Verified CMS metadata for blog posts
+BLOG_META = {
+    "custom-vs-off-the-shelf-choose-wisely": {
+        "datePublished": "2025-01-16T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog1.png"
+    },
+    "design-that-converts-our-approach": {
+        "datePublished": "2025-01-09T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog2.png"
+    },
+    "7-critical-steps-to-successfully-launch-your-digital-product": {
+        "datePublished": "2025-01-03T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog3.png"
+    },
+    "choosing-the-right-tech-stack-a-decision-framework-for-2025": {
+        "datePublished": "2024-12-23T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog4.png"
+    },
+    "speed-up-your-website-today": {
+        "datePublished": "2024-12-19T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog5.png"
+    },
+    "why-design-systems-actually-matter": {
+        "datePublished": "2024-12-04T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog6.png"
+    },
+    "headless-cms-the-future-is-here": {
+        "datePublished": "2024-12-01T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog7.png"
+    },
+    "stop-making-these-common-api-mistakes": {
+        "datePublished": "2024-11-29T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog8.png"
+    },
+    "website-security-made-simple": {
+        "datePublished": "2024-11-18T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog9.png"
+    },
+    "technical-debt-friend-or-foe": {
+        "datePublished": "2024-11-13T00:00:00Z",
+        "dateModified": "2026-10-01T00:00:00Z",
+        "image": f"{DOMAIN}/assets/images/blogs/blog10.png"
+    }
+}
+
+PROJECT_META = {
+    "kora": {"image": f"{DOMAIN}/assets/images/projects/kora/img1.png"},
+    "himon": {"image": f"{DOMAIN}/assets/images/projects/himon/img1.png"},
+    "norda": {"image": f"{DOMAIN}/assets/images/projects/norda/img1.png"},
+    "ardene": {"image": f"{DOMAIN}/assets/images/projects/ardene/img1.png"},
+    "havyn": {"image": f"{DOMAIN}/assets/images/projects/havyn/img1.png"},
+    "almare": {"image": f"{DOMAIN}/assets/images/projects/almare/img1.png"}
+}
 
 ORGANIZATION_LD = {
     "@context": "https://schema.org",
@@ -232,7 +262,12 @@ ORGANIZATION_LD = {
         "addressCountry": "IN",
         "postalCode": "700001"
     },
-    "sameAs": [DOMAIN],
+    "sameAs": [
+        "https://www.linkedin.com/company/corabin",
+        "https://www.instagram.com/corabin.studio",
+        "https://dribbble.com/corabin",
+        "https://www.behance.net/corabin"
+    ],
     "description": "Corabin is a boutique digital design and modern web architecture studio based in Kolkata, India."
 }
 
@@ -240,12 +275,7 @@ WEBSITE_LD = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Corabin",
-    "url": DOMAIN,
-    "potentialAction": {
-        "@type": "SearchAction",
-        "target": f"{DOMAIN}/blog?q={{search_term_string}}",
-        "query-input": "required name=search_term_string"
-    }
+    "url": DOMAIN
 }
 
 PROFESSIONAL_SERVICE_LD = {
@@ -303,12 +333,10 @@ def get_jsonld_for_page(page_key, page_data):
     canonical = page_data["canonical"]
     title = page_data["title"]
     description = page_data["description"]
-    og_type = page_data["og_type"]
 
     schemas = []
 
     if page_key == "":
-        # Home: Organization + WebSite + ProfessionalService
         schemas = [ORGANIZATION_LD, WEBSITE_LD, PROFESSIONAL_SERVICE_LD]
     elif page_key == "about":
         schemas = [
@@ -332,19 +360,22 @@ def get_jsonld_for_page(page_key, page_data):
         ]
     elif page_key.startswith("blog/"):
         slug = page_key.replace("blog/", "")
+        bmeta = BLOG_META.get(slug, {})
         article = {
             "@context": "https://schema.org",
             "@type": "Article",
             "headline": title.split(" — Corabin")[0].strip(),
             "description": description,
             "url": canonical,
+            "datePublished": bmeta.get("datePublished", "2025-01-01T00:00:00Z"),
+            "dateModified": bmeta.get("dateModified", "2026-10-01T00:00:00Z"),
             "author": {"@type": "Person", "name": "Souvik", "url": DOMAIN},
             "publisher": {
                 "@type": "Organization",
                 "name": "Corabin",
                 "logo": {"@type": "ImageObject", "url": f"{DOMAIN}/assets/images/Corabin_logo.png"}
             },
-            "image": OG_IMAGE,
+            "image": bmeta.get("image", OG_IMAGE),
             "mainEntityOfPage": {"@type": "WebPage", "@id": canonical}
         }
         breadcrumb = {
@@ -358,6 +389,8 @@ def get_jsonld_for_page(page_key, page_data):
         }
         schemas = [article, breadcrumb]
     elif page_key.startswith("projects/"):
+        slug = page_key.replace("projects/", "")
+        pmeta = PROJECT_META.get(slug, {})
         project_name = title.split(" — ")[0].strip()
         breadcrumb = {
             "@context": "https://schema.org",
@@ -368,9 +401,24 @@ def get_jsonld_for_page(page_key, page_data):
                 {"@type": "ListItem", "position": 3, "name": project_name, "item": canonical}
             ]
         }
+        case_study = {
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            "name": project_name,
+            "headline": title.split(" | Corabin")[0].strip(),
+            "description": description,
+            "url": canonical,
+            "image": pmeta.get("image", OG_IMAGE),
+            "creator": {"@type": "Organization", "name": "Corabin", "url": DOMAIN}
+        }
         schemas = [
             {**WEBPAGE_LD_BASE, "name": title, "url": canonical, "description": description},
+            case_study,
             breadcrumb
+        ]
+    else:
+        schemas = [
+            {**WEBPAGE_LD_BASE, "name": title, "url": canonical, "description": description}
         ]
 
     blocks = []
@@ -392,6 +440,16 @@ def build_seo_block(page_key, page_data):
     og_type = page_data["og_type"]
     site_name = "Corabin"
 
+    # Select specific image
+    if page_key.startswith("blog/"):
+        slug = page_key.replace("blog/", "")
+        page_image = BLOG_META.get(slug, {}).get("image", OG_IMAGE)
+    elif page_key.startswith("projects/"):
+        slug = page_key.replace("projects/", "")
+        page_image = PROJECT_META.get(slug, {}).get("image", OG_IMAGE)
+    else:
+        page_image = OG_IMAGE
+
     title_esc = escape_html_attr(title)
     desc_esc = escape_html_attr(desc)
     jsonld = get_jsonld_for_page(page_key, page_data)
@@ -405,37 +463,25 @@ def build_seo_block(page_key, page_data):
     <meta property="og:url" content="{og_url}">
     <meta property="og:title" content="{title_esc}">
     <meta property="og:description" content="{desc_esc}">
-    <meta property="og:image" content="{OG_IMAGE}">
+    <meta property="og:image" content="{page_image}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Corabin — Digital Design &amp; Modern Web Architecture Studio">
+    <meta property="og:image:alt" content="{title_esc}">
     <meta property="og:locale" content="en_US">
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@corabin">
     <meta name="twitter:title" content="{title_esc}">
     <meta name="twitter:description" content="{desc_esc}">
-    <meta name="twitter:image" content="{OG_IMAGE}">
-    <meta name="twitter:image:alt" content="Corabin — Digital Design &amp; Modern Web Architecture Studio">
+    <meta name="twitter:image" content="{page_image}">
+    <meta name="twitter:image:alt" content="{title_esc}">
     <!-- Structured Data -->
     {jsonld}"""
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Regex patterns to find existing SEO blocks in HTML (for replacement)
-# ──────────────────────────────────────────────────────────────────────────────
-
 def patch_html(html, page_key, page_data):
     """
-    Patch an HTML file:
-    1. Fix <title> with unique value
-    2. Fix <meta name="description">
-    3. Fix <meta name="viewport"> — add initial-scale=1
-    4. Remove framer-search-index metas
-    5. Remove old canonical, og:url, robots meta
-    6. Remove old og: and twitter: meta tags in the static early block (lines 23-30)
-    7. Inject new SEO block at the right position (before </head>)
-    8. Remove old early OG/Twitter block that was at lines 23-30
+    Patch an HTML file with updated title, description, viewport, favicons, and comprehensive SEO block.
     """
     title = page_data["title"]
     desc = page_data["description"]
@@ -461,71 +507,195 @@ def patch_html(html, page_key, page_data):
         html
     )
 
-    # 4. Remove framer-search-index meta tags
-    html = re.sub(r'\s*<meta\s+name=["\']framer-search-index[^"\']*["\']\s+content="[^"]*">\s*', '\n    ', html)
-    html = re.sub(r'\s*<meta\s+name=["\']framer-search-index-fallback[^"\']*["\']\s+content="[^"]*">\s*', '\n    ', html)
-
-    # 5. Remove old canonical (in the late head block ~line 950)
-    html = re.sub(r'\s*<link\s+rel=["\']canonical["\']\s+href="[^"]*">', '', html)
-
-    # 6. Remove old og:url (in the late head block)
-    html = re.sub(r'\s*<meta\s+property=["\']og:url["\']\s+content="[^"]*">', '', html)
-
-    # 7. Remove old robots meta (only the old simple one, not our new comprehensive one)
-    html = re.sub(r'\s*<meta\s+name=["\']robots["\']\s+content=["\']max-image-preview:large["\']\s*>', '', html)
-
-    # 8. Remove the early static OG/Twitter block (Open Graph / Facebook comment + tags)
-    # This block spans from "<!-- Open Graph / Facebook -->" to the last twitter: meta
+    # 4. Update favicons to lightweight assets
     html = re.sub(
-        r'\s*<!-- Open Graph / Facebook -->\s*'
-        r'<meta\s+property=["\']og:type["\']\s+content="[^"]*">\s*'
-        r'<meta\s+property=["\']og:title["\']\s+content="[^"]*">\s*'
-        r'<meta\s+property=["\']og:description["\']\s+content="[^"]*">\s*'
-        r'<!-- Twitter -->\s*'
-        r'<meta\s+name=["\']twitter:card["\']\s+content="[^"]*">\s*'
-        r'<meta\s+name=["\']twitter:title["\']\s+content="[^"]*">\s*'
-        r'<meta\s+name=["\']twitter:description["\']\s+content="[^"]*">',
-        '',
+        r'<link\s+href="[^"]*Corabin_logo\.png"\s+rel="icon"[^>]*>',
+        '<link href="/assets/images/favicon-32.png" rel="icon" type="image/png" sizes="32x32">\n    <link href="/favicon.ico" rel="icon" sizes="any">',
+        html
+    )
+    html = re.sub(
+        r'<link\s+href="[^"]*Corabin_logo\.png"\s+rel="apple-touch-icon"[^>]*>',
+        '<link href="/assets/images/favicon-180.png" rel="apple-touch-icon">',
         html
     )
 
-    # 9. Inject new comprehensive SEO block right before </style>\n</head> 
-    #    (i.e., just before the closing </head> tag)
+    # 5. Remove framer-search-index meta tags
+    html = re.sub(r'\s*<meta\s+name=["\']framer-search-index[^"\']*["\']\s+content="[^"]*">\s*', '\n    ', html)
+    html = re.sub(r'\s*<meta\s+name=["\']framer-search-index-fallback[^"\']*["\']\s+content="[^"]*">\s*', '\n    ', html)
+
+    # 6. Remove old canonical
+    html = re.sub(r'\s*<link\s+rel=["\']canonical["\']\s+href="[^"]*">', '', html)
+
+    # 7. Remove old og:url
+    html = re.sub(r'\s*<meta\s+property=["\']og:url["\']\s+content="[^"]*">', '', html)
+
+    # 8. Remove old robots meta
+    html = re.sub(r'\s*<meta\s+name=["\']robots["\']\s+content=["\']max-image-preview:large["\']\s*>', '', html)
+
+    # 9. Clean out existing SEO block if already injected
+    html = re.sub(
+        r'\s*<!-- SEO: Corabin Production Meta -->.*?(?=</head>)',
+        '',
+        html,
+        flags=re.DOTALL
+    )
+
+    # 10. Inject updated SEO block before </head>
     seo_block = build_seo_block(page_key, page_data)
     html = html.replace('</head>', f'\n    {seo_block}\n</head>', 1)
 
     return html
 
 
-# ──────────────────────────────────────────────────────────────────────────────
-# Main: patch all HTML files
-# ──────────────────────────────────────────────────────────────────────────────
-patched_count = 0
-skipped = []
+def update_sitemap():
+    """Ensure sitemap has correct 2026 lastmod, correct blog dates, and includes privacy and terms."""
+    sitemap_path = os.path.join(BASE, "sitemap.xml")
+    if not os.path.exists(sitemap_path):
+        return
 
-for page_key, page_data in PAGES.items():
-    # Build file path
-    if page_key == "":
-        html_path = os.path.join(BASE, "index.html")
-    else:
-        html_path = os.path.join(BASE, page_key, "index.html")
+    content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-    if not os.path.exists(html_path):
-        print(f"  SKIP (not found): {html_path}")
-        skipped.append(page_key or "/")
-        continue
+  <!-- Home -->
+  <url>
+    <loc>{DOMAIN}/</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
 
-    with open(html_path, 'r', encoding='utf-8') as f:
-        html = f.read()
+  <!-- Core pages -->
+  <url>
+    <loc>{DOMAIN}/about</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    patched = patch_html(html, page_key, page_data)
+  <url>
+    <loc>{DOMAIN}/contact</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
-    with open(html_path, 'w', encoding='utf-8') as f:
-        f.write(patched)
+  <!-- Legal pages -->
+  <url>
+    <loc>{DOMAIN}/privacy</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 
-    print(f"  ✅ Patched: {'/' + page_key if page_key else '/'}")
-    patched_count += 1
+  <url>
+    <loc>{DOMAIN}/terms</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
 
-print(f"\n✅ SEO patch complete: {patched_count} pages patched, {len(skipped)} skipped.")
-if skipped:
-    print(f"   Skipped: {skipped}")
+  <!-- Portfolio -->
+  <url>
+    <loc>{DOMAIN}/projects</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/kora</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/himon</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/norda</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/ardene</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/havyn</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>{DOMAIN}/projects/almare</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blog listing -->
+  <url>
+    <loc>{DOMAIN}/blog</loc>
+    <lastmod>2026-10-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+"""
+
+    for slug, bmeta in BLOG_META.items():
+        date_str = bmeta["datePublished"][:10]
+        content += f"""
+  <url>
+    <loc>{DOMAIN}/blog/{slug}</loc>
+    <lastmod>{date_str}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+"""
+
+    content += "</urlset>\n"
+    with open(sitemap_path, "w", encoding="utf-8") as f:
+        f.write(content)
+    print("  ✅ Updated sitemap.xml with canonical routes and verified dates.")
+
+
+if __name__ == "__main__":
+    print("--- Applying Comprehensive SEO & Metadata Pass ---")
+    patched_count = 0
+    skipped = []
+
+    for page_key, page_data in PAGES.items():
+        if page_key == "":
+            html_path = os.path.join(BASE, "index.html")
+        else:
+            html_path = os.path.join(BASE, page_key, "index.html")
+
+        if not os.path.exists(html_path):
+            print(f"  SKIP (not found): {html_path}")
+            skipped.append(page_key or "/")
+            continue
+
+        with open(html_path, 'r', encoding='utf-8') as f:
+            html = f.read()
+
+        patched = patch_html(html, page_key, page_data)
+
+        with open(html_path, 'w', encoding='utf-8') as f:
+            f.write(patched)
+
+        print(f"  ✅ Patched: {'/' + page_key if page_key else '/'}")
+        patched_count += 1
+
+    update_sitemap()
+    print(f"\n✅ SEO patch complete: {patched_count} pages patched, {len(skipped)} skipped.")

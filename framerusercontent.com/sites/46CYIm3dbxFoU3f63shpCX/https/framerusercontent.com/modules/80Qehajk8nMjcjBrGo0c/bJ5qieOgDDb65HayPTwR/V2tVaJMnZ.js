@@ -189,21 +189,21 @@ const getProps = ({
         aB8Y9pjL6: _2Photo ? ? props.aB8Y9pjL6 ? ? {
             pixelHeight: 2855,
             pixelWidth: 1903,
-            src: "https://framerusercontent.com/images/CbuRnkePiOKQIv4qrnpK4ikxio.jpg?width=1903&height=2855",
-            srcSet: "https://framerusercontent.com/images/CbuRnkePiOKQIv4qrnpK4ikxio.jpg?scale-down-to=1024&width=1903&height=2855 682w,https://framerusercontent.com/images/CbuRnkePiOKQIv4qrnpK4ikxio.jpg?scale-down-to=2048&width=1903&height=2855 1365w,https://framerusercontent.com/images/CbuRnkePiOKQIv4qrnpK4ikxio.jpg?width=1903&height=2855 1903w"
+            src: "/assets/images/projects/himon/img1.webp?width=1903&height=2855",
+            srcSet: "/assets/images/projects/himon/img1.webp?scale-down-to=1024&width=1903&height=2855 682w,/assets/images/projects/himon/img1.webp?scale-down-to=2048&width=1903&height=2855 1365w,/assets/images/projects/himon/img1.webp?width=1903&height=2855 1903w"
         },
         B08nfxnMs: _3Photo ? ? props.B08nfxnMs ? ? {
             pixelHeight: 3456,
             pixelWidth: 5184,
-            src: "https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?width=5184&height=3456",
-            srcSet: "https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?scale-down-to=512&width=5184&height=3456 512w,https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?scale-down-to=1024&width=5184&height=3456 1024w,https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?scale-down-to=2048&width=5184&height=3456 2048w,https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?scale-down-to=4096&width=5184&height=3456 4096w,https://framerusercontent.com/images/pVkIzXwfVUeaGFFY4CaQBJJdXhE.jpg?width=5184&height=3456 5184w"
+            src: "/assets/images/projects/norda/img1.webp?width=5184&height=3456",
+            srcSet: "/assets/images/projects/norda/img1.webp?scale-down-to=512&width=5184&height=3456 512w,/assets/images/projects/norda/img1.webp?scale-down-to=1024&width=5184&height=3456 1024w,/assets/images/projects/norda/img1.webp?scale-down-to=2048&width=5184&height=3456 2048w,/assets/images/projects/norda/img1.webp?scale-down-to=4096&width=5184&height=3456 4096w,/assets/images/projects/norda/img1.webp?width=5184&height=3456 5184w"
         },
         D3b4QPMu7: _1Position ? ? props.D3b4QPMu7 ? ? "Position #1",
         EgmxslYDq: _1Photo ? ? props.EgmxslYDq ? ? {
             pixelHeight: 1024,
             pixelWidth: 1024,
-            src: "https://framerusercontent.com/images/d8xBroOAXEENKrUrrZk0Y0XLuhE.png?width=1024&height=1024",
-            srcSet: "https://framerusercontent.com/images/d8xBroOAXEENKrUrrZk0Y0XLuhE.png?scale-down-to=512&width=1024&height=1024 512w,https://framerusercontent.com/images/d8xBroOAXEENKrUrrZk0Y0XLuhE.png?width=1024&height=1024 1024w"
+            src: "/assets/images/projects/kora/img1.webp?width=1024&height=1024",
+            srcSet: "/assets/images/projects/kora/img1.webp?scale-down-to=512&width=1024&height=1024 512w,/assets/images/projects/kora/img1.webp?width=1024&height=1024 1024w"
         },
         GBJ7CJyXJ: _2Position ? ? props.GBJ7CJyXJ ? ? "Position #2",
         GZcxYxeSd: _3Testimonial ? ? props.GZcxYxeSd ? ? "Testimonial #3",
