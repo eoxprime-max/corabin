@@ -10789,18 +10789,42 @@
         margin: 0 auto !important;
     }
 
-    /* Hero section: viewport fold alignment — compensates for CORABIN (7-char) being taller than the original 4-char brand name in the SVG heading */
+    /* Hero section: balanced typography & image layout - option2_minus12px */
     @media (min-width: 1440px) {
+        /* Top row: CORABIN right-aligned flush with image right edge */
         .framer-xtFIq .framer-1jyj1l4 {
-            margin-bottom: clamp(88px, calc(100vh - 746px), 260px) !important;
+            align-items: flex-end !important;
+            margin-bottom: clamp(60px, calc(100vh - 690px), 240px) !important;
         }
-    }
-    .framer-72rtr7 .framer-1jyj1l4 {
-        margin-bottom: clamp(88px, calc(100vh - 746px), 260px) !important;
+        .framer-xtFIq .framer-z4zkof,
+        .framer-72rtr7 .framer-z4zkof {
+            width: calc(77.51% - 15.5px) !important;
+            align-self: flex-end !important;
+            justify-content: flex-end !important;
+            margin-left: auto !important;
+            margin-right: 0 !important;
+        }
+        .framer-xtFIq .framer-z4zkof h1,
+        .framer-72rtr7 .framer-z4zkof h1 {
+            text-align: right !important;
+            justify-content: flex-end !important;
+        }
+        
+        /* Bottom row: STUDIO & Image */
+        .framer-xtFIq .framer-b7ccbg,
+        .framer-72rtr7 .framer-b7ccbg {
+            flex: 755.3 0 0 !important;
+        }
+        
+        .framer-xtFIq .framer-1pama8h,
+        .framer-72rtr7 .framer-1pama8h {
+            flex: 529.7 0 0 !important;
+            align-self: stretch !important;
+        }
     }
     @media (min-width: 700px) and (max-width: 1439.98px) {
         .framer-1fvi3ca .framer-1jyj1l4 {
-            margin-bottom: clamp(63px, calc(100vh - 660px), 200px) !important;
+            margin-bottom: clamp(32px, calc(100vh - 700px), 120px) !important;
         }
     }
 </style>
@@ -11058,19 +11082,19 @@
                 <div class="framer-4rfslu" data-framer-name="Hero Section" id="hero">
                     <div class="framer-1jyj1l4" data-framer-name="Heading Wrapper">
                         <div class="framer-z4zkof" data-framer-name="Top">
-                            <div class="ssr-variant hidden-1fvi3ca hidden-1nuy9oi"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 807.4 192" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:240px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
+                            <div class="ssr-variant hidden-1fvi3ca hidden-1nuy9oi"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 1064.7 192" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:240px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
                             <div
-                                class="ssr-variant hidden-72rtr7 hidden-1nuy9oi"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 242.32 58" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:72px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
+                                class="ssr-variant hidden-72rtr7 hidden-1nuy9oi"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 319.06 58" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:72px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
                         <div
-                            class="ssr-variant hidden-1fvi3ca hidden-72rtr7"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 201.6 48" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:60px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
+                            class="ssr-variant hidden-1fvi3ca hidden-72rtr7"><svg class="framer-t1nlx3" data-framer-appear-id="t1nlx3" data-framer-component-type="RichTextContainer" viewBox="0 0 267.05 48" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:60px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
                 </div>
                 <div class="framer-1df7ht1" data-framer-name="Bottom">
                     <div class="framer-b7ccbg" data-framer-name="Text Wrapper">
-                        <div class="ssr-variant hidden-1fvi3ca hidden-1nuy9oi"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 1064.7 192" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:240px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
+                        <div class="ssr-variant hidden-1fvi3ca hidden-1nuy9oi"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 807.4 192" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:240px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
                         <div
-                            class="ssr-variant hidden-72rtr7 hidden-1nuy9oi"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 319.06 58" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:72px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
+                            class="ssr-variant hidden-72rtr7 hidden-1nuy9oi"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 242.32 58" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:72px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
                     <div
-                        class="ssr-variant hidden-1fvi3ca hidden-72rtr7"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 267.05 48" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:60px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">CORABIN</h1></foreignObject></svg></div>
+                        class="ssr-variant hidden-1fvi3ca hidden-72rtr7"><svg class="framer-19r8z02" data-framer-appear-id="19r8z02" data-framer-component-type="RichTextContainer" viewBox="0 0 201.6 48" style="opacity:0.001;transform:translateY(400px)"><foreignObject width="100%" height="100%" class="framer-fit-text" transform="scale(1)" style="overflow:visible;transform-origin:center center"><h1 dir="auto" style="--font-selector:RlI7SW50ZXJEaXNwbGF5LVNlbWlCb2xk;--framer-font-family:&quot;Inter Display&quot;, &quot;Inter Display Placeholder&quot;, sans-serif;--framer-font-size:60px;--framer-font-weight:600;--framer-letter-spacing:-0.06em;--framer-line-height:80%;--framer-text-color:var(--token-bb407a59-7892-4758-ae44-34831ff9d303, rgb(12, 18, 12))" class="framer-text">STUDIO</h1></foreignObject></svg></div>
             </div>
             <div class="framer-1pama8h" data-framer-appear-id="1pama8h" data-framer-name="Image Wrapper" style="opacity:0.001;transform:translateY(400px)">
                 <div class="framer-1ncq91f-container" data-framer-name="Image" name="Image">
