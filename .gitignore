@@ -22,16 +22,12 @@ __pycache__/
 .Python
 *.egg
 *.egg-info/
-dist/
 build/
 eggs/
 parts/
-var/
 sdist/
 develop-eggs/
 .installed.cfg
-lib/
-lib64/
 .env
 .venv
 venv/
@@ -45,6 +41,8 @@ pip-log.txt
 *.log
 *.orig
 
-# === Large source assets (tools/ directory is reference only) ===
-# These are migrated — not part of the served site
-# tools/source-images/ contains 34MB of unoptimized originals
+# === Large source assets (not part of the served site) ===
+tools/source-images/
+
+# === Vercel ===
+.vercel/
