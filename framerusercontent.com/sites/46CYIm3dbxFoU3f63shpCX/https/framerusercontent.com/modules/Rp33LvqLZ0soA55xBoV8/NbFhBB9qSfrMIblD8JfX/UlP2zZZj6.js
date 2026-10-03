@@ -543,8 +543,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 pixelHeight: 1024,
                                                 pixelWidth: 1024,
                                                 sizes: "64px",
-                                                src: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024",
-                                                srcSet: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?scale-down-to=512&width=1024&height=1024 512w,https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024 1024w"
+                                                src: "/assets/images/about/souvik-profile.webp",
+                                                srcSet: "/assets/images/about/souvik-profile-512.webp 512w,/assets/images/about/souvik-profile.webp 1024w"
                                             }
                                         },
                                         qrOLsGssp: {
@@ -555,8 +555,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 pixelHeight: 1024,
                                                 pixelWidth: 1024,
                                                 sizes: "72px",
-                                                src: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024",
-                                                srcSet: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?scale-down-to=512&width=1024&height=1024 512w,https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024 1024w"
+                                                src: "/assets/images/about/souvik-profile.webp",
+                                                srcSet: "/assets/images/about/souvik-profile-512.webp 512w,/assets/images/about/souvik-profile.webp 1024w"
                                             }
                                         }
                                     },
@@ -568,8 +568,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                             pixelHeight: 1024,
                                             pixelWidth: 1024,
                                             sizes: "100px",
-                                            src: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024",
-                                            srcSet: "https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?scale-down-to=512&width=1024&height=1024 512w,https://framerusercontent.com/images/iXkDDkhg3KtlXLRlD6FyEgn7ZjI.png?width=1024&height=1024 1024w"
+                                            src: "/assets/images/about/souvik-profile.webp",
+                                            srcSet: "/assets/images/about/souvik-profile-512.webp 512w,/assets/images/about/souvik-profile.webp 1024w"
                                         },
                                         className: "framer-uvghmy",
                                         "data-framer-name": "Image"
@@ -872,10 +872,10 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 id: "toEXq0UAD",
                                                 layoutId: "toEXq0UAD",
                                                 lzLkubPyg: addImageAlt({
-                                                    pixelHeight: 1200,
-                                                    pixelWidth: 800,
-                                                    src: "https://framerusercontent.com/images/FWVIY526K1j3XdJlYFAz5lrhCQ.jpg?width=800&height=1200",
-                                                    srcSet: "https://framerusercontent.com/images/FWVIY526K1j3XdJlYFAz5lrhCQ.jpg?scale-down-to=1024&width=800&height=1200 682w,https://framerusercontent.com/images/FWVIY526K1j3XdJlYFAz5lrhCQ.jpg?width=800&height=1200 800w"
+                                                    pixelHeight: 1402,
+                                                    pixelWidth: 1122,
+                                                    src: "/assets/images/about/souvik-founder.webp",
+                                                    srcSet: "/assets/images/about/souvik-founder-800.webp 800w,/assets/images/about/souvik-founder.webp 1122w"
                                                 }, ""),
                                                 style: {
                                                     width: "100%"
