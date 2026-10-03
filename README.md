@@ -1,442 +1,1022 @@
-# Corabin Website — Production Readiness Audit
+# Corabin Website — Production Readiness & Security Audit
 
-**Project:** `opus_template.framer.website copy` (Corabin Studio, target domain `https://corabin.com`)
-**Audit date:** 2026-10-02
-**Method:** Static analysis of the full ZIP (all 27 HTML routes, every served JS/MJS module, `_headers`, `_redirects`, `robots.txt`, `sitemap.xml`, assets, docs, tooling and the full Git history). I did **not** run a browser, Lighthouse, or a live deployment, so runtime behaviour (console errors, hydration, real Core Web Vitals) is marked "verify" where it matters.
-
----
-
-## 0. Verdict
-
-# ❌ NOT ready to publish as-is
-
-The site is visually finished and the SEO/metadata groundwork is genuinely good. But there are **five blockers** that would hurt you on day one: your contact form most likely doesn't deliver to you, every page's raw HTML is a copy of the home page, several claims on the site are false or contradict each other, internal build files would be publicly served, and your own security headers would break fonts and smooth scrolling.
-
-All of the blockers are fixable. Realistic effort: roughly 1–2 focused days, with the contact form and content honesty being the most important.
-
-### Scorecard
-
-| Area | Status | One-line summary |
-|---|---|---|
-| Contact / lead capture | ❌ Blocker | Form posts to a Framer form ID that is almost certainly the template author's, not yours |
-| SEO (head metadata) | ✅ Good | Unique titles, canonicals, OG/Twitter, valid JSON-LD, sitemap matches files |
-| SEO (rendered content) | ❌ Blocker | All 27 pages ship identical home-page body HTML; only JS swaps in the real content |
-| Content accuracy / trust | ❌ Blocker | Fabricated stats, contradictory company history, unattributed testimonials |
-| Security (secrets) | ✅ Good | No keys/tokens in tree or Git history (pattern scan) |
-| Security (deploy exposure) | ❌ Blocker | `tools/`, `docs/`, `*.md`, `.git/` sit in the deploy root |
-| Security headers / CSP | ⚠️ High | CSP blocks Inter fonts + Lenis CSS; `unsafe-inline`/`unsafe-eval`; header merging risk |
-| Performance | ⚠️ High | ~22.9 MB of PNGs are what pages actually load; WebP files exist but aren't wired in |
-| Accessibility | ⚠️ High | No `<main>`, no skip link, no aria-labels, missing/empty alt text |
-| Legal pages | ⚠️ High | Terms lack governing law/refunds; Privacy describes features that don't exist |
-| Deployment config | ⚠️ Medium | Redirect/header rules are host-ambiguous; no deploy folder; no Git remote |
-| Code quality / structure | ⚠️ Medium | Framer compiled export (not hand-maintainable), in-place patched modules |
+**Audit date:** 2026-10-03  
+**Project:** Corabin website  
+**Source archive:** `Corabin.website.zip`  
+**Deployment target detected:** Vercel static deployment (`vercel.json` → `public/`)  
+**Architecture:** Static Framer-export-style site with custom JavaScript modules and a prebuilt `public/` deployment tree
 
 ---
 
-## 1. What is already good ✅
+## 0. Executive Verdict
 
-### Structure & hygiene
-1. Clean static-site layout: one `index.html` per route (`/about`, `/contact`, `/blog`, `/projects`, 10 blog posts, 6 projects, `/privacy`, `/terms`, `/404`).
-2. No broken local references: every `/assets/...`, `/framerusercontent.com/...`, `/fonts.gstatic.com/...` path referenced from `index.html` and `about/index.html` exists on disk (38 checked, 0 missing). Every image referenced by the CMS modules exists.
-3. No leftover template strings in served files: zero hits for `opus`, `Markus`, `framer.website`, `lorem`, `example.com`.
-4. `.gitignore` exists and excludes `.env`, OS junk, logs and backups.
-5. Sensible Git history with descriptive commits (13 commits, clean working tree).
-6. Migration scripts are documented in `tools/README.md` with a "do not re-run" warning.
+### ❌ Current status: **NOT PRODUCTION-READY**
 
-### SEO (metadata layer)
-7. Every indexable page has a **unique `<title>`, meta description, and self-referencing canonical**.
-8. Full Open Graph + Twitter Card tags on every page, with absolute URLs.
-9. **JSON-LD is valid on every page** (all 55 blocks parse): Organization, WebSite, ProfessionalService, Article, BreadcrumbList, WebPage, CreativeWork.
-10. `sitemap.xml` lists 23 URLs and every one maps to a real file; `robots.txt` references it.
-11. The 6 legacy project slugs are handled properly three ways: `noindex`, canonical to the new slug, and 301s in `_redirects`.
-12. `<html lang="en-US">` and a correct `viewport` meta are set.
-13. Favicons present in all needed sizes (`.ico`, 32 px, 180 px apple-touch).
+The project is substantially customized and has several good production-oriented foundations, but it should **not be approved for public launch in its current state**.
 
-### Security
-14. **No secrets found** in the working tree or Git history (AWS/OpenAI/Google/GitHub/Slack tokens, private keys, hard-coded passwords). This was a pattern-based scan; see §5 for a recommended second tool.
-15. No `.env`, key, credential or `.pem` files are tracked.
-16. A real security-header set is already drafted in `_headers` (HSTS, nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy, CSP, `frame-ancestors 'none'`). It needs fixes (see §3) but the intent is right.
-17. External `target="_blank"` links all carry `noopener` (0 violations).
-18. No analytics or trackers are loaded, so there is no consent-banner obligation today.
+The main blockers are not a lack of effort or missing basic SEO files; they are **deployment integrity, form configuration, route rendering/content correctness, security-header enforcement, asset provenance, and maintenance reliability**.
 
-### Performance & UX
-19. Hero video uses `preload="none"`, `muted`, `playsinline`.
-20. `prefers-reduced-motion` CSS is present.
-21. Per-route 404 page exists, and legal pages are lightweight (~38 KB body).
-22. Hashed Framer runtime files make long-term caching feasible.
+### Release decision
+
+- **Production-ready today:** ❌ No
+- **Safe to deploy exactly as provided:** ❌ No
+- **Major rework required:** ❌ No
+- **Focused production hardening required:** ✅ Yes
+- **Main risk level:** **High until the P0/P1 items below are closed**
 
 ---
 
-## 2. What is missing 🕳️
+# 1. 🌟 What Is Already Good
 
-### Missing functionality / files
-1. **A working contact-form backend that belongs to you** (see B1).
-2. **A deploy folder.** There is no `public/` or `dist/`, so "deploy the repo root" would publish internal files (see B4).
-3. **A project-level `README.md`** (only `tools/README.md` exists). This file can serve as the start of one.
-4. **A Git remote.** `git remote -v` is empty, so the code exists only on this machine.
-5. **Real hosting config for one specific host** (`wrangler.toml`/Cloudflare Pages settings, or `netlify.toml`). `_headers` and `_redirects` are written for "either" and behave differently on each.
-6. **Real WebP/AVIF usage.** The files exist but the pages don't reference them (see H2).
-7. **A correctly sized Open Graph image** (see H2).
-8. **`noindex` on the 404 page** (it is currently indexable, with `canonical` → `/404`).
-9. **Web app manifest** (`manifest.webmanifest`) and optionally `favicon.svg`: nice-to-have.
-10. **`/.well-known/security.txt`**: optional but good practice for a studio that sells web security content.
-11. **A `www` → apex redirect plan** and DNS/email records for `hello@corabin.com` (MX, SPF, DKIM, DMARC). The site publishes this address everywhere.
-12. **Monitoring:** uptime check, Search Console, Bing Webmaster, and (if wanted) privacy-friendly analytics.
-13. **A LICENSE / ownership note** documenting the template license and third-party licences (Framer runtime, Lenis, React, Motion, fonts).
+## 1.1 Project and deployment structure
 
-### Missing content
-14. Real **client attribution/consent** for testimonials and case studies (see B3).
-15. Governing law, jurisdiction, cancellation/refund and liability-limit clauses in the **Terms**.
-16. A **Privacy Policy** that matches reality: name the form processor, the host/CDN, and drop features you don't have (newsletters, payments, analytics, cookies) or add them for real.
-17. **Accessibility statement** (optional) and a visible **skip link** (required for good keyboard UX).
-18. Real photography: founder photo, logo SVG (the logo is a 1254×1254 PNG), real project screenshots.
+- [x] A dedicated Vercel configuration exists in `vercel.json`.
+- [x] `vercel.json` explicitly uses `public` as the output/deployment directory.
+- [x] `cleanUrls` is enabled.
+- [x] `trailingSlash` is disabled for the intended clean URL structure.
+- [x] Legacy project URLs have 301 redirects configured.
+- [x] A dedicated `404.html` exists.
+- [x] `robots.txt` exists.
+- [x] `sitemap.xml` exists.
+- [x] Security/caching headers have been defined.
+- [x] Deployment-only files are separated from internal audit/tooling files through the `public/` directory.
 
----
+## 1.2 Code integrity
 
-## 3. What needs to be fixed or updated 🔧
+- [x] The public JavaScript/MJS files passed Node syntax validation: **167 files checked, 0 syntax errors**.
+- [x] The Python utility scripts passed compilation checks: **21 files checked, 0 syntax errors**.
+- [x] No obvious broken local HTML/resource references were found by the static link/resource scan.
+- [x] The repository contains dedicated verification tooling rather than relying entirely on manual checking.
+- [x] The existing `tools/verify_production_readiness.py` reported **41 passed / 0 errors** under its own checks.
 
-Severity key: 🛑 Blocker (don't publish) · 🔴 High · 🟠 Medium · 🟡 Low
+> Important: these checks prove static/code consistency only. They do **not** prove that the production site works correctly in a real browser, under Vercel edge behavior, or under real user interaction.
 
-### 🛑 B1 — Contact form submits to a Framer form that probably isn't yours
+## 1.3 SEO foundations
 
-- **Evidence:** `framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/https/framerusercontent.com/modules/VM6LshqF3kGfk3qxJUTi/2SWjHeF37NxXG6KxhVeu/TQtrT4cVD.js`, line 410:
-  `action: "https://api.framer.com/forms/v1/forms/fbe3507b-9997-4e3f-91ff-9e4321e5b4d4/submit"`
-- **Why it matters:** This site was cloned from `opus_template.framer.website`. That form ID belongs to the Framer project that owns the original template. Submissions will either fail or land in someone else's inbox/dashboard, and **you will receive nothing**. The earlier `SEO_PRODUCTION_AUDIT.md` framed this as "if your Framer project expires", which understates it: there is no Framer project of yours behind this form.
-- **Note:** I can't see Framer's server, so treat "almost certainly not yours" as a strong inference, not a proof. Test it (below) either way.
-- **Fix (choose one):**
-  1. Replace the `action` URL with a form service you control (Formspree, Web3Forms, Basin, or a Cloudflare Pages Function + Resend/Mailgun). Then **submit a real test** and confirm (a) the email arrives and (b) the on-page success/error state works, since Framer's form component expects a particular response shape.
-  2. If that proves flaky, replace the Framer form block with a plain HTML `<form>` + small script.
-  3. Stopgap before launch: remove the form and show `mailto:` + WhatsApp/phone buttons only.
-- **Also do:** add a honeypot field or Cloudflare Turnstile for spam; add the new endpoint host to CSP `connect-src` and `form-action`; confirm your Privacy Policy names the processor.
+- [x] Canonical URLs are present on indexable pages.
+- [x] Meta descriptions are present.
+- [x] Open Graph/Twitter metadata is present.
+- [x] A `lang` attribute is present.
+- [x] JSON-LD is present and parseable on the audited HTML pages.
+- [x] Blog structured data includes publication/modification dates.
+- [x] `sitemap.xml` contains **23 canonical URLs**.
+- [x] Sitemap URLs map to real site files.
+- [x] Legacy project URLs are intended to redirect to current project URLs.
+- [x] Legacy redirect stubs are marked noindex/follow.
+- [x] `robots.txt` references the sitemap.
 
-### 🛑 B2 — Every route's HTML body is the home page
+## 1.4 Security foundations
 
-- **Evidence:** Body HTML of `/about`, `/contact`, `/blog`, `/projects`, all 6 project pages and all 10 blog posts has **100% text similarity** with `index.html` (identical 15,341-character visible text; each ~586 KB body). The only differences are the `<head>` metadata and the `data-framer-hydrate-v2` route attribute. The 12 `<h1>`s on every page all read "STUDIO / CORABIN".
-- **What works:** `<head>` tags are route-specific, so link previews (WhatsApp, LinkedIn, Slack) show the right title/image.
-- **What breaks:** Anything that does not run the JavaScript sees the **home page** at `/about`, `/contact` and every blog URL: some search/AI crawlers, link unfurlers that read body text, read-it-later tools, no-JS users, and the first paint before hydration. Googlebot does render JS, but it's slower, less reliable, and risks hydration mismatch (content flash or React errors when SSR markup doesn't match the route).
-- **Fix options:**
-  1. **Best:** regenerate true per-route static HTML (re-export from Framer, or rebuild the pages in a static generator such as Astro/Next export so each route's body matches its content).
-  2. **If you must keep this build:** at minimum add a short, route-specific server-rendered `<h1>` + intro paragraph in each page's HTML, and test hydration in the browser console for mismatch warnings.
-- **Verify:** `curl -s https://corabin.com/about | sed 's/<[^>]*>//g' | grep -i "our story"` should return the About copy, and the same for a blog URL.
+- [x] `X-Content-Type-Options: nosniff` is configured.
+- [x] `X-Frame-Options: DENY` is configured.
+- [x] `frame-ancestors 'none'` is included in the CSP policy.
+- [x] `Referrer-Policy` is configured.
+- [x] `Permissions-Policy` is configured.
+- [x] HSTS is configured.
+- [x] `object-src 'none'` appears in the Vercel CSP configuration.
+- [x] `base-uri 'self'` is configured.
+- [x] A static repository scan found **0 obvious matches** for common private-key/API-token/password secret patterns.
+- [x] No current Git remote is configured, reducing the chance of accidentally publishing this exact working tree to a configured remote without review.
 
-### 🛑 B3 — Several claims on the site are false, fabricated, or contradict each other
+> The secret scan is pattern-based. It is not proof that the project contains no secrets.
 
-This is both a trust problem and a legal one (misleading-advertising rules in India and wherever your clients are). It is also the fastest thing to fix.
+## 1.5 Accessibility foundations
 
-| Claim on the site | Where | Problem |
-|---|---|---|
-| "Building digital excellence since **2019**" | About page module `Rp33.../UlP2zZZj6.js` | 7 years of history |
-| "Over the past **decade**, we've built dozens of websites…" | Contact page, `TQtrT4cVD.js` | 10 years |
-| "**5** Years experience" | Home | 5 years: three different histories on one site |
-| "**134** Projects delivered", "**19** Direct collaboration" | Home | These are the **original template's numbers** (see `docs/AUDIT.md`: "19 individuals, 134+ projects") |
-| "**99%** On-time delivery", "**$17M** Client revenue impacted" | Home | `docs/CHANGELOG.md` shows these were edited from the template's "95%" and "$21M" with no source |
-| "We're a team of…", "our team members…", "19 direct collaboration" | About/Home | Reads as a large team |
-| 3 testimonials credited only to project names ("Enterprise Revenue Architecture" etc.) | Home | No real person/company/permission |
-| 6 case studies with "Client: Havyn Real Estate", "Client: Juliette Ardène"… | `/projects/*` | Source images are AI-generated (`tools/source-images`, `docs/CORABIN_BLOGS_EDITORIAL_AND_AI_IMAGE_PROMPTS.md`); if these are concept/sample projects, presenting them as delivered client work is misleading |
+- [x] Required contact form fields have labels/accessible names in the custom form module.
+- [x] Email is required in the contact form.
+- [x] Many image elements have alt attributes; the scan found **0 missing-alt attributes** in the inspected HTML, although many were intentionally empty.
+- [x] `prefers-reduced-motion` support exists in the stylesheet/codebase.
+- [x] The project has already undergone at least one accessibility-oriented pass, based on repository history and tooling.
 
-- **Fix:**
-  1. Replace every stat with a number you can prove, or remove the counters. If you're a solo designer-developer with a shorter track record, say so. That is a selling point (direct access, no agency overhead), not a weakness.
-  2. Pick **one** company/experience timeline and use it everywhere (Home, About, Contact, JSON-LD, Terms).
-  3. Label concept work honestly ("Concept project", "Case study (self-initiated)"), or replace with real work; get written permission before naming real clients.
-  4. Remove or replace testimonials until you have real, attributed, permitted quotes (name, role, company).
-  5. Replace the template's remaining stock photos (17 `<img>` tags still load from `framerusercontent.com`; see H3).
-  6. Fix blog dates (see M3).
+## 1.6 Brand/content customization
 
-### 🛑 B4 — Internal files would be publicly deployed
-
-- **Evidence:** Repo root contains `tools/` (35 MB: migration scripts, decoded CMS JSON, source images), `docs/` (AUDIT, CHANGELOG, content map, AI prompt doc), `CODEBASE_AUDIT.md`, `SEO_PRODUCTION_AUDIT.md`, `_headers`/`_redirects`, and `.git/` (68 MB, full history).
-- **Risk:** If the host's publish directory is the repo root (the default for "static, no build"), these become public: `corabin.com/tools/updated_cms_records.json`, `/docs/CHANGELOG.md` (which documents the OPUS template origin), and potentially `/.git/` contents. `robots.txt` has `Disallow: /tools/`, which doesn't protect anything and advertises the path. The old audit's `rsync --exclude` advice only helps if you always deploy that way.
-- **Fix:**
-  1. Create a `public/` (or `dist/`) folder containing **only** what should be served: `index.html`, route folders, `assets/`, `framerusercontent.com/`, `fonts.gstatic.com/`, `unpkg.com/`, `video.gumlet.io/`, `favicon.ico`, `robots.txt`, `sitemap.xml`, `_headers`, `_redirects`, `404.html`.
-  2. Set the host's publish directory to `public/`.
-  3. Move `tools/`, `docs/`, and the audit `.md` files to the repo root outside `public/` (or a private repo).
-  4. After deploy: `curl -I https://corabin.com/tools/README.md`, `/docs/CHANGELOG.md`, `/.git/config` must all return **404**.
-
-### 🛑 B5 — Your own CSP blocks the Inter fonts and the Lenis scroll CSS
-
-The full detail and fix are in **H1** below. It is a launch blocker because, once `_headers` is applied on the host, the site's typography and smooth-scroll styling will not match what you see when testing locally without those headers.
+- [x] Corabin branding is present throughout the customized route set.
+- [x] Custom project and blog content has been added.
+- [x] Founder imagery has been added.
+- [x] Custom legal pages exist.
+- [x] Legacy template route handling has been addressed rather than simply deleting old URLs.
 
 ---
 
-### 🔴 H1 — `_headers` Content-Security-Policy blocks things the site needs
+# 2. 🚨 What Is Missing / What Is Currently Blocking Launch
 
-| Problem | Evidence | Effect |
-|---|---|---|
-| `font-src` doesn't include `framerusercontent.com` | 78 `@font-face` entries (Inter, Inter Display) load from `https://framerusercontent.com/...` | Inter is blocked, so fallback font, layout shift, brand typography lost |
-| `style-src` doesn't include `unpkg.com` | 21 HTML pages link `https://unpkg.com/lenis@1.3.19/dist/lenis.css` | Lenis CSS blocked, smooth-scroll quirks. A local copy already exists at `/unpkg.com/lenis@1.3.19/dist/lenis.css` |
-| `script-src` has `'unsafe-inline' 'unsafe-eval'` | `_headers` | Much of the CSP's XSS protection is gone (Framer's runtime needs these today, so keep but document) |
-| No `object-src 'none'` | `_headers` | Minor hardening gap |
-| Form endpoint not future-proofed | `connect-src`/`form-action` only list `api.framer.com` | Your new form endpoint will be blocked until added |
-| Duplicate `Cache-Control` | `/*` sets `max-age=0, must-revalidate`; `/assets/*` and `/framerusercontent.com/*` set long caching | On Cloudflare Pages, same-named headers from multiple matching rules are **joined with a comma**, producing contradictory directives. Check with `curl -I` after deploy |
-| `immutable` 1-year cache on `/framerusercontent.com/*` | Several modules in that folder were **patched in place** (same hashed filename, new content) | After any future edit, returning visitors keep the old file for a year. Rename patched files (new hash) or give them shorter caching |
-| `HSTS … preload` | `_headers` | Preload is hard to undo and applies to **all subdomains**. Add only when every subdomain is HTTPS-only |
+## P0 — Release blockers
 
-**Fix:** use the corrected headers in Appendix A. Roll the CSP out as `Content-Security-Policy-Report-Only` first, load every page with DevTools open, and fix every console violation before enforcing. Better still: self-host the Inter fonts and the images (H3), then drop `framerusercontent.com` from the CSP entirely.
+### 2.1 Contact form is not production-configured
 
-### 🔴 H2 — Images: pages load ~23 MB of PNGs; WebP files are not used
+- [ ] Replace the literal placeholder endpoint in the **actual Vercel deploy tree**:
 
-- **Evidence:** The CMS modules reference **46 PNGs (22.9 MB total)** and only **3 WebPs**. The 47 `.webp` files in `assets/images/` (about 3 MB combined) are effectively dead weight. The older audit's "87% reduction" claim is not realised in the delivered pages.
-- **Worst offenders:** `blog8.png` 2.85 MB, `blog1.png` 2.19 MB, `blog9.png` 1.93 MB, `blog4.png` 1.89 MB, `blog3.png` 1.64 MB, `blog2.png` 1.50 MB. The home page shows 3 blog cards, so about 5.3 MB of PNG on the home page alone.
-- **Other image problems:**
-  - `Corabin_logo.png` and `favicon.png` are 410 KB, 1254×1254 (a WebP of the logo is 63 KB).
-  - `assets/images/og-corabin.png` is **actually a JPEG** (`file` reports JPEG data) at **1376×768**, while the meta tags declare **1200×630**. Facebook/LinkedIn may crop or reject it. Export a real 1200×630 file.
-  - No `loading="lazy"` in the static HTML (Framer's runtime may add it; verify in DevTools) and no `srcset`: the CMS records set `srcSet` to the same PNG for every width.
-- **Fix:** In the CMS data (`tools/updated_blog_records.json`/`updated_cms_records.json` are the source, but the live data is inside the patched `.mjs`), point `src`/`srcSet` to the `.webp` files (or generate 640/1024/1600 px variants), keep PNG only as a fallback, and re-hash the changed modules (H1 caching). Target: blog/project images ≤ 150 KB each, home page total < 1.5 MB transferred.
+`public/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/https/framerusercontent.com/modules/VM6LshqF3kGfk3qxJUTi/2SWjHeF37NxXG6KxhVeu/TQtrT4cVD.js`
 
-### 🔴 H3 — Still dependent on the template author's CDN and assets
+Current deployed-copy endpoint:
 
-- **Fonts:** 78 Inter/Inter Display faces load from `framerusercontent.com`; Manrope too.
-- **Images:** 17 `<img>` tags on each page load from `framerusercontent.com/images/...` (43 original template photos per `CODEBASE_AUDIT.md`). These are the template's demo photos, not yours.
-- **Hero video:** `<video src="https://video.gumlet.io/67a34db7c82041cdc3756469/…/download.mp4">` is on the **template creator's Gumlet account**. A local copy exists at `/video.gumlet.io/…/download.mp4` but the HTML doesn't use it.
-- **Licensing:** The earlier audit states self-hosting the Framer runtime is "permitted under export terms". I could not verify that, and Framer does not offer an official static export of a site. **Read the Framer Terms of Service and your template's licence** (the Framer Marketplace licence typically covers publishing via Framer, not redistributing the runtime). If you have any doubt, the clean route is to publish through Framer hosting (point `corabin.com` to it) or rebuild the site.
-- **Fix:** Self-host the fonts (download the Inter files you actually use, or use `fontsource`); replace template photos with your own/licensed ones; point the video to your own file (or remove it); settle the licensing question before launch.
-
-### 🔴 H4 — Accessibility basics are missing
-
-- No `<main>` landmark (0 found) and no **skip link**.
-- 0 `aria-label` attributes; only 3 `role=` attributes; 0 `<button>` elements. The "Menu" control and FAQ accordions are likely `div`s, so keyboard and screen-reader support is doubtful (verify by tabbing through).
-- **32 `<img>` per page: 6 have no `alt` attribute and 15 have `alt=""`** (fine for decorative, wrong for content images like project/blog thumbnails).
-- 12 `<h1>` per page, all "STUDIO / CORABIN": Framer renders one per breakpoint variant; confirm only one is exposed to assistive tech. The visible H1 isn't descriptive.
-- Lenis smooth-scroll can interfere with keyboard/assistive scrolling; ensure it's disabled under `prefers-reduced-motion`.
-- Colour contrast (e.g. `rgba(12,18,12,0.6)` text on `#f3f3f1`) is **untested**.
-- **Fix:** add `<main>`, a skip link, real buttons/aria for menu + accordions, meaningful alt text, then run axe/Lighthouse and a keyboard-only pass.
-
-### 🔴 H5 — Legal pages don't match reality
-
-- **Terms** have payment terms (50% deposit, net-14) but **no governing law/jurisdiction, no refund/cancellation, no liability cap, no revision limits** (searched for "Governing", "Jurisdiction", "laws of", "Refund": not found).
-- **Privacy Policy** says you send newsletters, process payments, run analytics and cookies, and give "Regular security assessments"; none of that exists on the site. It doesn't name the form processor/host, or mention India's DPDP Act 2023 / GDPR rights handling or a grievance contact.
-- Both say "Last updated: October 2026 · Effective immediately".
-- **Fix:** rewrite to describe what you actually do, add jurisdiction (India/Kolkata courts, as applicable), refund/cancellation, IP transfer on payment, liability limits. I'm not a lawyer, so have these reviewed.
-
-### 🔴 H6 — `mailto:` links are malformed
-
-- The email link is `mailto: hello@corabin.com` (note the **space after the colon**), in `TQtrT4cVD.js`, `xVFoVRkDB.js` and the home footer (3 links). Several mail clients handle it, others open a blank draft.
-- **Fix:** `mailto:hello@corabin.com` in all three modules. Also make sure the mailbox exists and receives mail (MX/forwarding + SPF/DKIM/DMARC) before launch.
-
-### 🔴 H7 — `_redirects` and 404 handling are host-dependent
-
-- `/* /404.html 404`: valid on Netlify; **not supported on Cloudflare Pages** (which only allows 200/3xx and already serves `404.html` automatically). It may be ignored or flagged at deploy.
-- `/privacy /privacy/index.html 200` and `/terms … 200` are unnecessary: both hosts already serve `/privacy/` from `privacy/index.html`, and on some hosts this rewrite can fight the pretty-URL redirect.
-- `404.html` and `404/index.html` are byte-identical duplicates (797 KB each, mostly Framer CSS).
-- The 404 page is **indexable** (no `noindex`) and has `canonical` → `https://corabin.com/404`.
-- **Fix:** use the `_redirects` in Appendix B, keep a single `404.html`, add `<meta name="robots" content="noindex">`, and confirm unknown URLs return a real **HTTP 404** (`curl -I https://corabin.com/nope`).
-
----
-
-### 🟠 Medium
-
-| ID | Issue | Detail / Fix |
-|---|---|---|
-| M1 | **Titles too long** | 21 pages have `<title>` > 60 chars (e.g. "Custom Web Architecture vs. Commercial Templates: The ROI Breakdown — Corabin" = 77). Google will truncate. Shorten to ≤ 60. |
-| M2 | **Meta descriptions too long** | 13 pages > 160 chars (worst: custom-vs-off-the-shelf = 193; design-that-converts = 180; technical-debt = 179). Trim to ≤ 155. |
-| M3 | **Backdated blog dates** | Posts are dated Nov 2024 – Jan 2025 and `sitemap.xml` `lastmod` repeats that, yet the site was built in Sept/Oct 2026 and the Privacy page says "Last updated October 2026". Use real publish dates; "Corabin" blog posts older than the brand/domain look inauthentic and conflict with B3. |
-| M4 | **Slug/title drift** | Slug `choosing-the-right-tech-stack-a-decision-framework-for-2025` but title says "for 2026"; `custom-vs-off-the-shelf-choose-wisely` etc. are old template slugs that no longer describe the post. If you rename, add 301s. |
-| M5 | **Twitter handle is a guess** | `twitter:site` = `@corabin` on every page. Update or remove if the account doesn't exist. |
-| M6 | **JSON-LD data unverified** | `sameAs` lists LinkedIn `/company/corabin`, Instagram `corabin.studio`, Dribbble, Behance, and the address uses postal code `700001`. Confirm each profile exists and the PIN is yours, or remove. Also review whether you want your **personal mobile number** in public markup (JSON-LD, Contact page, Privacy page): scrapers and spam calls follow. A business line/WhatsApp Business number is safer. |
-| M7 | **Editor bundle shipped** | `framerusercontent.com/sites/…/https/app.framerstatic.com/framer.BVYWINPW.mjs` (1.6 MB) and `chunk-7KEO2DXG.mjs` (437 KB) are Framer **editor** code, plus a `ga.jspm.io` react-dom mirror (234 KB) and an `api.framer.com` auth path. They are probably never loaded on a live site, but verify in the Network tab and delete them (smaller deploy, smaller attack surface). |
-| M8 | **Huge HTML** | Each page is ~1.37 MB of HTML (inlined CSS for all breakpoints, 3× duplicated DOM per breakpoint). Ensure Brotli/gzip is on (Cloudflare/Netlify do this by default; confirm with `curl -H 'Accept-Encoding: br' -I`). Real fix = re-export (B2). |
-| M9 | **Legacy redirect stubs** | The 6 `projects/<old-slug>/index.html` files duplicate what `_redirects` already does. Keep one mechanism (the 301s are better for SEO). |
-| M10 | **Trailing-slash behaviour** | Canonicals/sitemap use no trailing slash. Test `/about` and `/about/` both resolve without redirect loops, and one redirects to the other. |
-| M11 | **`.gitignore` flaws** | It ignores `dist/`, `build/`, `lib/` (it would hide a future `dist/` deploy folder), and its comment claims `tools/source-images/` is ignored but there is no pattern, so 35 MB of source images are tracked. |
-| M12 | **Stale/incorrect docs** | `SEO_PRODUCTION_AUDIT.md` and `CODEBASE_AUDIT.md` say: 22 sitemap URLs (actual 23); robots.txt disallows legacy slugs (actual file doesn't); "No 404 page" (one exists); "WebP files → 87% reduction" (not wired in); "safe to push to GitHub as a public repository" (true for secrets, but it publishes `tools/` and template provenance). Update or delete. |
-| M13 | **Project folder name** | `opus_template.framer.website copy` (spaces + template name). Rename to `corabin-website` before creating a repo. |
-
-### 🟡 Low
-
-1. `<!-- Published May 22, 2026, 1:47 PM UTC -->` template stamp in HTML: remove.
-2. `permissions-policy` includes `interest-cohort=()` (deprecated, harmless).
-3. `Disallow: /tools/` in `robots.txt` advertises a path: remove once `tools/` isn't deployed.
-4. Lenis smooth-scroll (hijacks native scroll) is a UX preference, so offer reduced-motion fallback.
-5. No `<noscript>` fallback message.
-6. Large `.framercms` chunk files are served (12 files); harmless but not needed in the browser if the data is embedded; verify before removing.
-
----
-
-## 4. What needs to be created 🆕
-
-| # | File / asset | Purpose |
-|---|---|---|
-| 1 | `public/` folder | Clean deploy root (B4) |
-| 2 | Working **contact backend** (Formspree/Web3Forms/Pages Function) + spam protection | Leads actually reach you (B1) |
-| 3 | `public/_headers` (corrected) | See Appendix A |
-| 4 | `public/_redirects` (corrected) | See Appendix B |
-| 5 | `wrangler.toml` **or** `netlify.toml` | Pin build dir = `public`, no build command |
-| 6 | Real **1200×630 OG image** (`og-corabin.jpg`) | Correct social previews |
-| 7 | **WebP/AVIF** variants (640/1024/1600) of all blog/project images, wired into the CMS data | Cut ~20 MB from page weight |
-| 8 | **Logo as SVG** + small PNG fallbacks (180/512) | Replaces 410 KB PNG logo |
-| 9 | Self-hosted **Inter** `.woff2` files + `@font-face` | Removes CDN/CSP dependency |
-| 10 | Real **testimonials / case-study copy** with consent | B3 |
-| 11 | Rewritten **Privacy Policy** and **Terms** | H5 |
-| 12 | `README.md` at repo root (what this is, how to deploy, how to edit content) | Maintainability |
-| 13 | `LICENSE` / `THIRD_PARTY.md` | Template + runtime + font licences |
-| 14 | `.well-known/security.txt` | Responsible disclosure contact |
-| 15 | `manifest.webmanifest` (optional) | PWA metadata/icons |
-| 16 | `scripts/check.sh` (see Appendix C) | Repeatable pre-deploy checks |
-| 17 | A **remote Git repository** (private to start) | Backup + deploy-from-Git |
-| 18 | DNS records: apex + `www`, MX/SPF/DKIM/DMARC for `hello@corabin.com` | Domain + email |
-| 19 | Analytics (optional): Plausible/Umami/Cloudflare Web Analytics | Cookie-free measurement |
-
----
-
-## 5. What must be checked before publishing ✅
-
-Tick every box. Items marked 🛑 map to blockers above.
-
-### Content & legal
-- [ ] 🛑 Every number on the site is true and provable (projects, years, team size, revenue, on-time %)
-- [ ] 🛑 One consistent company history across Home/About/Contact/JSON-LD/Terms
-- [ ] 🛑 Testimonials are real, attributed, and permitted, or removed
-- [ ] 🛑 Case studies are labelled honestly (concept vs. client) and clients consented
-- [ ] Template stock photos and hero video replaced with your own/licensed assets
-- [ ] Framer Terms + template licence checked for self-hosting (H3)
-- [ ] Privacy Policy and Terms rewritten and reviewed
-- [ ] Blog dates are real; no dates earlier than the brand's existence
-- [ ] Phone number/email intentionally public; `hello@corabin.com` receives mail
-
-### Forms & links
-- [ ] 🛑 Submit the contact form on the **live domain** and confirm the email arrives and the success state shows
-- [ ] Spam protection works (honeypot/Turnstile)
-- [ ] `mailto:` links have no space
-- [ ] All 4 social profiles exist and the links open them (LinkedIn, Instagram, Dribbble, Behance)
-- [ ] No broken links (run a crawler, e.g. `npx linkinator https://corabin.com --recurse`)
-
-### SEO
-- [ ] 🛑 View-source (not DevTools) of `/about`, `/contact`, one blog post and one project shows that page's own content in the body
-- [ ] Titles ≤ 60 chars, descriptions ≤ 155 chars
-- [ ] 404 page returns HTTP 404 and has `noindex`
-- [ ] `robots.txt` and `sitemap.xml` load on the live domain; sitemap `lastmod` is accurate
-- [ ] Rich Results Test passes on `/` and one blog post
-- [ ] Facebook Sharing Debugger / LinkedIn Post Inspector show a correct 1200×630 image
-- [ ] Search Console + Bing Webmaster verified; sitemap submitted
-- [ ] `https://www.corabin.com` and `http://` both 301 to `https://corabin.com`
-
-### Security & deploy
-- [ ] 🛑 `curl -I` on `/tools/README.md`, `/docs/CHANGELOG.md`, `/.git/config`, `/CODEBASE_AUDIT.md`, `/_headers` all return **404**
-- [ ] `curl -I https://corabin.com/` shows HSTS, nosniff, X-Frame-Options, Referrer-Policy, Permissions-Policy, and a **single, sane** `Cache-Control`
-- [ ] CSP: deploy as Report-Only first; zero violations on every route; then enforce
-- [ ] Inter fonts render (DevTools → Network → Fonts, no blocked requests); Lenis CSS applies
-- [ ] Run a second secret scanner on the repo: `gitleaks detect` or `trufflehog git file://.`
-- [ ] Don't enable HSTS `preload` until all subdomains are HTTPS
-- [ ] Git repo pushed to a private remote; branch protection on `main`
-
-### Performance
-- [ ] Lighthouse (mobile, throttled) on `/`, `/blog`, one post: Performance ≥ 85, LCP < 2.5 s, CLS < 0.1, INP < 200 ms
-- [ ] Home page transfer < 1.5 MB; no PNG > 200 KB served
-- [ ] Brotli/gzip confirmed (`content-encoding: br`)
-- [ ] Hero video loads from your own origin and doesn't block LCP
-- [ ] Editor bundle (`app.framerstatic.com/*`) confirmed unused, then removed
-
-### Accessibility & responsiveness
-- [ ] Keyboard-only walkthrough: skip link, menu, FAQ accordions, form, focus visible
-- [ ] axe DevTools / Lighthouse a11y ≥ 95
-- [ ] Screen-reader pass (NVDA/VoiceOver) on Home + Contact
-- [ ] Test at 360, 390, 768, 1024, 1440, 1920 px and on a real Android + iPhone
-- [ ] Contrast checked on secondary text
-- [ ] Reduced-motion setting disables animations and smooth scroll
-
-### Post-launch (first 48 h)
-- [ ] Watch Search Console coverage and the host's error logs
-- [ ] Re-run Lighthouse on the live URL
-- [ ] Set an uptime monitor (UptimeRobot / Better Stack)
-
----
-
-## Appendix A — Suggested `_headers` (start here, then tighten)
-
-```
-/*
-  X-Content-Type-Options: nosniff
-  X-Frame-Options: DENY
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://framerusercontent.com; style-src 'self' 'unsafe-inline'; font-src 'self' data: https://fonts.gstatic.com https://framerusercontent.com; img-src 'self' data: blob: https://framerusercontent.com; media-src 'self' blob: https://video.gumlet.io; connect-src 'self' https://framerusercontent.com https://YOUR-FORM-ENDPOINT; object-src 'none'; base-uri 'self'; form-action 'self' https://YOUR-FORM-ENDPOINT; frame-ancestors 'none'
-
-# No Cache-Control on /* so it can't merge with the rules below.
-# HTML keeps the host default (revalidate on every load).
-
-/assets/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
-
-/fonts.gstatic.com/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/favicon.ico
-  Cache-Control: public, max-age=86400
+```text
+https://YOUR-N8N-WEBHOOK-URL/webhook/contact-form
 ```
 
-Notes:
-- Remove `framerusercontent.com` and `video.gumlet.io` from the CSP once fonts, images and video are self-hosted (H3).
-- Leave `/framerusercontent.com/*` on short caching (or rename patched files with new hashes) until you've verified which modules were patched in place (H1).
-- Switch `Content-Security-Policy-Report-Only` to `Content-Security-Policy` after a clean pass.
+- [ ] Set the real production endpoint.
+- [ ] Decide whether the form should submit to n8n directly, to a server-side relay, or to another form processor.
+- [ ] Test successful submission.
+- [ ] Test failed submission.
+- [ ] Test timeout/offline behavior.
+- [ ] Add spam/abuse protection.
+- [ ] Confirm the receiving workflow cannot be abused to send arbitrary email or execute unintended automation.
+- [ ] Ensure the endpoint accepts only expected fields and validates them server-side.
+- [ ] Add rate limiting or equivalent abuse controls.
+- [ ] Ensure the privacy policy identifies the real processor and data flow.
 
-## Appendix B — Suggested `_redirects`
+### 2.2 Root source and `public/` deployment copy have already diverged
 
-```
-# Legacy project slugs
-/projects/arrows          /projects/kora      301
-/projects/arrows/         /projects/kora      301
-/projects/chantalle       /projects/himon     301
-/projects/chantalle/      /projects/himon     301
-/projects/papyrus         /projects/norda     301
-/projects/papyrus/        /projects/norda     301
-/projects/london-museum   /projects/ardene    301
-/projects/london-museum/  /projects/ardene    301
-/projects/bullseye        /projects/havyn     301
-/projects/bullseye/       /projects/havyn     301
-/projects/interference    /projects/almare    301
-/projects/interference/   /projects/almare    301
+This is one of the most important structural problems in the project.
 
-# Cloudflare Pages serves /404.html automatically.
-# On Netlify only, you may also add:  /*  /404.html  404
+The root/source version of the contact module still points to the original Framer form endpoint:
+
+```text
+https://api.framer.com/forms/v1/forms/fbe3507b-9997-4e3f-91ff-9e4321e5b4d4/submit
 ```
 
-## Appendix C — Quick pre-deploy check script (`scripts/check.sh`)
+The deployment copy in `public/` points to the placeholder n8n endpoint.
 
-```bash
-#!/usr/bin/env bash
-# Run from repo root. Fails if internal files or obvious problems would ship.
-set -euo pipefail
-PUB=public
+This proves that the source tree and deployment tree are **not automatically synchronized**.
 
-# 1. Nothing internal inside the deploy folder
-for p in tools docs .git CODEBASE_AUDIT.md SEO_PRODUCTION_AUDIT.md; do
-  [ ! -e "$PUB/$p" ] || { echo "FAIL: $PUB/$p must not be deployed"; exit 1; }
-done
+- [ ] Define one authoritative source.
+- [ ] Create a deterministic build/copy/export step.
+- [ ] Make the deployment tree generated rather than manually edited.
+- [ ] Add a CI check that fails when root and deploy output disagree where they are expected to match.
+- [ ] Stop making ad-hoc production fixes directly inside `public/` unless `public/` itself is declared the canonical source.
 
-# 2. Every route has its own body content (not a copy of home)
-home=$(sed -n '/<body/,$p' $PUB/index.html | md5sum)
-for r in about contact blog projects; do
-  [ "$(sed -n '/<body/,$p' $PUB/$r/index.html | md5sum)" != "$home" ] \
-    || { echo "FAIL: /$r body is identical to home"; exit 1; }
-done
+### 2.3 Indexable pages are not carrying their own route-specific body content in static HTML
 
-# 3. No malformed mailto, no template leftovers, no stray form IDs
-! grep -rIn 'mailto: ' $PUB --include=*.js --include=*.mjs --include=*.html \
-  || { echo "FAIL: 'mailto: ' has a space"; exit 1; }
-! grep -rIniE 'opus|markus|lorem' $PUB --include=*.js --include=*.mjs --include=*.html \
-  || { echo "FAIL: template leftovers"; exit 1; }
-! grep -rIn 'fbe3507b-9997-4e3f-91ff-9e4321e5b4d4' $PUB \
-  || { echo "FAIL: old Framer form ID still present"; exit 1; }
+A normalization check found **20 indexable non-home routes with effectively identical body text** in the generated `public/*.html` shell.
 
-# 4. No oversized images
-find $PUB/assets -type f \( -name '*.png' -o -name '*.jpg' \) -size +300k -print \
-  | { ! grep . ; } || { echo "FAIL: images > 300 KB above"; exit 1; }
+The route-specific data is heavily dependent on the Framer runtime/modules being executed and hydrated in the browser.
 
-echo "OK"
-```
+Examples include:
+
+- `/about`
+- `/contact`
+- `/projects`
+- individual project pages
+- `/blog`
+- individual blog posts
+
+This creates a strong dependency on client-side rendering for the real page content.
+
+- [ ] Ensure each indexable route has meaningful route-specific content in the initial HTML/SSR/SSG output.
+- [ ] Verify that the exact content expected for `/about`, `/contact`, `/blog/...`, `/projects/...` is available without relying exclusively on hydration.
+- [ ] Test the rendered DOM with JavaScript disabled.
+- [ ] Test Google-friendly rendered HTML after deployment.
+- [ ] Validate that Open Graph previews and link unfurlers receive the correct page metadata/content.
+
+### 2.4 Template asset/licensing provenance is not resolved in the repository
+
+Git history shows this project originated from an Opus/Framer template import, and several image assets remain unchanged from the initial import.
+
+The project therefore needs an explicit answer to:
+
+- Are all remaining template images licensed for redistribution?
+- Are all fonts licensed for self-hosting?
+- Are all Framer runtime assets legally redistributable in this deployment context?
+- Are all third-party assets properly attributed where required?
+
+- [ ] Verify the template license.
+- [ ] Verify image licenses.
+- [ ] Verify font licenses.
+- [ ] Verify third-party package/runtime licenses.
+- [ ] Remove any asset for which ownership/licensing cannot be established.
+- [ ] Create a third-party notices/license file where required.
 
 ---
 
-## Suggested order of work
+# 3. 🔐 Security Findings
 
-1. **Today:** create `public/` + move internal files out (B4) → fix `mailto:` (H6) → fix `_headers`/`_redirects` (H1, H7).
-2. **Content pass (B3):** stats, timeline, testimonials, case-study labels, blog dates, legal pages.
-3. **Contact form (B1):** swap endpoint, test end-to-end, add spam protection.
-4. **Images/fonts/video (H2, H3):** wire WebP, self-host Inter, replace template assets, new OG image.
-5. **Per-route HTML (B2):** re-export/rebuild so each route's body is its own.
-6. **Accessibility (H4)**, then run the §5 checklist, deploy to a **preview URL first**, re-run the checklist, and only then point `corabin.com` at it.
+## 3.1 CSP is not enforced on Vercel
+
+`vercel.json` uses:
+
+```text
+Content-Security-Policy-Report-Only
+```
+
+This means the policy is reporting violations rather than actively blocking them.
+
+Additionally, the current policy contains:
+
+```text
+'unsafe-inline'
+'unsafe-eval'
+```
+
+These materially weaken CSP protection.
+
+- [ ] Move from Report-Only to enforced `Content-Security-Policy` after the policy is validated.
+- [ ] Remove `'unsafe-eval'` if the runtime permits it.
+- [ ] Reduce or eliminate `'unsafe-inline'` where practical.
+- [ ] Use nonces/hashes for unavoidable inline scripts where feasible.
+- [ ] Restrict `connect-src`, `img-src`, `font-src`, and `media-src` to only required vendors.
+- [ ] Add the real form endpoint only after it is selected.
+- [ ] Test the final policy in production with browser console/CSP reports.
+
+## 3.2 Two different CSP/header configurations exist
+
+There is a root `_headers` file and a separate `public/_headers` file, while Vercel is configured through `vercel.json`.
+
+The two header files are not equivalent, and one still contains the n8n placeholder.
+
+- [ ] Keep one authoritative deployment-header configuration per deployment platform.
+- [ ] Generate platform-specific files from one source if multi-platform deployment is required.
+- [ ] Remove stale/contradictory header definitions.
+- [ ] Verify actual HTTP response headers from the live domain rather than trusting config files alone.
+
+## 3.3 HSTS needs deployment validation
+
+The configuration uses:
+
+```text
+Strict-Transport-Security: max-age=31536000; includeSubDomains
+```
+
+The root `_headers` also adds `preload`.
+
+- [ ] Confirm every production subdomain is HTTPS-ready before using `includeSubDomains`.
+- [ ] Confirm the domain is intended for HSTS preload before submitting it to any preload list.
+- [ ] Verify HTTP → HTTPS behavior on the live host.
+
+## 3.4 Git repository is included in the source archive
+
+The archive contains a `.git` directory of approximately **75 MB**.
+
+It is not inside the configured `public/` deploy directory, so Vercel should not publish it when `outputDirectory` is respected.
+
+However:
+
+- [ ] Never deploy the repository root as the public web root.
+- [ ] Never publish `.git` accidentally through another hosting platform.
+- [ ] Keep `.git` excluded from packaged deploy artifacts.
+- [ ] Consider repository cleanup/GC because the archive contains many Git objects and increases distribution size.
+
+## 3.5 Stale Framer editor/runtime artifact is present under `public/`
+
+The deploy tree contains:
+
+```text
+public/framerusercontent.com/sites/.../framertoplevel/main.html
+```
+
+This file references Framer editor initialization and pageview/tracking behavior, including an editor module such as:
+
+```text
+https://framer.com/edit/init.mjs
+```
+
+- [ ] Determine whether this file is actually required by the public site.
+- [ ] Remove it from deployment if it is an editor/debug artifact.
+- [ ] Remove any other unused Framer editor/debug artifacts from `public/`.
+- [ ] Re-run the deployment scan after cleanup.
+
+## 3.6 No obvious hard-coded secrets were found, but dependency exposure remains
+
+A pattern-based scan did not find obvious private keys, AWS keys, Google API keys, GitHub tokens, Slack tokens, or generic password assignments.
+
+That is positive, but the site still contains many external runtime/resource dependencies.
+
+- [ ] Review every external origin.
+- [ ] Remove unnecessary vendor dependencies.
+- [ ] Self-host assets where practical.
+- [ ] Use SRI for externally loaded scripts where applicable.
+- [ ] Confirm that no tracking/analytics vendor exists without being reflected in the privacy documentation.
 
 ---
 
-*Limits of this audit: static review only. I did not execute the site in a browser, run Lighthouse/axe, test the form submission, or inspect Framer's servers or licence terms. Legal observations are not legal advice.*
+# 4. 🧱 Code Quality / Architecture Findings
+
+## 4.1 No normal application build manifest exists
+
+The repository contains no:
+
+```text
+package.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
+```
+
+This is not automatically wrong for a static export, but it means:
+
+- [ ] There is no standard package-managed build pipeline.
+- [ ] There is no normal `npm audit`/lockfile-based dependency lifecycle.
+- [ ] Runtime updates are harder to reproduce.
+- [ ] Generated Framer runtime code is difficult to maintain manually.
+- [ ] CI cannot easily reproduce a deterministic application build.
+
+For a frozen static site this can be acceptable, but the project needs a documented maintenance strategy.
+
+## 4.2 Compiled/vendored runtime code is difficult to maintain
+
+Most of the application is generated/bundled Framer runtime code rather than a clean, human-maintainable source application.
+
+- [ ] Document which files are generated.
+- [ ] Document which files are human-authored.
+- [ ] Do not patch generated runtime bundles manually unless absolutely necessary.
+- [ ] Prefer regenerating the export from an authoritative source.
+- [ ] Add a reproducible build/export step.
+- [ ] Keep customization code separate from generated vendor code where possible.
+
+## 4.3 Duplicated source/deploy trees create synchronization risk
+
+The scan found **374 common relative paths** between the root tree and `public/`, with **325 identical files**.
+
+That leaves files that are duplicated but no longer identical.
+
+- [ ] Reduce duplication.
+- [ ] Generate `public/` from source.
+- [ ] Do not allow manually edited duplicates to become separate sources of truth.
+
+## 4.4 Existing verification tooling has blind spots
+
+`tools/verify_production_readiness.py` is useful, but it does not represent a full browser/deployment test.
+
+Notable limitations identified in the current verifier:
+
+- It starts a simple HTTP server instead of testing Vercel behavior.
+- It does not truly validate the real 404 behavior for a nonexistent route.
+- It checks contact accessibility/configuration fields but does not validate that the configured endpoint is usable.
+- It does not validate browser hydration or interactive behavior.
+- It reports success even though a separate check script only warns about the n8n placeholder.
+
+- [ ] Update the verifier to serve/test `public/` rather than the repository root.
+- [ ] Add actual HTTP 404 assertions for unknown paths.
+- [ ] Fail on placeholder URLs.
+- [ ] Add browser-based smoke tests.
+- [ ] Add external-link checks.
+- [ ] Add form submission tests with a test endpoint.
+
+---
+
+# 5. 🔎 Bugs / Potential Errors / Functional Risks
+
+## 5.1 Contact form endpoint placeholder — confirmed
+
+**Severity:** P0 / Blocker
+
+This is a confirmed configuration error in the deployment copy.
+
+- [ ] Replace `YOUR-N8N-WEBHOOK-URL`.
+- [ ] Confirm form submission in production.
+- [ ] Confirm n8n receives the expected payload.
+- [ ] Confirm failure states are visible to the visitor.
+- [ ] Confirm duplicate/replay/spam submissions are controlled.
+
+## 5.2 Root and deploy form implementations disagree — confirmed
+
+**Severity:** P0 / Blocker
+
+The root copy still contains the old Framer form endpoint while the `public/` copy contains the n8n placeholder.
+
+**Impact:** A future edit to the source can silently fail to reach production, or production can contain changes that are not represented in the source.
+
+- [ ] Establish a canonical source/build process immediately.
+
+## 5.3 404 robots metadata is contradictory — confirmed
+
+`public/404.html` contains both:
+
+```html
+<meta name="robots" content="noindex, nofollow">
+```
+
+and later:
+
+```html
+<meta name="robots" content="index, follow, ...">
+```
+
+It also has a canonical URL pointing to:
+
+```text
+https://corabin.com/404
+```
+
+- [ ] Keep the 404 page unambiguously `noindex, nofollow`.
+- [ ] Remove conflicting robots metadata.
+- [ ] Decide whether `/404` should have a canonical at all; normally there is no SEO reason to canonicalize a generic error page as a normal indexable page.
+- [ ] Ensure an actually missing URL returns HTTP `404`.
+
+## 5.4 404 social metadata is inconsistent
+
+The 404 page title is:
+
+```text
+404 — Page Not Found | Corabin
+```
+
+but its Twitter title still uses the homepage title.
+
+- [ ] Align 404 Open Graph/Twitter metadata with the 404 context.
+- [ ] Confirm generic social previews are acceptable for error pages.
+
+## 5.5 Static counters expose non-final values
+
+The static HTML contains initial counter values such as `0`, while other site content contains different project/metric values.
+
+Observed examples include static values such as:
+
+- `0 Projects delivered`
+- `0% On-time delivery`
+- `$0M Client revenue impacted`
+- other lower-page figures such as `134 Projects delivered` and `19 Direct collaboration`
+
+This is risky because the initial HTML can expose stale or incomplete values before client-side animation updates them.
+
+- [ ] Put truthful final values in the initial HTML.
+- [ ] Animate from the truthful value rather than from a misleading published value.
+- [ ] Remove stale template-era metrics.
+- [ ] Confirm all business claims are factually supportable.
+
+---
+
+# 6. 🚀 Performance Findings
+
+## 6.1 Deployment payload is larger than necessary
+
+Approximate audited sizes:
+
+| Area | Size |
+|---|---:|
+| `public/` | ~83 MB |
+| `public/assets/` | ~29 MB |
+| `public/framerusercontent.com/` | ~25 MB |
+| `public/video.gumlet.io/` | ~2.1 MB |
+| `.git/` | ~75 MB |
+
+The deploy tree contains **385 files**.
+
+The large total is not automatically a page-speed failure because only a subset loads per page, but it indicates substantial asset and runtime weight.
+
+## 6.2 Large image files exist
+
+Examples include roughly:
+
+- `tH0TkQuNIAPV18APpKlpNbDgBRE.jpg` — ~2.7 MB
+- `blog8.png` — ~2.7 MB
+- `blog1.png` — ~2.1 MB
+- several other PNG/JPG files above ~1 MB
+
+- [ ] Compress large images.
+- [ ] Prefer WebP/AVIF where browser support and visual quality are suitable.
+- [ ] Ensure correct intrinsic dimensions.
+- [ ] Ensure responsive `srcset`/size selection.
+- [ ] Avoid loading desktop-only assets on mobile.
+- [ ] Avoid loading below-the-fold imagery eagerly.
+
+## 6.3 High-resolution PNG variants remain in the tree
+
+The asset inventory contains numerous PNG/WebP pairs, including cases where the WebP version is dramatically smaller.
+
+- [ ] Identify assets that are never referenced.
+- [ ] Remove unused originals from deployment.
+- [ ] Use a single optimized source per visual where possible.
+- [ ] Keep original production masters outside the web root.
+
+## 6.4 External Framer imagery remains in the rendered HTML
+
+The static HTML references Framer-hosted resources such as:
+
+```text
+https://framerusercontent.com/...
+```
+
+This creates:
+
+- vendor availability dependency
+- external network latency
+- cache/vendor-control dependency
+- potential licensing/provenance concerns
+- additional CSP complexity
+
+- [ ] Replace unnecessary remote template images with owned/local/CDN-controlled assets.
+- [ ] Decide intentionally which Framer-hosted resources are still required.
+
+## 6.5 External video dependency remains
+
+The public HTML references a Gumlet video origin:
+
+```text
+https://video.gumlet.io/...
+```
+
+A local video copy is also present in the project.
+
+- [ ] Decide whether the local or CDN version is the canonical production source.
+- [ ] Avoid duplicate storage/traffic if one copy is unnecessary.
+- [ ] Use an intentional CDN strategy.
+- [ ] Verify mobile/autoplay/muted/poster behavior.
+- [ ] Ensure the video is not delaying LCP.
+
+## 6.6 External library dependency remains
+
+The project contains references to external services such as `unpkg.com` and Google/Framer-hosted font assets.
+
+- [ ] Self-host critical dependencies where reasonable.
+- [ ] Add SRI for any external scripts that remain.
+- [ ] Review version pinning.
+- [ ] Remove unused local copies or remove unused external references so only one source remains.
+
+## 6.7 HTML pages are unusually large
+
+Normal route HTML files are approximately **1.3 MB each** in the deployed tree.
+
+This is a significant amount of HTML for a studio/marketing site and is a clear optimization opportunity.
+
+- [ ] Reduce duplicated HTML/runtime payload.
+- [ ] Avoid embedding every breakpoint/page variant in every route where possible.
+- [ ] Move large generated data out of the initial document when appropriate.
+- [ ] Use proper static generation with route-specific documents.
+
+---
+
+# 7. ♿ Accessibility Findings
+
+## 7.1 Missing/weak semantic landmarks
+
+Normal pages do not consistently expose a clean `<main>` landmark in the static HTML shell.
+
+- [ ] Add one clear `<main id="main-content">` landmark per page.
+- [ ] Use one logical `<header>`, `<nav>`, `<main>`, and `<footer>` structure.
+- [ ] Avoid relying on repeated desktop/tablet/mobile DOM copies to provide semantics.
+
+## 7.2 Empty links need review
+
+The static homepage contains many empty `<a>` elements. Examples include logo/menu wrappers where the visible label may be injected by layout/runtime behavior.
+
+- [ ] Ensure every interactive link has an accessible name.
+- [ ] Add `aria-label` where an icon/logo-only control is intended.
+- [ ] Confirm keyboard users can identify every navigation control.
+- [ ] Confirm no hidden breakpoint clone remains in the accessibility tree.
+
+## 7.3 Repeated responsive DOM should be checked with a real screen reader
+
+The HTML contains multiple desktop/tablet/mobile variants of navigation/header/footer.
+
+- [ ] Confirm only the intended variant is exposed to assistive technology.
+- [ ] Use `aria-hidden` or, preferably, a DOM strategy that avoids duplicate controls where appropriate.
+- [ ] Test keyboard order at desktop/tablet/mobile widths.
+
+## 7.4 Skip navigation is missing
+
+No clear skip-to-content link was identified in the static HTML.
+
+- [ ] Add a keyboard-accessible “Skip to main content” link.
+
+## 7.5 Heading hierarchy requires rendered-page verification
+
+The static HTML contains multiple `h1` elements because responsive variants are duplicated in the source.
+
+- [ ] Ensure exactly one meaningful visible H1 per page.
+- [ ] Make sure hidden breakpoint variants are not exposed to assistive technology.
+- [ ] Verify logical H2/H3 hierarchy.
+
+## 7.6 Interactive components need browser-level testing
+
+The repository includes custom interactive components such as accordions and navigation.
+
+- [ ] Verify `aria-expanded` and `aria-controls` relationships.
+- [ ] Verify focus management.
+- [ ] Verify Escape/Enter/Space behavior where appropriate.
+- [ ] Verify keyboard access to mobile navigation.
+- [ ] Verify visible focus indicators.
+- [ ] Verify reduced-motion behavior.
+
+## 7.7 Visual accessibility
+
+- [ ] Run automated WCAG tooling such as axe against rendered pages.
+- [ ] Check color contrast on all typography states.
+- [ ] Check focus indicators on dark/light backgrounds.
+- [ ] Check text scaling to 200%.
+- [ ] Check browser zoom at 400%.
+- [ ] Check touch targets on mobile.
+
+---
+
+# 8. 🔎 SEO Findings
+
+## 8.1 Good SEO coverage
+
+- [x] 23 sitemap URLs are present.
+- [x] Indexable pages have titles, descriptions and canonical URLs.
+- [x] JSON-LD is present.
+- [x] Blog article dates are represented in structured data.
+- [x] Legacy URLs have migration handling.
+
+## 8.2 Title length cleanup needed
+
+**16 indexable pages** have titles longer than approximately 60 characters.
+
+Examples:
+
+- Blog articles with titles in the 70–88 character range.
+- Project pages such as Almare, Himon, Kora and Nordå.
+
+This is not a hard Google indexing blocker, but long titles can be truncated and can reduce clarity in SERPs.
+
+- [ ] Rewrite long titles to preserve the important search/entity terms first.
+- [ ] Keep brand suffixes only where they add value.
+
+## 8.3 Meta description cleanup needed
+
+**13 indexable pages** have descriptions longer than approximately 160 characters.
+
+- [ ] Trim descriptions to concise, accurate search snippets.
+- [ ] Keep the main topic and differentiator early in the description.
+
+## 8.4 Blog URL/title mismatch
+
+The route:
+
+```text
+/blog/choosing-the-right-tech-stack-a-decision-framework-for-2025
+```
+
+currently has a title referring to **2026**.
+
+- [ ] Decide whether the URL is intentionally historical.
+- [ ] If the content/slug was materially renamed, create a clean migration plan and 301 redirect.
+- [ ] Keep page title, H1, slug, publication date and content intent consistent.
+
+## 8.5 Sitemap/article modification dates should reflect reality
+
+Several blog pages have structured-data `dateModified` values around `2026-10-01`, while the sitemap retains older article dates.
+
+That can be valid, but only if the content was actually materially reviewed/updated.
+
+- [ ] Do not fabricate `dateModified` values.
+- [ ] Align sitemap `lastmod` with real content changes.
+- [ ] Keep publication date and modification date semantically distinct.
+
+## 8.6 404 must be excluded cleanly
+
+- [ ] Make `/404` non-indexable without contradictory metadata.
+- [ ] Keep it out of the sitemap.
+- [ ] Ensure unknown URLs return a true HTTP 404.
+
+---
+
+# 9. 📄 Legal / Privacy / Trust Findings
+
+## 9.1 Privacy policy appears broader than the currently visible implementation
+
+The privacy page describes processing such as:
+
+- payment information
+- newsletters
+- cookies
+- analytics
+- hosting/form/payment/analytics providers
+
+The current inspected frontend does not clearly demonstrate all of those systems as active production features.
+
+- [ ] Create an actual data-processing inventory.
+- [ ] Remove claims about systems that are not used.
+- [ ] Add the real form processor/n8n flow.
+- [ ] Document actual analytics, if any.
+- [ ] Document cookie use, if any.
+- [ ] Document retention periods.
+- [ ] Document lawful basis where applicable.
+- [ ] Ensure privacy policy contact details are correct.
+
+## 9.2 Terms and Conditions require legal review
+
+The Terms page contains commercial terms such as:
+
+- deposit/payment schedules
+- invoice timing
+- warranty duration
+- termination notice
+- liability limitation
+
+- [ ] Confirm governing law/jurisdiction.
+- [ ] Confirm cancellation/refund treatment.
+- [ ] Confirm late-payment consequences.
+- [ ] Confirm intellectual-property ownership/transfer terms.
+- [ ] Confirm acceptance/signature mechanics.
+- [ ] Confirm the terms match real contracts/Proposal/MSA/SOW documents.
+- [ ] Have a qualified legal professional review the final version for the target jurisdiction.
+
+## 9.3 Contact information must be verified
+
+- [ ] Verify `hello@corabin.com` is operational.
+- [ ] Verify the displayed business/contact information is current.
+- [ ] Verify email deliverability.
+- [ ] Configure SPF, DKIM and DMARC for the sending domain as appropriate.
+
+---
+
+# 10. 🧩 Missing Files / Configurations / Operational Features
+
+## 10.1 Missing standard dependency/build metadata
+
+- [ ] `package.json` — create only if the project is moving to a managed build/runtime workflow.
+- [ ] Lockfile — create with the chosen package manager.
+- [ ] Document exact versions of all manually vendored runtime dependencies.
+
+A package manifest is **not mandatory** for a pure frozen static export, but the current project has too much generated/runtime code to remain undocumented indefinitely.
+
+## 10.2 Missing automated CI/CD quality gates
+
+No standard CI workflow was identified.
+
+- [ ] Add CI for static syntax checks.
+- [ ] Add placeholder/secrets scan.
+- [ ] Add route/link checks.
+- [ ] Add sitemap consistency checks.
+- [ ] Add 404 checks.
+- [ ] Add form endpoint configuration checks.
+- [ ] Add security-header checks.
+- [ ] Add Lighthouse or equivalent performance checks.
+- [ ] Add axe/accessibility smoke checks.
+
+## 10.3 Existing pre-deploy checker must fail on placeholders
+
+`scripts/check.sh` currently **warns** when `YOUR-N8N-WEBHOOK-URL` remains but does not fail the build.
+
+That is dangerous for a production gate.
+
+- [ ] Convert placeholder detection into a hard failure.
+- [ ] Scan all deployable text/code, not only selected file extensions.
+- [ ] Fail on any `YOUR-*`, `TODO-*`, fake endpoint, fake phone, fake email, placeholder copy, or unsupported template content.
+
+## 10.4 Monitoring / incident visibility
+
+- [ ] Add uptime monitoring.
+- [ ] Add error monitoring for the form endpoint/workflow.
+- [ ] Add form-delivery alerting.
+- [ ] Add deployment notifications or rollback visibility.
+- [ ] Consider privacy-friendly analytics only if there is a real business need and the privacy policy is updated accordingly.
+
+## 10.5 Optional production hardening files
+
+Consider creating:
+
+- [ ] `security.txt` under the well-known path if appropriate.
+- [ ] `THIRD_PARTY_NOTICES.md`.
+- [ ] A deployment runbook.
+- [ ] An asset ownership/license inventory.
+- [ ] A content-claim/source inventory for metrics and testimonials.
+
+---
+
+# 11. 📦 Files / Artifacts That Should Not Be Public
+
+The deployment directory correctly excludes most internal files, but the repository itself contains many internal/audit artifacts.
+
+Never serve these from the public web root:
+
+```text
+.git/
+tools/
+docs/
+CODEBASE_AUDIT.md
+SEO_PRODUCTION_AUDIT.md
+README.md
+scripts/
+```
+
+Also review whether the following generated/editor artifacts belong in production:
+
+```text
+public/.../framertoplevel/main.html
+```
+
+- [ ] Keep deployment target explicitly set to `public/`.
+- [ ] Verify the live host does not expose repository files.
+- [ ] Verify directory listing is disabled.
+- [ ] Verify unknown sensitive paths return 404 rather than source content.
+
+---
+
+# 12. 🌐 Routing / Redirect / Domain Checks
+
+## Required
+
+- [ ] Confirm `https://corabin.com/` resolves to the intended production deployment.
+- [ ] Confirm `https://www.corabin.com/` redirects to the chosen canonical host.
+- [ ] Confirm HTTP redirects to HTTPS.
+- [ ] Confirm all sitemap URLs return `200`.
+- [ ] Confirm legacy project URLs return a single `301` directly to the intended destination.
+- [ ] Confirm there are no redirect chains.
+- [ ] Confirm `/404` is a real error page if retained as a direct route.
+- [ ] Request a random nonexistent route and confirm HTTP `404`.
+- [ ] Confirm favicon and OG assets are reachable.
+
+---
+
+# 13. 🧪 Required Browser / Real-World QA
+
+Static analysis cannot prove the following.
+
+## Desktop
+
+- [ ] Chrome
+- [ ] Firefox
+- [ ] Safari
+- [ ] Edge
+
+## Mobile
+
+- [ ] iPhone Safari
+- [ ] Android Chrome
+- [ ] Small-width viewport
+- [ ] Large-width viewport
+
+## User flows
+
+- [ ] Open home page.
+- [ ] Open every portfolio project.
+- [ ] Open every blog article.
+- [ ] Open About.
+- [ ] Open Contact.
+- [ ] Open Privacy.
+- [ ] Open Terms.
+- [ ] Submit contact form successfully.
+- [ ] Submit contact form with invalid email.
+- [ ] Submit contact form with missing required fields.
+- [ ] Submit form while network request fails.
+- [ ] Use mobile menu with keyboard/screen reader.
+- [ ] Operate accordions with keyboard.
+- [ ] Operate every CTA.
+- [ ] Test all external social links.
+- [ ] Test video playback/autoplay/poster behavior.
+- [ ] Test reduced-motion mode.
+
+---
+
+# 14. 📊 Performance QA Before Launch
+
+Run against the deployed URL, not just source files.
+
+- [ ] Lighthouse Performance.
+- [ ] Lighthouse Accessibility.
+- [ ] Lighthouse Best Practices.
+- [ ] Lighthouse SEO.
+- [ ] WebPageTest or equivalent waterfall analysis.
+- [ ] Core Web Vitals on representative mobile/desktop pages.
+- [ ] Check LCP element.
+- [ ] Check INP on menu/form/accordion interactions.
+- [ ] Check CLS from images, fonts, video and dynamic layout.
+- [ ] Confirm images are appropriately lazy-loaded.
+- [ ] Confirm hero imagery/video are prioritized correctly.
+- [ ] Confirm unused assets are not loaded.
+
+### Minimum pages to test
+
+- `/`
+- `/about`
+- `/contact`
+- `/projects`
+- one project detail page
+- `/blog`
+- one blog article
+- `/privacy`
+- `/terms`
+- a nonexistent URL
+
+---
+
+# 15. 🔐 Final Security QA Checklist
+
+- [ ] No API keys/secrets in public files.
+- [ ] No `.env` files in deploy output.
+- [ ] No `.git` in deploy output.
+- [ ] No internal audit/tooling files in deploy output.
+- [ ] No editor/debug artifacts in deploy output.
+- [ ] Contact endpoint is real and production-ready.
+- [ ] Form endpoint validates input server-side.
+- [ ] Form endpoint has rate limiting/spam protection.
+- [ ] CSP is enforced, not only Report-Only.
+- [ ] No unnecessary `unsafe-eval`.
+- [ ] Inline-script allowances are minimized.
+- [ ] Actual external origins are intentionally allowlisted.
+- [ ] Security headers are verified from the live response.
+- [ ] HTTPS is enforced.
+- [ ] HSTS settings are appropriate.
+- [ ] Clickjacking protection is present.
+- [ ] Referrer policy is correct.
+- [ ] Permissions policy is correct.
+- [ ] Third-party assets are licensed.
+- [ ] Third-party scripts use integrity/version controls where applicable.
+
+---
+
+# 16. 🧹 Recommended Fix / Creation Order
+
+## Phase 1 — Must fix before any public launch
+
+1. [ ] Replace the n8n form placeholder in `public/`.
+2. [ ] Make root/source and `public/` deterministic and synchronized.
+3. [ ] Ensure route-specific content is present in initial HTML/SSG output.
+4. [ ] Remove/resolve stale Framer editor artifacts in the deploy directory.
+5. [ ] Resolve template asset ownership/licensing.
+6. [ ] Fix the contradictory 404 robots metadata.
+7. [ ] Make the pre-deploy checker fail on placeholders.
+8. [ ] Verify actual Vercel responses and routing.
+
+## Phase 2 — Security and quality hardening
+
+9. [ ] Enforce CSP.
+10. [ ] Remove unnecessary `unsafe-eval`/inline allowances.
+11. [ ] Reconcile `_headers`, `public/_headers`, and `vercel.json`.
+12. [ ] Verify HSTS/subdomain assumptions.
+13. [ ] Add CI checks.
+14. [ ] Add real browser accessibility tests.
+15. [ ] Add real form/error-flow tests.
+
+## Phase 3 — Performance and SEO refinement
+
+16. [ ] Optimize large images.
+17. [ ] Remove unused duplicate assets.
+18. [ ] Reduce HTML/runtime payload.
+19. [ ] Reduce unnecessary external dependencies.
+20. [ ] Clean long titles/descriptions.
+21. [ ] Reconcile blog slug/title/date metadata.
+22. [ ] Align `sitemap.xml` lastmod values with actual updates.
+
+## Phase 4 — Operational polish
+
+23. [ ] Verify email deliverability.
+24. [ ] Verify social accounts/links.
+25. [ ] Finalize legal/privacy accuracy.
+26. [ ] Add monitoring/alerts.
+27. [ ] Produce an asset/license inventory.
+28. [ ] Create a deployment/rollback runbook.
+
+---
+
+# 17. ✅ Final Pre-Publish Gate
+
+Do **not** publish until every item below is checked.
+
+- [ ] Real contact form endpoint configured.
+- [ ] Contact form successfully tested from the live domain.
+- [ ] Spam/rate limiting verified.
+- [ ] Source/deployment synchronization solved.
+- [ ] No placeholders remain anywhere in `public/`.
+- [ ] No Framer template/editor artifacts remain unless intentionally required.
+- [ ] All template/third-party assets are licensed or replaced.
+- [ ] Every canonical route renders correct route-specific content.
+- [ ] Every sitemap URL returns `200`.
+- [ ] Nonexistent URLs return `404`.
+- [ ] 404 has no contradictory robots directives.
+- [ ] `www`/apex canonical behavior is correct.
+- [ ] HTTPS is enforced.
+- [ ] Security headers verified from live HTTP responses.
+- [ ] CSP enforced and clean.
+- [ ] No accidental secrets in deploy output.
+- [ ] Accessibility passes manual keyboard testing.
+- [ ] Accessibility passes automated axe/Lighthouse review.
+- [ ] Mobile menu works.
+- [ ] Accordion/interactions work.
+- [ ] All CTAs work.
+- [ ] All social links work.
+- [ ] Video works and does not damage Core Web Vitals.
+- [ ] Contact/privacy/terms content matches the actual data flow.
+- [ ] Performance budgets pass.
+- [ ] Final content claims/metrics are accurate and supportable.
+- [ ] Production rollback procedure is known.
+
+---
+
+# 18. Audit Evidence Summary
+
+| Check | Result |
+|---|---|
+| Public deploy tree | Present (`public/`) |
+| Vercel config | Present |
+| Package/build manifest | Not present |
+| Public HTML files | 31 |
+| JavaScript/MJS syntax | 167 checked, 0 errors |
+| Python utility syntax | 21 checked, 0 errors |
+| Canonical sitemap URLs | 23 |
+| Static verifier | 41 passed, 0 errors |
+| Obvious local resource breakage | None found in static scan |
+| Common secret-pattern scan | 0 obvious matches |
+| Placeholder URL | **Found** |
+| 404 robots conflict | **Found** |
+| Indexable route body duplication | **Found: 20 routes** |
+| Long titles | **16 indexable pages** |
+| Long descriptions | **13 indexable pages** |
+| `public/` size | ~83 MB |
+| `.git/` size in archive | ~75 MB |
+| Browser/Lighthouse validation | **Not completed from the archive alone** |
+
+---
+
+# 19. Bottom Line
+
+The project has a solid amount of production preparation already in place: routing, metadata, sitemap, redirects, security headers, custom content, static checks, and a Vercel deployment definition are all present.
+
+However, the project currently behaves like a **heavily customized static Framer export rather than a clean, reproducible production application**. The strongest evidence is the divergence between the root/source tree and `public/`, the placeholder contact endpoint in the actual deployment copy, and the fact that most indexable routes share the same initial HTML body and depend on runtime hydration for their real content.
+
+The correct next step is **not a visual redesign**. It is a focused production hardening pass that makes the deployment deterministic, makes the contact flow real and secure, removes template/editor leftovers, produces correct route-specific HTML, and verifies the live site with browser, accessibility, performance, routing and security checks.
+
+**Final status after this audit: ❌ Do not publish yet.**
