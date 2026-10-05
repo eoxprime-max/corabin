@@ -9,7 +9,4 @@ Allow: /fonts.gstatic.com/
 Allow: /unpkg.com/
 Allow: /video.gumlet.io/
 
-# Disallow internal tools and migration scripts
-Disallow: /tools/
-
 Sitemap: https://corabin.com/sitemap.xml

@@ -1,22 +1,20 @@
-# Corabin Studio Production Security & Caching Headers
-# Compatible with Cloudflare Pages, Netlify, and modern static edge CDNs
+# Corabin Studio — Security & Caching Headers
+# Note: On Vercel, headers are configured via vercel.json (repo root).
+# This file is provided for Netlify/Cloudflare Pages compatibility.
 
 /*
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://framerusercontent.com https://*.framer.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://framerusercontent.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://framerusercontent.com https://*.framerstatic.com; media-src 'self' https://video.gumlet.io blob:; connect-src 'self' https://api.framer.com https://framerusercontent.com https://*.framer.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://api.framer.com;
-  Cache-Control: public, max-age=0, must-revalidate
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://framerusercontent.com; style-src 'self' 'unsafe-inline' https://unpkg.com; font-src 'self' data: https://framerusercontent.com https://fonts.gstatic.com; img-src 'self' data: blob: https://framerusercontent.com; media-src 'self' blob: https://video.gumlet.io; connect-src 'self' https://framerusercontent.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
 
-# Immutable long-term caching for hashed runtime modules
-/framerusercontent.com/*
-  Cache-Control: public, max-age=31536000, immutable
-
-# Cache-control for static assets (images, fonts)
 /assets/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/framerusercontent.com/*
+  Cache-Control: public, max-age=31536000, immutable
 
 /fonts.gstatic.com/*
   Cache-Control: public, max-age=31536000, immutable

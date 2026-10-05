@@ -593,7 +593,7 @@ addFonts(FramerarC6CNm2o, [{
         source: "google",
         style: "normal",
         uiFamilyName: "Onest",
-        url: "https://fonts.gstatic.com/s/onest/v9/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
+        url: "/assets/fonts/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
         weight: "500"
     }, {
         cssFamilyName: "Inter",

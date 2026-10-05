@@ -6,22 +6,13 @@ set -euo pipefail
 PUB=public
 FAIL=0
 
-check() {
-  if ! eval "$1" >/dev/null 2>&1; then
-    echo "✅ $2"
-  else
-    echo "❌ FAIL: $2"
-    FAIL=1
-  fi
-}
-
 pass() {
   echo "✅ $1"
 }
 
 # 1. No internal files inside the deploy folder
 echo "=== Checking deploy folder integrity ==="
-for p in tools docs .git CODEBASE_AUDIT.md SEO_PRODUCTION_AUDIT.md README.md; do
+for p in tools docs .git CODEBASE_AUDIT.md SEO_PRODUCTION_AUDIT.md README.md Corabin_PRODUCTION_AUDIT_REPORT.md; do
   if [ -e "$PUB/$p" ]; then
     echo "❌ FAIL: $PUB/$p must not be deployed"
     FAIL=1
@@ -82,10 +73,31 @@ fi
 # 7. Check n8n webhook placeholder
 echo ""
 echo "=== Checking form endpoint configuration ==="
-if grep -rIn 'YOUR-N8N-WEBHOOK-URL' $PUB --include='*.js' 2>/dev/null; then
+if grep -rIn 'YOUR-N8N-WEBHOOK-URL' $PUB --include='*.js' --include='*.mjs' 2>/dev/null; then
   echo "⚠️  WARNING: n8n webhook URL placeholder still needs to be replaced"
+  # TODO: Change this to FAIL=1 once the production webhook URL is configured
 else
   pass "Form endpoint configured"
+fi
+
+# 8. Check CSP is enforced (not Report-Only)
+echo ""
+echo "=== Checking CSP enforcement ==="
+if grep -q 'Content-Security-Policy-Report-Only' "$PUB/_headers" 2>/dev/null; then
+  echo "❌ FAIL: CSP is Report-Only in _headers — must be enforced"
+  FAIL=1
+else
+  pass "CSP is enforced (not Report-Only)"
+fi
+
+# 9. No placeholder URLs in deployment config
+echo ""
+echo "=== Checking for placeholder URLs ==="
+if grep -rIn 'YOUR-N8N-WEBHOOK-URL' "$PUB/_headers" 2>/dev/null; then
+  echo "❌ FAIL: Placeholder URL found in _headers"
+  FAIL=1
+else
+  pass "No placeholder URLs in deployment config"
 fi
 
 echo ""

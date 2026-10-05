@@ -419,7 +419,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-jznxc",
                                                     id: "contact-name",
-                                                    inputName: "Name",
+                                                    inputName: "Name", autoComplete: "name",
                                                     "aria-label": "Your Name",
                                                     placeholder: "Name *",
                                                     required: true,
@@ -431,7 +431,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-x4fs21",
                                                     id: "contact-email",
-                                                    inputName: "Email",
+                                                    inputName: "Email", autoComplete: "email",
                                                     "aria-label": "Your Email Address",
                                                     placeholder: "E-mail *",
                                                     required: true,

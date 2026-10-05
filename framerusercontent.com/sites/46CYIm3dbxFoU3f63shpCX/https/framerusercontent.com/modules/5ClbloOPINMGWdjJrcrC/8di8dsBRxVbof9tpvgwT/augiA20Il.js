@@ -4654,7 +4654,7 @@ addFonts(FrameraugiA20Il, [{
         source: "google",
         style: "normal",
         uiFamilyName: "Onest",
-        url: "https://fonts.gstatic.com/s/onest/v9/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
+        url: "/assets/fonts/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
         weight: "500"
     }]
 }, ...ImageParallaxFonts, ...ButtonFonts, ...SectionBadgeFonts, ...CounterFonts, ...UserComponentFonts, ...UserComponent1Fonts, ...UserComponent2Fonts, ...UserComponent3Fonts, ...UserComponent4Fonts, ...UserComponent5Fonts, ...UserComponent6Fonts, ...UserComponent7Fonts, ...UserComponent8Fonts, ...UserComponent9Fonts, ...ServiceCardFonts, ...ProcessSliderFonts, ...ProjectCardFonts, ...PricingTableFonts, ...TestimonialSliderFonts, ...FAQSectionFonts, ...BlogPostCardFonts, ...LenisFonts, ...getFontsFromSharedStyle(sharedStyle.fonts), ...getFontsFromSharedStyle(sharedStyle1.fonts), ...getFontsFromSharedStyle(sharedStyle2.fonts), ...getFontsFromSharedStyle(sharedStyle3.fonts), ...getFontsFromSharedStyle(sharedStyle4.fonts), ...getFontsFromSharedStyle(sharedStyle5.fonts), ...getFontsFromSharedStyle(sharedStyle6.fonts)], {

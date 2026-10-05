@@ -1,18 +1,16 @@
-# Corabin 301 Redirects for Legacy Slugs
-/projects/arrows /projects/kora 301
-/projects/arrows/ /projects/kora 301
-/projects/chantalle /projects/himon 301
-/projects/chantalle/ /projects/himon 301
-/projects/papyrus /projects/norda 301
-/projects/papyrus/ /projects/norda 301
-/projects/london-museum /projects/ardene 301
-/projects/london-museum/ /projects/ardene 301
-/projects/bullseye /projects/havyn 301
-/projects/bullseye/ /projects/havyn 301
-/projects/interference /projects/almare 301
-/projects/interference/ /projects/almare 301
+# Corabin 301 Redirects for Legacy Project Slugs
+# Note: On Vercel, redirects are configured via vercel.json (repo root).
+# This file is provided for Netlify/Cloudflare Pages compatibility.
 
-# SPA fallback for legal and 404
-/privacy /privacy/index.html 200
-/terms /terms/index.html 200
-/* /404.html 404
+/projects/arrows          /projects/kora      301
+/projects/arrows/         /projects/kora      301
+/projects/chantalle       /projects/himon     301
+/projects/chantalle/      /projects/himon     301
+/projects/papyrus         /projects/norda     301
+/projects/papyrus/        /projects/norda     301
+/projects/london-museum   /projects/ardene    301
+/projects/london-museum/  /projects/ardene    301
+/projects/bullseye        /projects/havyn     301
+/projects/bullseye/       /projects/havyn     301
+/projects/interference    /projects/almare    301
+/projects/interference/   /projects/almare    301

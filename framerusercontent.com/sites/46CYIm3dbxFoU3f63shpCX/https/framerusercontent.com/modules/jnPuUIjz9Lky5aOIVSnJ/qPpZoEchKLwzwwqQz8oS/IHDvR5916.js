@@ -9,7 +9,7 @@ export const fonts = [{
         family: "Fragment Mono",
         source: "google",
         style: "normal",
-        url: "https://fonts.gstatic.com/s/fragmentmono/v4/4iCr6K5wfMRRjxp0DA6-2CLnN4FNh4UI_1U.woff2",
+        url: "/assets/fonts/4iCr6K5wfMRRjxp0DA6-2CLnN4FNh4UI_1U.woff2",
         weight: "400"
     }]
 }];

@@ -283,7 +283,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 className: "framer-styles-preset-1gjhefo",
                                                 "data-styles-preset": "pLdfyfLcz",
                                                 children: /*#__PURE__*/ _jsx(Link, {
-                                                    href: "mailto: hello@corabin.com",
+                                                    href: "mailto:hello@corabin.com",
                                                     motionChild: true,
                                                     nodeId: "pYxtoSB_2",
                                                     openInNewTab: true,
@@ -407,7 +407,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                     verticalAlignment: "top",
                                     withExternalLayout: true
                                 }), /*#__PURE__*/ _jsx(FormContainer, {
-                                    action: "https://api.framer.com/forms/v1/forms/fbe3507b-9997-4e3f-91ff-9e4321e5b4d4/submit",
+                                    action: "https://YOUR-N8N-WEBHOOK-URL/webhook/contact-form",
                                     className: "framer-1hpdqdf",
                                     nodeId: "e1JNSYwKU",
                                     children: formState => /*#__PURE__*/ _jsxs(_Fragment, {
@@ -419,7 +419,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-jznxc",
                                                     id: "contact-name",
-                                                    inputName: "Name",
+                                                    inputName: "Name", autoComplete: "name",
                                                     "aria-label": "Your Name",
                                                     placeholder: "Name *",
                                                     required: true,
@@ -431,7 +431,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 children: /*#__PURE__*/ _jsx(FormPlainTextInput, {
                                                     className: "framer-x4fs21",
                                                     id: "contact-email",
-                                                    inputName: "Email",
+                                                    inputName: "Email", autoComplete: "email",
                                                     "aria-label": "Your Email Address",
                                                     placeholder: "E-mail *",
                                                     required: true,
@@ -813,7 +813,7 @@ addFonts(FramerTQtrT4cVD, [{
         source: "google",
         style: "normal",
         uiFamilyName: "Onest",
-        url: "https://fonts.gstatic.com/s/onest/v9/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
+        url: "/assets/fonts/gNMZW3F-SZuj7zOT0IfSjTS16cPhxx-ZtxFMQWXgSQ.woff2",
         weight: "500"
     }]
 }, ...FormButtonFonts, ...FAQSectionFonts, ...LenisFonts, ...getFontsFromSharedStyle(sharedStyle.fonts), ...getFontsFromSharedStyle(sharedStyle1.fonts), ...getFontsFromSharedStyle(sharedStyle2.fonts), ...getFontsFromSharedStyle(sharedStyle3.fonts), ...getFontsFromSharedStyle(sharedStyle4.fonts), ...getFontsFromSharedStyle(sharedStyle5.fonts), ...getFontsFromSharedStyle(sharedStyle6.fonts)], {

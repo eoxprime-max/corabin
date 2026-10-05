@@ -1259,7 +1259,7 @@ addFonts(FramerFhR90JJqz, [{
         source: "google",
         style: "normal",
         uiFamilyName: "Onest",
-        url: "https://fonts.gstatic.com/s/onest/v9/gNMZW3F-SZuj7zOT0IfSjTS16cPh9R-ZtxFMQWXgSQ.woff2",
+        url: "/assets/fonts/gNMZW3F-SZuj7zOT0IfSjTS16cPh9R-ZtxFMQWXgSQ.woff2",
         weight: "400"
     }]
 }, ...SocialSharingButtonFonts, ...BlogPostCardSmallFonts, ...LoadMoreButtonFonts, ...LenisFonts, ...getFontsFromSharedStyle(sharedStyle.fonts), ...getFontsFromSharedStyle(sharedStyle1.fonts), ...getFontsFromSharedStyle(sharedStyle2.fonts), ...getFontsFromSharedStyle(sharedStyle3.fonts), ...getFontsFromSharedStyle(sharedStyle4.fonts), ...getFontsFromSharedStyle(sharedStyle5.fonts), ...getFontsFromSharedStyle(sharedStyle6.fonts), ...getFontsFromSharedStyle(sharedStyle7.fonts), ...getFontsFromSharedStyle(sharedStyle8.fonts)], {

@@ -516,7 +516,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                         "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                     },
                                                     children: /*#__PURE__*/ _jsx(Link, {
-                                                        href: "mailto: hello@corabin.com",
+                                                        href: "mailto:hello@corabin.com",
                                                         motionChild: true,
                                                         nodeId: "weVqxGA7J",
                                                         openInNewTab: true,
@@ -554,7 +554,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                             },
                                                             children: /*#__PURE__*/ _jsx(Link, {
-                                                                href: "mailto: hello@corabin.com",
+                                                                href: "mailto:hello@corabin.com",
                                                                 motionChild: true,
                                                                 nodeId: "weVqxGA7J",
                                                                 openInNewTab: true,
@@ -581,7 +581,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                                 "--framer-text-color": "var(--extracted-1of0zx5, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                             },
                                                             children: /*#__PURE__*/ _jsx(Link, {
-                                                                href: "mailto: hello@corabin.com",
+                                                                href: "mailto:hello@corabin.com",
                                                                 motionChild: true,
                                                                 nodeId: "weVqxGA7J",
                                                                 openInNewTab: true,

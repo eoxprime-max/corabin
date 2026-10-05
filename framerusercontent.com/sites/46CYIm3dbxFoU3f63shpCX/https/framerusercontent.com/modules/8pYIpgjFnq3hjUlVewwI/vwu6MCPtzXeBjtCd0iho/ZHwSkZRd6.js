@@ -686,7 +686,7 @@ addFonts(FramerZHwSkZRd6, [{
         source: "google",
         style: "normal",
         uiFamilyName: "Onest",
-        url: "https://fonts.gstatic.com/s/onest/v9/gNMZW3F-SZuj7zOT0IfSjTS16cPhKxiZtxFMQWXgSQ.woff2",
+        url: "/assets/fonts/gNMZW3F-SZuj7zOT0IfSjTS16cPhKxiZtxFMQWXgSQ.woff2",
         weight: "600"
     }]
 }, ...PricingCardFonts, ...getFontsFromSharedStyle(sharedStyle.fonts)], {
