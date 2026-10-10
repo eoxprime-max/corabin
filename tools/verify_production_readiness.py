@@ -18,7 +18,8 @@ import socketserver
 import threading
 import json
 
-PORT = 8089
+import time
+PORT = 8999
 BASE_URL = f"http://127.0.0.1:{PORT}"
 
 ROUTES = [
@@ -87,7 +88,8 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 
 def run_server():
     os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-    server = socketserver.TCPServer(("127.0.0.1", PORT), QuietHandler)
+    http.server.HTTPServer.allow_reuse_address = True
+    server = http.server.HTTPServer(("127.0.0.1", PORT), QuietHandler)
     server.serve_forever()
 
 def verify():
@@ -98,6 +100,7 @@ def verify():
     # 1. Start Server
     server_thread = threading.Thread(target=run_server, daemon=True)
     server_thread.start()
+    time.sleep(1) # wait for server to bind
 
     errors = 0
     passed = 0
