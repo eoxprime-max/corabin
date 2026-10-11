@@ -1439,7 +1439,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                         "data-framer-name": "Menu",
                                         layoutDependency: layoutDependency,
                                         layoutId: "dMta36yB1",
-                                        children: [ /*#__PURE__*/ _jsx(Transition, {
+                                        children: [
+                                            /*#__PURE__*/ _jsx(Transition, {
                                             value: transition11,
                                             children: /*#__PURE__*/ _jsx(RichText, {
                                                 __fromCanvasComponent: true,
@@ -1452,7 +1453,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                             "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                         },
                                                         children: /*#__PURE__*/ _jsx(Link, {
-                                                            href: "www.facebook.com",
+                                                            href: "https://linkedin.com/company/corabin",
                                                             motionChild: true,
                                                             nodeId: "VnxdRlj0E",
                                                             openInNewTab: true,
@@ -1462,7 +1463,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                             children: /*#__PURE__*/ _jsx(motion.a, {
                                                                 className: "framer-styles-preset-1k8uo92",
                                                                 "data-styles-preset": "diqAQm8b4",
-                                                                children: "Facebook"
+                                                                children: "LinkedIn"
                                                             })
                                                         })
                                                     })
@@ -1478,7 +1479,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 whileHover: animation9,
                                                 withExternalLayout: true
                                             })
-                                        }), /*#__PURE__*/ _jsx(Transition, {
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
                                             value: transition11,
                                             children: /*#__PURE__*/ _jsx(RichText, {
                                                 __fromCanvasComponent: true,
@@ -1491,47 +1493,7 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                             "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                         },
                                                         children: /*#__PURE__*/ _jsx(Link, {
-                                                            href: "www.dibbble.com",
-                                                            motionChild: true,
-                                                            nodeId: "YDpYQWwZu",
-                                                            openInNewTab: true,
-                                                            relValues: [],
-                                                            scopeId: "gvLY5FfCM",
-                                                            smoothScroll: false,
-                                                            children: /*#__PURE__*/ _jsx(motion.a, {
-                                                                className: "framer-styles-preset-1k8uo92",
-                                                                "data-styles-preset": "diqAQm8b4",
-                                                                children: "Dribbble"
-                                                            })
-                                                        })
-                                                    })
-                                                }),
-                                                className: "framer-40vbhv",
-                                                "data-framer-name": "Dribble",
-                                                fonts: ["Inter"],
-                                                layoutDependency: layoutDependency,
-                                                layoutId: "YDpYQWwZu",
-                                                style: {
-                                                    "--extracted-a0htzi": "var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255))"
-                                                },
-                                                verticalAlignment: "top",
-                                                whileHover: animation9,
-                                                withExternalLayout: true
-                                            })
-                                        }), /*#__PURE__*/ _jsx(Transition, {
-                                            value: transition11,
-                                            children: /*#__PURE__*/ _jsx(RichText, {
-                                                __fromCanvasComponent: true,
-                                                children: /*#__PURE__*/ _jsx(React.Fragment, {
-                                                    children: /*#__PURE__*/ _jsx(motion.h3, {
-                                                        className: "framer-styles-preset-1nepq3m",
-                                                        "data-styles-preset": "cGUnsbRA0",
-                                                        dir: "auto",
-                                                        style: {
-                                                            "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
-                                                        },
-                                                        children: /*#__PURE__*/ _jsx(Link, {
-                                                            href: "www.instagram.com",
+                                                            href: "https://instagram.com/corabinagency",
                                                             motionChild: true,
                                                             nodeId: "r4ycf7uaO",
                                                             openInNewTab: true,
@@ -1557,7 +1519,8 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 whileHover: animation9,
                                                 withExternalLayout: true
                                             })
-                                        }), /*#__PURE__*/ _jsx(Transition, {
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
                                             value: transition11,
                                             children: /*#__PURE__*/ _jsx(RichText, {
                                                 __fromCanvasComponent: true,
@@ -1570,7 +1533,48 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                             "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
                                                         },
                                                         children: /*#__PURE__*/ _jsx(Link, {
-                                                            href: "www.behance.net",
+                                                            href: "https://facebook.com/61594918605124/",
+                                                            motionChild: true,
+                                                            nodeId: "YDpYQWwZu",
+                                                            openInNewTab: true,
+                                                            relValues: [],
+                                                            scopeId: "gvLY5FfCM",
+                                                            smoothScroll: false,
+                                                            children: /*#__PURE__*/ _jsx(motion.a, {
+                                                                className: "framer-styles-preset-1k8uo92",
+                                                                "data-styles-preset": "diqAQm8b4",
+                                                                children: "Facebook"
+                                                            })
+                                                        })
+                                                    })
+                                                }),
+                                                className: "framer-40vbhv",
+                                                "data-framer-name": "Facebook",
+                                                fonts: ["Inter"],
+                                                layoutDependency: layoutDependency,
+                                                layoutId: "YDpYQWwZu",
+                                                style: {
+                                                    "--extracted-a0htzi": "var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255))"
+                                                },
+                                                verticalAlignment: "top",
+                                                whileHover: animation9,
+                                                withExternalLayout: true
+                                            })
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
+                                            value: transition11,
+                                            children: /*#__PURE__*/ _jsx(RichText, {
+                                                __fromCanvasComponent: true,
+                                                children: /*#__PURE__*/ _jsx(React.Fragment, {
+                                                    children: /*#__PURE__*/ _jsx(motion.h3, {
+                                                        className: "framer-styles-preset-1nepq3m",
+                                                        "data-styles-preset": "cGUnsbRA0",
+                                                        dir: "auto",
+                                                        style: {
+                                                            "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
+                                                        },
+                                                        children: /*#__PURE__*/ _jsx(Link, {
+                                                            href: "https://x.com/CorabinStudio",
                                                             motionChild: true,
                                                             nodeId: "m_c_l35A5",
                                                             openInNewTab: true,
@@ -1580,13 +1584,13 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                             children: /*#__PURE__*/ _jsx(motion.a, {
                                                                 className: "framer-styles-preset-1k8uo92",
                                                                 "data-styles-preset": "diqAQm8b4",
-                                                                children: "Behance"
+                                                                children: "X"
                                                             })
                                                         })
                                                     })
                                                 }),
                                                 className: "framer-rm7aap",
-                                                "data-framer-name": "Behance",
+                                                "data-framer-name": "X",
                                                 fonts: ["Inter"],
                                                 layoutDependency: layoutDependency,
                                                 layoutId: "m_c_l35A5",
@@ -1597,7 +1601,131 @@ const Component = /*#__PURE__*/ React.forwardRef(function(props, ref) {
                                                 whileHover: animation9,
                                                 withExternalLayout: true
                                             })
-                                        })]
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
+                                            value: transition11,
+                                            children: /*#__PURE__*/ _jsx(RichText, {
+                                                __fromCanvasComponent: true,
+                                                children: /*#__PURE__*/ _jsx(React.Fragment, {
+                                                    children: /*#__PURE__*/ _jsx(motion.h3, {
+                                                        className: "framer-styles-preset-1nepq3m",
+                                                        "data-styles-preset": "cGUnsbRA0",
+                                                        dir: "auto",
+                                                        style: {
+                                                            "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
+                                                        },
+                                                        children: /*#__PURE__*/ _jsx(Link, {
+                                                            href: "https://reddit.com/user/CorabinHQ/",
+                                                            motionChild: true,
+                                                            nodeId: "CrbMRddt01N",
+                                                            openInNewTab: true,
+                                                            relValues: [],
+                                                            scopeId: "gvLY5FfCM",
+                                                            smoothScroll: false,
+                                                            children: /*#__PURE__*/ _jsx(motion.a, {
+                                                                className: "framer-styles-preset-1k8uo92",
+                                                                "data-styles-preset": "diqAQm8b4",
+                                                                children: "Reddit"
+                                                            })
+                                                        })
+                                                    })
+                                                }),
+                                                className: "framer-40vbhv",
+                                                "data-framer-name": "Reddit",
+                                                fonts: ["Inter"],
+                                                layoutDependency: layoutDependency,
+                                                layoutId: "CrbMRddt01L",
+                                                style: {
+                                                    "--extracted-a0htzi": "var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255))"
+                                                },
+                                                verticalAlignment: "top",
+                                                whileHover: animation9,
+                                                withExternalLayout: true
+                                            })
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
+                                            value: transition11,
+                                            children: /*#__PURE__*/ _jsx(RichText, {
+                                                __fromCanvasComponent: true,
+                                                children: /*#__PURE__*/ _jsx(React.Fragment, {
+                                                    children: /*#__PURE__*/ _jsx(motion.h3, {
+                                                        className: "framer-styles-preset-1nepq3m",
+                                                        "data-styles-preset": "cGUnsbRA0",
+                                                        dir: "auto",
+                                                        style: {
+                                                            "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
+                                                        },
+                                                        children: /*#__PURE__*/ _jsx(Link, {
+                                                            href: "https://discord.gg/prUmeKj7E",
+                                                            motionChild: true,
+                                                            nodeId: "CrbMDscrd01N",
+                                                            openInNewTab: true,
+                                                            relValues: [],
+                                                            scopeId: "gvLY5FfCM",
+                                                            smoothScroll: false,
+                                                            children: /*#__PURE__*/ _jsx(motion.a, {
+                                                                className: "framer-styles-preset-1k8uo92",
+                                                                "data-styles-preset": "diqAQm8b4",
+                                                                children: "Discord"
+                                                            })
+                                                        })
+                                                    })
+                                                }),
+                                                className: "framer-40vbhv",
+                                                "data-framer-name": "Discord",
+                                                fonts: ["Inter"],
+                                                layoutDependency: layoutDependency,
+                                                layoutId: "CrbMDscrd01L",
+                                                style: {
+                                                    "--extracted-a0htzi": "var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255))"
+                                                },
+                                                verticalAlignment: "top",
+                                                whileHover: animation9,
+                                                withExternalLayout: true
+                                            })
+                                        }),
+                                            /*#__PURE__*/ _jsx(Transition, {
+                                            value: transition11,
+                                            children: /*#__PURE__*/ _jsx(RichText, {
+                                                __fromCanvasComponent: true,
+                                                children: /*#__PURE__*/ _jsx(React.Fragment, {
+                                                    children: /*#__PURE__*/ _jsx(motion.h3, {
+                                                        className: "framer-styles-preset-1nepq3m",
+                                                        "data-styles-preset": "cGUnsbRA0",
+                                                        dir: "auto",
+                                                        style: {
+                                                            "--framer-text-color": "var(--extracted-a0htzi, var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255)))"
+                                                        },
+                                                        children: /*#__PURE__*/ _jsx(Link, {
+                                                            href: "https://github.com/corabin",
+                                                            motionChild: true,
+                                                            nodeId: "CrbMGH01N",
+                                                            openInNewTab: true,
+                                                            relValues: [],
+                                                            scopeId: "gvLY5FfCM",
+                                                            smoothScroll: false,
+                                                            children: /*#__PURE__*/ _jsx(motion.a, {
+                                                                className: "framer-styles-preset-1k8uo92",
+                                                                "data-styles-preset": "diqAQm8b4",
+                                                                children: "GitHub"
+                                                            })
+                                                        })
+                                                    })
+                                                }),
+                                                className: "framer-40vbhv",
+                                                "data-framer-name": "GitHub",
+                                                fonts: ["Inter"],
+                                                layoutDependency: layoutDependency,
+                                                layoutId: "CrbMGH01L",
+                                                style: {
+                                                    "--extracted-a0htzi": "var(--token-8e40c9bb-798b-4b01-b44f-6ce860eedadb, rgb(255, 255, 255))"
+                                                },
+                                                verticalAlignment: "top",
+                                                whileHover: animation9,
+                                                withExternalLayout: true
+                                            })
+                                        })
+                                        ]
                                     })]
                                 }), isDisplayed() && /*#__PURE__*/ _jsxs(MotionDivWithFXWithOptimizedAppearEffect, {
                                     __perspectiveFX: false,
