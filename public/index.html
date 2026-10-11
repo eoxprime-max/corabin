@@ -15206,9 +15206,9 @@
                 } = s;
 
                 function f() {
-                    window.MotionCancelOptimisedAnimation ? .(e, r, t)
+                    window.MotionCancelOptimisedAnimation?.(e, r, t)
                 }
-                return i.onfinish = f, n === null || window.MotionHandoffIsComplete ? .(e) ? (f(), null) : n
+                return i.onfinish = f, n === null || window.MotionHandoffIsComplete?.(e) ? (f(), null) : n
             }
             var X, K, ce = new Set;
 
@@ -15248,11 +15248,11 @@
                 }, window.MotionCheckAppearSync = (a, m, p) => {
                     let c = me(a);
                     if (!c) return;
-                    let u = window.MotionHasOptimisedAnimation ? .(c, m),
-                        x = a.props.values ? .[m];
+                    let u = window.MotionHasOptimisedAnimation?.(c, m),
+                        x = a.props.values?.[m];
                     if (!u || !x) return;
                     let A = p.on("change", d => {
-                        x.get() !== d && (window.MotionCancelOptimisedAnimation ? .(c, m), A())
+                        x.get() !== d && (window.MotionCancelOptimisedAnimation?.(c, m), A())
                     });
                     return A
                 });
@@ -15355,8 +15355,8 @@
                     s = 0,
                     i = 0;
                 for (let n of de(e, r)) {
-                    let f = e[n] ? ? z[n],
-                        a = r[n] ? ? z[n];
+                    let f = e[n]?? z[n],
+                        a = r[n]?? z[n];
                     if (f === void 0 || a === void 0 || n !== "transformPerspective" && f === a && f === z[n]) continue;
                     n === "transformPerspective" && (o[n] = [f, a]);
                     let m = Qe(f, a, t),
@@ -15418,8 +15418,8 @@
                     f = s ? Pe : i,
                     a = {};
                 for (let p of de(e, r)) {
-                    let c = e[p] ? ? z[p],
-                        u = r[p] ? ? z[p];
+                    let c = e[p]?? z[p],
+                        u = r[p]?? z[p];
                     c === void 0 || u === void 0 || p !== "transformPerspective" && c === u || (xe(p) ? a[p] = [c, u] : n[p] = {
                         keyframes: [c, u],
                         options: p === "opacity" ? i : f
@@ -15477,7 +15477,7 @@
 
             function Ce(e, r) {
                 let t = [],
-                    o = Object.values(e)[0] ? .length;
+                    o = Object.values(e)[0]?.length;
                 if (!o) return;
                 let s = Object.keys(e);
                 for (let i = 0; i < o; i++) {
@@ -15499,7 +15499,7 @@
                 if (!r)
                     for (let t in e) {
                         let o = e[t];
-                        return o ? .legacy === !0 ? o : void 0
+                        return o?.legacy === !0 ? o : void 0
                     }
             }
 
@@ -15507,7 +15507,7 @@
                 for (let [n, f] of Object.entries(e)) {
                     let a = i ? f[i] : void 0;
                     if (a === null || !a && f.default === null) continue;
-                    let m = a ? ? f.default ? ? Je(f, i);
+                    let m = a?? f.default?? Je(f, i);
                     if (!m) continue;
                     let {
                         initial: p,
@@ -15533,7 +15533,7 @@
             }
 
             function Ie(e) {
-                return e ? e.find(t => t.mediaQuery ? window.matchMedia(t.mediaQuery).matches === !0 : !1) ? .hash : void 0
+                return e ? e.find(t => t.mediaQuery ? window.matchMedia(t.mediaQuery).matches === !0 : !1)?.hash : void 0
             }
             var kt = {
                 animateAppearEffects: ke,
@@ -15712,8 +15712,8 @@
                         signDisplay: t.signDisplay,
                         roundingIncrement: t.roundingIncrement ?? 1,
                         roundingMode: t.roundingMode ?? "halfExpand",
-                        roundingPriority: t.roundingPriority ? ? "auto",
-                        trailingZeroDisplay: t.trailingZeroDisplay ? ? "auto"
+                        roundingPriority: t.roundingPriority ?? "auto",
+                        trailingZeroDisplay: t.trailingZeroDisplay ?? "auto"
                     };
                 for (let a in t) a in o || (o[a] = t[a]);
                 return o
