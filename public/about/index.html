@@ -14757,8 +14757,8 @@
                     let e = this.getAttribute("href");
                     if (!e) return;
                     if (/Mac|iPod|iPhone|iPad/u.test(navigator.userAgent) ? t.metaKey : t.ctrlKey) return n(e, "", "_blank");
-                    let r = this.getAttribute("rel") ? ? "",
-                        c = this.getAttribute("target") ? ? "";
+                    let r = this.getAttribute("rel") ?? "",
+                        c = this.getAttribute("target") ?? "";
                     n(e, r, c)
                 }
 
@@ -14781,8 +14781,8 @@
                     t.preventDefault(), t.stopPropagation();
                     let e = this.getAttribute("href");
                     if (!e) return;
-                    let i = this.getAttribute("rel") ? ? "",
-                        r = this.getAttribute("target") ? ? "";
+                    let i = this.getAttribute("rel") ?? "",
+                        r = this.getAttribute("target") ?? "";
                     n(e, i, r)
                 }
                 document.querySelectorAll("[data-nested-link]").forEach(t => {
@@ -14811,7 +14811,7 @@
             }
             var g = 'div#main a[href^="#"],div#main a[href^="/"],div#main a[href^="."]',
                 f = "div#main a[data-framer-preserve-params]",
-                S = document.currentScript ? .hasAttribute("data-preserve-internal-params");
+                S = document.currentScript?.hasAttribute("data-preserve-internal-params");
             if (window.location.search && !navigator.webdriver && !/bot|-google|google-|yandex|ia_archiver|crawl|spider/iu.test(navigator.userAgent)) {
                 let a = document.querySelectorAll(S ? `${g},${f}` : f);
                 for (let r of a) {
@@ -15094,7 +15094,7 @@
 
             function Me(e, r) {
                 let t = _(e);
-                return () => Te[r] ? ? t()
+                return () => Te[r] ?? t()
             }
             var be = Me(() => {
                 try {
@@ -15684,8 +15684,8 @@
                         notation: t.notation,
                         compactDisplay: t.compactDisplay,
                         signDisplay: t.signDisplay,
-                        roundingIncrement: t.roundingIncrement ? ? 1,
-                        roundingMode: t.roundingMode ? ? "halfExpand",
+                        roundingIncrement: t.roundingIncrement ?? 1,
+                        roundingMode: t.roundingMode ?? "halfExpand",
                         roundingPriority: t.roundingPriority ? ? "auto",
                         trailingZeroDisplay: t.trailingZeroDisplay ? ? "auto"
                     };
@@ -15725,7 +15725,7 @@
     </script>
     <script>
         typeof document < "u" && (window.process = { ...window.process,
-            env: { ...window.process ? .env,
+            env: { ...window.process?.env,
                 NODE_ENV : "production"
             }
         });

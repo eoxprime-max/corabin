@@ -1,0 +1,74 @@
+
+===== index.html =====
+
+--- Around line 14786 ---
+14784:                         this.removeEventListener("keydown", s);
+14785:                         return
+14786:                     }
+14787:                     if (t.key !== "Enter") return;
+14788:                     t.preventDefault(), t.stopPropagation();
+
+--- Around line 14840 ---
+14838:         <!--/$-->
+14839:     </div>
+14840:     <script>
+14841:         var animator = (() => {
+14842:             var L = (e, r, t) => t > r ? r : t < e ? e : t;
+
+--- Around line 15123 ---
+15121:                 ease: "ease",
+15122:                 easeIn: "ease-in",
+15123:                 easeOut: "ease-out",
+15124:                 easeInOut: "ease-in-out",
+15125:                 circIn: C([0, .65, .55, 1]),
+
+--- Around line 15713 ---
+15711:                     "toLocaleDateString": {}
+15712:                 },
+15713:                 "DateTimeFormat": {
+15714:                     "format": {},
+15715:                     "formatRange": {},
+
+--- Around line 15754 ---
+15752:     <link rel="modulepreload" fetchpriority="low" href="/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/iKJRSh9jmrbmilHdac6ozhPaiCytW8lQqaCPLmlLitI.Z1Wyg5E1.mjs">
+15753:     <link rel="modulepreload" fetchpriority="low" href="/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/augiA20Il.CAOvriYr.mjs">
+15754:     <link rel="modulepreload" fetchpriority="low" href="/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/GJDYW1pCq.Deq0M5vZ.mjs">
+15755:     <link rel="modulepreload" fetchpriority="low" href="/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/polLgksOM.BqC9vc0X.mjs">
+15756:     <link rel="modulepreload" fetchpriority="low" href="/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/ARhvNzuJf.Bc2RUKEP.mjs">
+
+===== public/index.html =====
+
+--- Around line 14786 ---
+14784:                     if (!e) return;
+14785:                     if (/Mac|iPod|iPhone|iPad/u.test(navigator.userAgent) ? t.metaKey : t.ctrlKey) return n(e, "", "_blank");
+14786:                     let r = this.getAttribute("rel") ? ? "",
+14787:                         c = this.getAttribute("target") ? ? "";
+14788:                     n(e, r, c)
+
+--- Around line 14840 ---
+14838:             var g = 'div#main a[href^="#"],div#main a[href^="/"],div#main a[href^="."]',
+14839:                 f = "div#main a[data-framer-preserve-params]",
+14840:                 S = document.currentScript ? .hasAttribute("data-preserve-internal-params");
+14841:             if (window.location.search && !navigator.webdriver && !/bot|-google|google-|yandex|ia_archiver|crawl|spider/iu.test(navigator.userAgent)) {
+14842:                 let a = document.querySelectorAll(S ? `${g},${f}` : f);
+
+--- Around line 15123 ---
+15121:             function Me(e, r) {
+15122:                 let t = _(e);
+15123:                 return () => Te[r] ? ? t()
+15124:             }
+15125:             var be = Me(() => {
+
+--- Around line 15713 ---
+15711:                         compactDisplay: t.compactDisplay,
+15712:                         signDisplay: t.signDisplay,
+15713:                         roundingIncrement: t.roundingIncrement ? ? 1,
+15714:                         roundingMode: t.roundingMode ? ? "halfExpand",
+15715:                         roundingPriority: t.roundingPriority ? ? "auto",
+
+--- Around line 15754 ---
+15752:     <script>
+15753:         typeof document < "u" && (window.process = { ...window.process,
+15754:             env: { ...window.process ? .env,
+15755:                 NODE_ENV : "production"
+15756:             }
