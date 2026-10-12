@@ -88,24 +88,22 @@ export default function SocialSharingButton(props) {
     };
     const handleShare = (platform, text) => {
         let url;
-        const encodedUrl = encodeURIComponent(window.location.href);
-        const encodedText = encodeURIComponent(text);
         switch (platform) {
             case "facebook":
-                url = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+                url = "https://facebook.com/61594918605124/";
                 break;
             case "linkedin":
-                url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+                url = "https://linkedin.com/company/corabin";
                 break;
             case "reddit":
-                url = `https://reddit.com/submit?url=${encodedUrl}&title=${encodedText}`;
+                url = "https://reddit.com/user/CorabinHQ/";
                 break;
             case "x":
-                url = `https://x.com/intent/tweet?url=${encodedUrl}`;
+                url = "https://x.com/CorabinStudio";
                 break;
             default:
-                console.log("Unsupported platform");
-                return;
+                url = "https://x.com/CorabinStudio";
+                break;
         }
         window.open(url, "_blank");
     };
