@@ -100,6 +100,26 @@ else
   pass "No placeholder URLs in deployment config"
 fi
 
+# 10. Check for malformed JS operators in HTML scripts
+echo ""
+echo "=== Checking for malformed JS operators ==="
+if grep -rInE '([A-Za-z0-9_$)\]])[ \t]+\?[ \t]+[.?]' "$PUB" --include='*.html' 2>/dev/null; then
+  echo "❌ FAIL: Malformed optional chaining or nullish coalescing operator found"
+  FAIL=1
+else
+  pass "All inline JavaScript operators are valid"
+fi
+
+# 11. Check CSP allows the contact form webhook origin
+echo ""
+echo "=== Checking CSP permits contact webhook origin ==="
+if grep -q 'connect-src.*https://n8n.corabin.com' "$PUB/_headers" && grep -q 'form-action.*https://n8n.corabin.com' "$PUB/_headers"; then
+  pass "CSP permits https://n8n.corabin.com in connect-src and form-action"
+else
+  echo "❌ FAIL: CSP in _headers does not allow https://n8n.corabin.com"
+  FAIL=1
+fi
+
 echo ""
 echo "================================"
 if [ $FAIL -eq 0 ]; then
