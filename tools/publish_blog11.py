@@ -2,8 +2,8 @@
 import json
 import os
 import re
-
-BASE_DIR = '/home/souvik/Corabin/Corabin.website'
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
 
 # 1. Define AST for Article Body
 ast = [
@@ -224,7 +224,6 @@ print(f"tools/updated_blog_records.json updated with {len(records)} records!")
 compact_json = json.dumps(records, separators=(',', ':'), ensure_ascii=False)
 
 cms_files = [
-    os.path.join(BASE_DIR, 'framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/l0aFVHEAD.Du2GMRYI.mjs'),
     os.path.join(BASE_DIR, 'public/framerusercontent.com/sites/46CYIm3dbxFoU3f63shpCX/l0aFVHEAD.Du2GMRYI.mjs')
 ]
 
@@ -261,7 +260,6 @@ for cfile in cms_files:
 
 # 3. Generate detail routes
 routes = [
-    ('blog/real-estate-agent-website-cost-2026/index.html', 'blog/technical-debt-friend-or-foe/index.html'),
     ('public/blog/real-estate-agent-website-cost-2026/index.html', 'public/blog/technical-debt-friend-or-foe/index.html')
 ]
 
@@ -406,7 +404,6 @@ for dest_rel, src_rel in routes:
 
 # 4. Update Sitemap in root and public
 sitemap_files = [
-    os.path.join(BASE_DIR, 'sitemap.xml'),
     os.path.join(BASE_DIR, 'public/sitemap.xml')
 ]
 

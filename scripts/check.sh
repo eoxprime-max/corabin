@@ -12,7 +12,7 @@ pass() {
 
 # 1. No internal files inside the deploy folder
 echo "=== Checking deploy folder integrity ==="
-for p in tools docs .git CODEBASE_AUDIT.md SEO_PRODUCTION_AUDIT.md README.md Corabin_PRODUCTION_AUDIT_REPORT.md; do
+for p in tools docs archive scripts .git CODEBASE_AUDIT.md SEO_PRODUCTION_AUDIT.md README.md Corabin_PRODUCTION_AUDIT_REPORT.md; do
   if [ -e "$PUB/$p" ]; then
     echo "❌ FAIL: $PUB/$p must not be deployed"
     FAIL=1

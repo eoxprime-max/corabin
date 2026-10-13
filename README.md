@@ -70,19 +70,16 @@ The system is structured to keep future pages, sections, and content visually co
 
 ## Technology
 
-The project uses a modern frontend stack focused on maintainability, responsiveness, and performance.
+The website is engineered as a high-performance static web application designed for exceptional speed, visual fidelity, and security.
 
 **Core Technologies**
 
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- Modern CSS
-- Responsive UI architecture
-- Motion and interaction tooling
-
-The implementation is organized around reusable components and maintainable frontend architecture.
+- **Frontend Engine**: React 18 client-side hydration over pre-rendered SSR HTML
+- **Bundler**: Rolldown / Framer runtime bundler
+- **Styling**: Modular CSS tokens + dedicated `<style id="corabin-brand-overrides">` brand system
+- **Motion & Scrolling**: Framer Motion + Lenis Smooth Scroll v1.3.19
+- **Deployment Platform**: Vercel Static Hosting (`vercel.json` with `"outputDirectory": "public"`)
+- **Multi-Platform Fallback**: Netlify / Cloudflare Pages compatible via `_headers` and `_redirects`
 
 ---
 
@@ -90,66 +87,76 @@ The implementation is organized around reusable components and maintainable fron
 
 ```text
 .
+├── vercel.json                 # Vercel deployment configuration (outputDirectory: "public")
+├── _headers                    # Root fallback security & caching headers
+├── _redirects                  # Root fallback 301 redirect rules for legacy project slugs
+├── scripts/
+│   ├── check.sh                # Automated pre-deployment validation suite (verifies public/)
+│   └── dev.sh                  # Local preview server (serves public/ on port 8080)
+├── tools/                      # Content management tools & verification suites
+│   ├── publish_blog11.py       # Blog article publishing workflow (targets public/)
+│   ├── updated_blog_records.json # CMS blog records
+│   └── verify_*.py             # Automated route & DOM verification suites
 ├── docs/                       # Organized documentation
 │   ├── architecture/           # System design & changelogs
 │   ├── audits/                 # Production & security audit reports
 │   ├── editorial/              # Editorial strategy & content map
 │   └── logs/                   # Historical diagnostic logs
 ├── archive/                    # Non-runtime archives & raw source assets
-│   └── raw-assets/             # Loose branding and source creative assets
-├── public/                     # Static website directory (served by Vercel)
-├── scripts/                    # Maintenance & release validation scripts
-├── tools/                      # Publishing workflows & automated test suites
-├── vercel.json                 # Vercel deployment configuration
-├── _headers                    # Security and caching headers
-├── _redirects                  # 301 redirects for legacy routes
+│   ├── migrations/             # Historical one-time template migration scripts
+│   └── raw-assets/             # Original branding, source images, legacy chunks & SVG dumps
+├── public/                     # CANONICAL WEBSITE DIRECTORY (served in dev and production)
 └── README.md
 ```
 
-The structure may evolve as the project and Corabin's digital experience continue to grow.
+The structure keeps public production assets separate from internal tooling and documentation.
 
 ---
 
-## Local Development
+## Local Development & Preview
 
-Clone the repository:
+The site is fully self-contained with no npm dependencies required to run locally.
 
-```bash
-git clone https://github.com/eoxprime-max/corabinyea.git
-cd corabinyea
-```
+### Start Local Static Preview
 
-Install dependencies:
+Use the dedicated preview runner (which automatically serves the canonical `public/` directory):
 
 ```bash
-npm install
+./scripts/dev.sh
 ```
 
-Start the development server:
+To specify a custom port:
 
 ```bash
-npm run dev
+./scripts/dev.sh 8089
 ```
 
-Open the local development URL provided by Next.js.
+Or using manual server commands:
+
+```bash
+python3 -m http.server 8080 --directory public
+```
+
+Open `http://localhost:8080` in your browser.
 
 ---
 
-## Production Build
+## Pre-Deployment Quality Checks
 
-Create an optimized production build:
-
-```bash
-npm run build
-```
-
-Run the production server:
+Before publishing changes to production or deploying to Vercel, run the automated validation suite:
 
 ```bash
-npm start
+./scripts/check.sh
 ```
 
-Before deployment, verify that the production build completes successfully and that all required environment variables, assets, and integrations are correctly configured.
+This script verifies:
+1. **Deploy folder integrity** — Ensures internal files (`docs/`, `tools/`, `archive/`, `scripts/`, `.git/`) are never deployed.
+2. **Mailto links** — Validates proper syntax without malformed whitespace.
+3. **No template remnants** — Confirms removal of legacy template identifiers and publish stamps.
+4. **Contact form endpoint** — Verifies production webhook configuration.
+5. **SEO & Link hygiene** — Validates `noindex` on 404 pages and proper redirect definitions.
+6. **CSP enforcement** — Asserts Content Security Policy is strictly enforced.
+
 
 ---
 

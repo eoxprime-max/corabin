@@ -43,6 +43,7 @@ pip-log.txt
 
 # === Large source assets (not part of the served site) ===
 tools/source-images/
+archive/raw-assets/source-images/
 
 # === Vercel ===
 .vercel/

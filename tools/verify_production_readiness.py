@@ -83,11 +83,18 @@ FORBIDDEN_PATTERNS = [
 ]
 
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
+    def translate_path(self, path):
+        p = super().translate_path(path)
+        if not os.path.exists(p) and os.path.exists(p + '.html'):
+            return p + '.html'
+        return p
+
     def log_message(self, format, *args):
         pass
 
 def run_server():
-    os.chdir(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    pub_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'public'))
+    os.chdir(pub_dir)
     http.server.HTTPServer.allow_reuse_address = True
     server = http.server.HTTPServer(("127.0.0.1", PORT), QuietHandler)
     server.serve_forever()
