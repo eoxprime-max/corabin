@@ -90,13 +90,19 @@ The implementation is organized around reusable components and maintainable fron
 
 ```text
 .
-├── app/
-├── components/
-├── public/
-├── styles/
-├── lib/
-├── package.json
-├── tsconfig.json
+├── docs/                       # Organized documentation
+│   ├── architecture/           # System design & changelogs
+│   ├── audits/                 # Production & security audit reports
+│   ├── editorial/              # Editorial strategy & content map
+│   └── logs/                   # Historical diagnostic logs
+├── archive/                    # Non-runtime archives & raw source assets
+│   └── raw-assets/             # Loose branding and source creative assets
+├── public/                     # Static website directory (served by Vercel)
+├── scripts/                    # Maintenance & release validation scripts
+├── tools/                      # Publishing workflows & automated test suites
+├── vercel.json                 # Vercel deployment configuration
+├── _headers                    # Security and caching headers
+├── _redirects                  # 301 redirects for legacy routes
 └── README.md
 ```
 
