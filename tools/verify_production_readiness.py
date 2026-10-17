@@ -47,6 +47,9 @@ ROUTES = [
     "/blog/stop-making-these-common-api-mistakes",
     "/blog/website-security-made-simple",
     "/blog/technical-debt-friend-or-foe",
+    "/blog/idx-listings-not-showing-google",
+    "/blog/real-estate-agent-website-cost-2026",
+    "/blog/article.html",
 ]
 
 LEGACY_ROUTES = {

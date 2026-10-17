@@ -25,4 +25,4 @@ echo " Press Ctrl+C to stop."
 echo "=========================================================="
 
 # 3. Forward process termination cleanly (exec replaces the subshell)
-exec python3 -m http.server "${PORT}" --directory "${PUB_DIR}"
+exec python3 "${ROOT_DIR}/tools/dev_server.py" "${PORT}"

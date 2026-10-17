@@ -14,3 +14,6 @@
 /projects/bullseye/       /projects/havyn     301
 /projects/interference    /projects/almare    301
 /projects/interference/   /projects/almare    301
+
+# Dynamic blog route fallback for future CMS posts
+/blog/*                   /blog/article.html  200
