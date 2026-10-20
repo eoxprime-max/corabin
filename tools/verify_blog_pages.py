@@ -135,49 +135,66 @@ pages = [
         "The requested article is not currently published or does not exist.",
         "Return to all articles"
     ]),
+    ("Future Published Supabase Route (/blog/why-every-real-estate-agent-needs-a-website-in-2026)", "http://localhost:8088/blog/why-every-real-estate-agent-needs-a-website-in-2026", [
+        "Why Every Real Estate Agent Needs a Website in 2026",
+        "In today",
+        "Souvik"
+    ]),
 ]
 
 all_passed = True
 
-# --- 1. Static File Content Duplication Audit ---
-print("=== Step 1: Static File Content Duplication Audit ===")
+# --- 1. Authentic Original Article & Shared Template Audit ---
+print("=== Step 1: Authentic Original Article & Shared Template Audit ===")
 import glob
 import os
 
-blog_dirs = [d for d in glob.glob("public/blog/*") if os.path.isdir(d)]
-known_article_snippets = [
-    "Check whether the URLs are indexed",
-    "Strategic Illusion of Off-the-Shelf Simplicity",
-    "Four realistic budget levels",
-    "Eliminating Cumulative Layout Shift",
-    "The Financial Analogy of Technical Debt"
+backup_dir = ".corabin-local-backups/phase3-pre-cutover-articles"
+if not os.path.isdir(backup_dir):
+    backup_dir = ".corabin-local-backups/20261016-pre-shared-template/blog"
+
+expected_12_slugs = [
+    "7-critical-steps-to-successfully-launch-your-digital-product",
+    "choosing-the-right-tech-stack-a-decision-framework-for-2025",
+    "custom-vs-off-the-shelf-choose-wisely",
+    "design-that-converts-our-approach",
+    "headless-cms-the-future-is-here",
+    "idx-listings-not-showing-google",
+    "real-estate-agent-website-cost-2026",
+    "speed-up-your-website-today",
+    "stop-making-these-common-api-mistakes",
+    "technical-debt-friend-or-foe",
+    "website-security-made-simple",
+    "why-design-systems-actually-matter"
 ]
 
-for bdir in sorted(blog_dirs):
-    index_file = os.path.join(bdir, "index.html")
+for slug in expected_12_slugs:
+    index_file = os.path.join(backup_dir, slug, "index.html")
     if not os.path.isfile(index_file):
-        continue
-    with open(index_file, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Verify lightweight shell markers
-    if 'id="article-body-content" data-pre-rendered="false"' not in content:
-        print(f"❌ {index_file}: Missing data-pre-rendered='false' on article-body-content!")
-        all_passed = False
-    elif 'data-rendered="false"' not in content:
-        print(f"❌ {index_file}: Missing data-rendered='false' on root main element!")
-        all_passed = False
-    elif '<div class="corabin-supabase-state">' not in content:
-        print(f"❌ {index_file}: Missing corabin-supabase-state loading placeholder!")
+        print(f"❌ Missing recoverable backup index.html for {slug} in {backup_dir}!")
         all_passed = False
     else:
-        # Check for duplicated article snippets
-        found_leaks = [s for s in known_article_snippets if s in content]
-        if found_leaks:
-            print(f"❌ {index_file}: Found leaked article body content: {found_leaks}!")
+        with open(index_file, "r", encoding="utf-8") as f:
+            content = f.read()
+        if '<style data-framer-css>' not in content and '<style data-framer-font-css>' not in content:
+            print(f"❌ Backup for {slug} does not contain authentic Framer CSS styles!")
             all_passed = False
         else:
-            print(f"✅ {os.path.basename(bdir)}: Lightweight shell verified (0 bytes of article content duplicated)")
+            print(f"✅ {slug}: Authentic original Framer article verified in {backup_dir}")
+
+# Check reusable article.html
+article_html_file = "public/blog/article.html"
+if not os.path.isfile(article_html_file):
+    print("❌ public/blog/article.html does not exist!")
+    all_passed = False
+else:
+    with open(article_html_file, "r", encoding="utf-8") as f:
+        article_content = f.read()
+    if 'id="article-title"' in article_content and 'id="article-body-content"' in article_content and 'blog-runtime.js' in article_content:
+        print("✅ article.html: Authentic reusable article template with blog-runtime.js integration verified")
+    else:
+        print("❌ public/blog/article.html is missing required article markers or Supabase runtime!")
+        all_passed = False
 
 # --- 2. Hosting Rewrite HTTP Verification ---
 print("\n=== Step 2: Hosting Rewrite HTTP Verification ===")

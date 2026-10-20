@@ -1,0 +1,86 @@
+{
+  "totalRequests": 63,
+  "totalBytes": 4749240,
+  "totalKB": "4637.9",
+  "totalMB": "4.53",
+  "imageCount": 24,
+  "imageTotalBytes": 1248264,
+  "imageTotalKB": "1219.0",
+  "topImages": [
+    {
+      "url": "http://localhost:8088/assets/images/Corabin_logo.png",
+      "bytes": 245190,
+      "kb": "239.4"
+    },
+    {
+      "url": "https://framerusercontent.com/images/Jy5WCcnJay20YD0j0v7yo4cy2w.jpg?width=2000&height=1334",
+      "bytes": 194931,
+      "kb": "190.4"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/blogs/blog1.webp",
+      "bytes": 129914,
+      "kb": "126.9"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/blogs/blog11.webp",
+      "bytes": 115542,
+      "kb": "112.8"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/blogs/blog12.webp",
+      "bytes": 91561,
+      "kb": "89.4"
+    },
+    {
+      "url": "https://framerusercontent.com/images/ECzuL4YY67K9O1ChG9ioW32OpA.jpg?scale-down-to=1024&width=2732&height=4096",
+      "bytes": 77181,
+      "kb": "75.4"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/ardene/img1.webp",
+      "bytes": 69115,
+      "kb": "67.5"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/havyn/img1.webp",
+      "bytes": 64097,
+      "kb": "62.6"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/almare/img1.webp",
+      "bytes": 50413,
+      "kb": "49.2"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/norda/img1.webp",
+      "bytes": 49501,
+      "kb": "48.3"
+    },
+    {
+      "url": "https://framerusercontent.com/images/cxS3pdE2Am67jSPeaOJc4e6co.jpg?scale-down-to=512&width=2500&height=1667",
+      "bytes": 43404,
+      "kb": "42.4"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/kora/img1.webp",
+      "bytes": 40673,
+      "kb": "39.7"
+    },
+    {
+      "url": "http://localhost:8088/assets/images/projects/himon/img1.webp",
+      "bytes": 40489,
+      "kb": "39.5"
+    },
+    {
+      "url": "https://framerusercontent.com/images/FPeepKKHxtAQvBoZw06THrhotfE.png?width=2400&height=1600",
+      "bytes": 35459,
+      "kb": "34.6"
+    },
+    {
+      "url": "https://framerusercontent.com/assets/shSYSaRjokpwgL577UKH65sDjU.svg",
+      "bytes": 794,
+      "kb": "0.8"
+    }
+  ]
+}

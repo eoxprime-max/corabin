@@ -1,0 +1,283 @@
+{
+  "results": [
+    {
+      "slug": "7-critical-steps-to-successfully-launch-your-digital-product",
+      "url": "http://localhost:8088/blog/7-critical-steps-to-successfully-launch-your-digital-product/",
+      "data": {
+        "title": "From Concept to Market: The 7 Strategic Milestones of Digital Product Launch — Corabin",
+        "h1": "From Concept to Market: The 7 Strategic Milestones of Digital Product Launch",
+        "excerpt": "Launching a category-defining digital product requires rigor",
+        "author": "Souvik",
+        "date": "Jan 3, 2025",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/7-critical-steps-to-successfully-launch-your-digital-product-1f3f96f8",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 8,
+        "firstParagraph": "The most catastrophic pitfall in digital product development is feature bloat di",
+        "canonical": "https://corabin.com/blog/7-critical-steps-to-successfully-launch-your-digital-product",
+        "ogTitle": "From Concept to Market: The 7 Strategic Milestones of Digital Product Launch — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "choosing-the-right-tech-stack-a-decision-framework-for-2025",
+      "url": "http://localhost:8088/blog/choosing-the-right-tech-stack-a-decision-framework-for-2025/",
+      "data": {
+        "title": "The Modern Web Tech Stack: A Definitive Decision Framework for 2026 — Corabin",
+        "h1": "The Modern Web Tech Stack: A Definitive Decision Framework for 2026",
+        "excerpt": "Selecting your technology stack isn't just an engineering de",
+        "author": "Souvik",
+        "date": "Dec 23, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/choosing-the-right-tech-stack-a-decision-framework-for-2025-12999377",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "The landscape of web engineering has permanently shifted away from centralized, ",
+        "canonical": "https://corabin.com/blog/choosing-the-right-tech-stack-a-decision-framework-for-2025",
+        "ogTitle": "The Modern Web Tech Stack: A Definitive Decision Framework for 2026 — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "custom-vs-off-the-shelf-choose-wisely",
+      "url": "http://localhost:8088/blog/custom-vs-off-the-shelf-choose-wisely/",
+      "data": {
+        "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown — Corabin",
+        "h1": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown",
+        "excerpt": "A strategic evaluation of when custom-engineered digital sys",
+        "author": "Souvik",
+        "date": "Jan 16, 2025",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "Pre-packaged CMS themes, no-code builders, and boilerplate commercial templates ",
+        "canonical": "https://corabin.com/blog/custom-vs-off-the-shelf-choose-wisely",
+        "ogTitle": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "design-that-converts-our-approach",
+      "url": "http://localhost:8088/blog/design-that-converts-our-approach/",
+      "data": {
+        "title": "Conversion-Driven Design: How Top Digital Studios Engineer User Intent — Corabin",
+        "h1": "Conversion-Driven Design: How Top Digital Studios Engineer User Intent",
+        "excerpt": "Converting high-intent visitors into committed partners requ",
+        "author": "Souvik",
+        "date": "Jan 9, 2025",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/design-that-converts-our-approach-80009e6b",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "Aesthetic beauty without cognitive clarity is merely decoration. In modern digit",
+        "canonical": "https://corabin.com/blog/design-that-converts-our-approach",
+        "ogTitle": "Conversion-Driven Design: How Top Digital Studios Engineer User Intent — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "headless-cms-the-future-is-here",
+      "url": "http://localhost:8088/blog/headless-cms-the-future-is-here/",
+      "data": {
+        "title": "The Headless Architecture Paradigm: Why Monoliths Stifle Brand Agility — Corabin",
+        "h1": "The Headless Architecture Paradigm: Why Monoliths Stifle Brand Agility",
+        "excerpt": "Decoupling your presentation layer from content storage unle",
+        "author": "Souvik",
+        "date": "Dec 1, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/headless-cms-the-future-is-here-1bda897f",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "For decades, traditional monolithic CMS platforms dominated digital publishing b",
+        "canonical": "https://corabin.com/blog/headless-cms-the-future-is-here",
+        "ogTitle": "The Headless Architecture Paradigm: Why Monoliths Stifle Brand Agility — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "idx-listings-not-showing-google",
+      "url": "http://localhost:8088/blog/idx-listings-not-showing-google/",
+      "data": {
+        "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It) — Corabin",
+        "h1": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+        "excerpt": "Find out why IDX listing pages may not appear in Google and ",
+        "author": "Souvik",
+        "date": "Oct 13, 2026",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 21,
+        "firstParagraph": "An IDX search can work perfectly for a visitor and still create weak or inconsis",
+        "canonical": "https://corabin.com/blog/idx-listings-not-showing-google",
+        "ogTitle": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It) — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "real-estate-agent-website-cost-2026",
+      "url": "http://localhost:8088/blog/real-estate-agent-website-cost-2026/",
+      "data": {
+        "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents — Corabin",
+        "h1": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+        "excerpt": "Compare realistic 2026 budget ranges for a real estate agent",
+        "author": "Souvik",
+        "date": "Oct 12, 2026",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 29,
+        "firstParagraph": "A real estate website can cost a few hundred dollars to set up, several thousand",
+        "canonical": "https://corabin.com/blog/real-estate-agent-website-cost-2026",
+        "ogTitle": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "speed-up-your-website-today",
+      "url": "http://localhost:8088/blog/speed-up-your-website-today/",
+      "data": {
+        "title": "Sub-Second Web Performance: Mastering Core Web Vitals for Organic Growth — Corabin",
+        "h1": "Sub-Second Web Performance: Mastering Core Web Vitals for Organic Growth",
+        "excerpt": "Every 100 milliseconds of latency erodes conversion and sear",
+        "author": "Souvik",
+        "date": "Dec 19, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/speed-up-your-website-today-b415b53e",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "In digital commerce and high-end professional services, speed is not a technical",
+        "canonical": "https://corabin.com/blog/speed-up-your-website-today",
+        "ogTitle": "Sub-Second Web Performance: Mastering Core Web Vitals for Organic Growth — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "stop-making-these-common-api-mistakes",
+      "url": "http://localhost:8088/blog/stop-making-these-common-api-mistakes/",
+      "data": {
+        "title": "High-Throughput API Architecture: Eliminating Latency & Reliability Bottlenecks — Corabin",
+        "h1": "High-Throughput API Architecture: Eliminating Latency & Reliability Bottlenecks",
+        "excerpt": "APIs power modern software ecosystems, but poor caching, fra",
+        "author": "Souvik",
+        "date": "Nov 29, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/stop-making-these-common-api-mistakes-3524e774",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "Application Programming Interfaces (APIs) are the invisible connective tissue of",
+        "canonical": "https://corabin.com/blog/stop-making-these-common-api-mistakes",
+        "ogTitle": "High-Throughput API Architecture: Eliminating Latency & Reliability Bottlenecks — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "technical-debt-friend-or-foe",
+      "url": "http://localhost:8088/blog/technical-debt-friend-or-foe/",
+      "data": {
+        "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay — Corabin",
+        "h1": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+        "excerpt": "Technical debt isn't inherently evil—it is financial leverag",
+        "author": "Souvik",
+        "date": "Nov 13, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "The term 'technical debt' was famously coined by Ward Cunningham to illustrate a",
+        "canonical": "https://corabin.com/blog/technical-debt-friend-or-foe",
+        "ogTitle": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "website-security-made-simple",
+      "url": "http://localhost:8088/blog/website-security-made-simple/",
+      "data": {
+        "title": "Client-Side Web Security: Hardening Modern Frontends Against Emerging Threats — Corabin",
+        "h1": "Client-Side Web Security: Hardening Modern Frontends Against Emerging Threats",
+        "excerpt": "Modern client-side applications face sophisticated attack ve",
+        "author": "Souvik",
+        "date": "Nov 18, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/website-security-made-simple-b53a4be0",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "Historically, cybersecurity was concentrated almost exclusively on perimeter fir",
+        "canonical": "https://corabin.com/blog/website-security-made-simple",
+        "ogTitle": "Client-Side Web Security: Hardening Modern Frontends Against Emerging Threats — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "why-design-systems-actually-matter",
+      "url": "http://localhost:8088/blog/why-design-systems-actually-matter/",
+      "data": {
+        "title": "Why Scalable Design Systems Actually Matter: Bridging Figma to Production — Corabin",
+        "h1": "Why Scalable Design Systems Actually Matter: Bridging Figma to Production",
+        "excerpt": "Design systems are not static UI libraries—they are operatio",
+        "author": "Souvik",
+        "date": "Dec 4, 2024",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/why-design-systems-actually-matter-17f749da",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 6,
+        "firstParagraph": "Too many organizations treat design systems as decorative Figma component sheets",
+        "canonical": "https://corabin.com/blog/why-design-systems-actually-matter",
+        "ogTitle": "Why Scalable Design Systems Actually Matter: Bridging Figma to Production — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    },
+    {
+      "slug": "why-every-real-estate-agent-needs-a-website-in-2026",
+      "url": "http://localhost:8088/blog/why-every-real-estate-agent-needs-a-website-in-2026/",
+      "data": {
+        "title": "Why Every Real Estate Agent Needs a Website in 2026 — Corabin",
+        "h1": "Why Every Real Estate Agent Needs a Website in 2026",
+        "excerpt": "Discover how a professional real estate website helps agents",
+        "author": "Souvik",
+        "date": "Apr 13, 2026",
+        "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/why-every-real-estate-agent-needs-a-website-in-2026-e34ab2c1",
+        "coverNaturalWidth": 1440,
+        "paragraphCount": 4,
+        "firstParagraph": "In today’s digital world, most property buyers start their search online. Before",
+        "canonical": "https://corabin.com/blog/why-every-real-estate-agent-needs-a-website-in-2026",
+        "ogTitle": "Why Every Real Estate Agent Needs a Website in 2026 — Corabin"
+      },
+      "supabaseFetches": 2,
+      "consoleErrors": []
+    }
+  ],
+  "nonExistData": {
+    "title": "Article Unavailable — Corabin",
+    "h1": "Article Unavailable",
+    "bodyText": "Article Unavailable\nThe requested article is not currently published or does not exist.\n\n                    \n\n\n                        The article you are looking for may have been moved, unpublished, or the link may be outdated. You can explore all published insights and guides on our blog.\n      "
+  },
+  "blogListingData": {
+    "featuredCount": 3,
+    "regularCount": 10,
+    "featuredSlugs": [
+      "idx-listings-not-showing-google",
+      "real-estate-agent-website-cost-2026",
+      "custom-vs-off-the-shelf-choose-wisely"
+    ],
+    "firstRegularSlug": "why-every-real-estate-agent-needs-a-website-in-2026"
+  },
+  "homeData": {
+    "count": 3,
+    "cards": [
+      {
+        "slug": "idx-listings-not-showing-google",
+        "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)"
+      },
+      {
+        "slug": "real-estate-agent-website-cost-2026",
+        "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents"
+      },
+      {
+        "slug": "custom-vs-off-the-shelf-choose-wisely",
+        "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown"
+      }
+    ]
+  }
+}
