@@ -530,7 +530,7 @@ export function applyArticleData(post) {
     try {
         const slug = resolveCurrentSlug();
         const activeTitle = post.title || '';
-        const activeDate = post.published_at || '';
+        const activeDate = post.published_at || post.date || '';
         const activeExcerpt = post.excerpt || post.meta_description || '';
         const activeImage = post.cover_image || '';
 
@@ -790,6 +790,11 @@ export async function initSharedBlogArticle() {
         return;
     }
 
+    // Immediate sync from preloaded metadata if available
+    if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug) {
+        applyArticleData(window.__PRELOADED_BLOG_POST__);
+    }
+
     // Fetch live post data from Supabase using public anon key
     const supabaseResult = await fetchPostFromSupabase(slug);
 
@@ -851,6 +856,12 @@ export async function initSharedBlogArticle() {
             });
         }
     } else {
+        // Fallback to preloaded post if this is a known post and Supabase fetch failed due to network/offline
+        if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug && supabaseResult.status !== 'not_found') {
+            window.__corabinLivePost = window.__PRELOADED_BLOG_POST__;
+            applyArticleData(window.__PRELOADED_BLOG_POST__);
+            return;
+        }
         renderUnavailableState(
             supabaseResult.status === 'not_found'
                 ? 'The requested article is not currently published or does not exist.'
@@ -1520,30 +1531,87 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
         if (url.startsWith('./contact')) {
             return url.replace(/^\.\/contact/, '/contact');
         }
+        if (url.startsWith('./privacy')) {
+            return url.replace(/^\.\/privacy/, '/privacy');
+        }
+        if (url.startsWith('./terms')) {
+            return url.replace(/^\.\/terms/, '/terms');
+        }
         if (url === './' || url === '.') {
             return '/';
         }
         if (url.startsWith('./')) {
-            return '/' + url.slice(2);
+            const rel = url.slice(2);
+            if (window.location.pathname.startsWith('/blog')) {
+                return '/blog/' + rel.replace(/^\/+/, '');
+            }
+            return '/' + rel;
         }
-        if (url.startsWith('/blog/blog/')) {
-            return url.replace('/blog/blog/', '/blog/');
+        if (url === '/blog/blog' || url.startsWith('/blog/blog/')) {
+            return url.replace(/^\/blog\/blog\/?/, '/blog/');
         }
         return url;
     }
 
-    // Immediately fix any active /blog/blog/ URL in browser location
-    if (window.location.pathname.startsWith('/blog/blog/')) {
-        const cleanPath = window.location.pathname.replace(/^\/blog\/blog\//, '/blog/');
+    // Immediately fix any active /blog/blog URL in browser location
+    if (window.location.pathname.startsWith('/blog/blog')) {
+        const cleanPath = window.location.pathname.replace(/^\/blog\/blog\/?/, '/blog/');
         window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
         currentPath = window.location.pathname;
     }
 
+    function sanitizeHref(href) {
+        if (!href || typeof href !== 'string') return href;
+        if (href === './blog' || href === './blog/') return '/blog/';
+        if (href.startsWith('./blog/')) return '/blog/' + href.slice(7);
+        if (href.startsWith('./projects')) return href.replace(/^\.\/projects/, '/projects');
+        if (href.startsWith('./about')) return href.replace(/^\.\/about/, '/about');
+        if (href.startsWith('./contact')) return href.replace(/^\.\/contact/, '/contact');
+        if (href.startsWith('./privacy')) return href.replace(/^\.\/privacy/, '/privacy');
+        if (href.startsWith('./terms')) return href.replace(/^\.\/terms/, '/terms');
+        if (href === './' || href === '.') return '/';
+        if (href.startsWith('./')) {
+            const rel = href.slice(2);
+            if (window.location.pathname.startsWith('/blog')) {
+                return '/blog/' + rel.replace(/^\/+/, '');
+            }
+            return '/' + rel;
+        }
+        if (href === '/blog/blog' || href.startsWith('/blog/blog/')) return href.replace(/^\/blog\/blog\/?/, '/blog/');
+        return href;
+    }
+
+    function fixDomLinks() {
+        document.querySelectorAll('a[href]').forEach(a => {
+            const raw = a.getAttribute('href');
+            const clean = sanitizeHref(raw);
+            if (clean && clean !== raw) {
+                a.setAttribute('href', clean);
+            }
+        });
+    }
+
+    // Capturing click listener to prevent any relative link from resolving against /blog/
+    document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[href]');
+        if (!link) return;
+        const raw = link.getAttribute('href');
+        const clean = sanitizeHref(raw);
+        if (clean && clean !== raw) {
+            link.setAttribute('href', clean);
+        }
+    }, true);
+
+    fixDomLinks();
+    window.addEventListener('load', fixDomLinks);
+
     const handleRouteChange = () => {
         if (window.location.pathname !== currentPath) {
             currentPath = window.location.pathname;
+            fixDomLinks();
             setTimeout(() => {
                 initBlogSystem();
+                fixDomLinks();
             }, 60);
         }
     };
@@ -1570,4 +1638,3 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
         };
     }
 }
-
