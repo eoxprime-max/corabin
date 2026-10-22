@@ -588,8 +588,8 @@ export function applyArticleData(post, token = undefined) {
             activeAuthor = typeof post.author === 'object' ? (post.author.name || 'Souvik') : String(post.author);
         }
 
-        const resolvedCover = resolveCloudinaryImageUrl(activeImage) || 'https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a';
-        const resolvedSrcset = generateResponsiveSrcset(activeImage);
+        const resolvedCover = resolveCloudinaryImageUrl(activeImage) || 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1672 941\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%23111111\'/%3E%3C/svg%3E';
+        const resolvedSrcset = activeImage ? generateResponsiveSrcset(activeImage) : '';
         const formattedDate = formatArticleDate(activeDate);
 
         // Update document title and head metadata
@@ -836,6 +836,7 @@ export function renderUnavailableState(message = 'The requested article is not c
 export async function syncArticleRelatedPosts(currentSlug) {
     if (!currentSlug || currentSlug === 'blog' || currentSlug === 'index.html') return;
     const gridEl = document.querySelector('.framer-k7mcxy .framer-3lukgt') ||
+                   document.querySelector('#main .framer-3lukgt') ||
                    document.querySelector('[data-framer-name="Blog"] .framer-3lukgt') ||
                    document.querySelector('.framer-k7mcxy');
     if (!gridEl) return;
@@ -855,17 +856,50 @@ export async function syncArticleRelatedPosts(currentSlug) {
     if (!allPosts || allPosts.length === 0) return;
 
     // Filter out active article so it NEVER recommends itself
-    const eligible = allPosts.filter(p => p.slug && p.slug !== currentSlug);
+    const eligible = allPosts.filter(p => p.slug && p.slug !== currentSlug && p.status === 'published');
     if (eligible.length === 0) return;
 
     // Pick 3 companion articles: prioritize featured posts, then recent posts
     const featuredEligible = eligible.filter(p => p.featured === true);
     const nonFeaturedEligible = eligible.filter(p => p.featured !== true);
     const relatedPosts = [...featuredEligible, ...nonFeaturedEligible].slice(0, 3);
+    if (relatedPosts.length < 3 && eligible.length >= 3) {
+        relatedPosts.push(...eligible.filter(p => !relatedPosts.includes(p)).slice(0, 3 - relatedPosts.length));
+    }
 
-    const targetGrid = gridEl.classList.contains('framer-3lukgt') ? gridEl : gridEl.querySelector('.framer-3lukgt');
-    if (targetGrid) {
-        syncFeaturedGrid(targetGrid, relatedPosts);
+    const p1 = relatedPosts[0];
+    const p2 = relatedPosts[1];
+    const p3 = relatedPosts[2];
+
+    const targetGrid = gridEl.classList.contains('framer-3lukgt') ? gridEl : (gridEl.querySelector('.framer-3lukgt') || gridEl);
+
+    // Desktop Hero Card: in .framer-1tq2jgu
+    const desktopHero = targetGrid.querySelector('.framer-1tq2jgu a[data-framer-name="Desktop"]') ||
+                        targetGrid.querySelector('.framer-1tq2jgu .ssr-variant:not(.hidden-72rtr7) a.framer-7Bi9P') ||
+                        targetGrid.querySelector('.framer-1tq2jgu a.framer-7Bi9P');
+    if (desktopHero && p1) {
+        syncFeaturedCard(desktopHero, p1, { isHero: true, index: 0 });
+    }
+
+    // Desktop Side Cards: in .framer-v3he4g (2 cards)
+    const desktopSideCards = targetGrid.querySelectorAll('.framer-v3he4g a.framer-7Bi9P');
+    if (desktopSideCards[0] && p2) {
+        syncFeaturedCard(desktopSideCards[0], p2, { isHero: false, index: 1 });
+    }
+    if (desktopSideCards[1] && p3) {
+        syncFeaturedCard(desktopSideCards[1], p3, { isHero: false, index: 2 });
+    }
+
+    // Mobile Cards: in .framer-1tq2jgu (3 cards)
+    const mobileCards = targetGrid.querySelectorAll('.framer-1tq2jgu a[data-framer-name="Mobile"], .framer-1tq2jgu .ssr-variant.hidden-72rtr7 a.framer-7Bi9P');
+    if (mobileCards[0] && p1) {
+        syncFeaturedCard(mobileCards[0], p1, { isHero: true, index: 0 });
+    }
+    if (mobileCards[1] && p2) {
+        syncFeaturedCard(mobileCards[1], p2, { isHero: false, index: 1 });
+    }
+    if (mobileCards[2] && p3) {
+        syncFeaturedCard(mobileCards[2], p3, { isHero: false, index: 2 });
     }
 }
 
@@ -908,9 +942,16 @@ export async function initSharedBlogArticle() {
 
         if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug) {
             applyArticleData(window.__PRELOADED_BLOG_POST__, requestToken);
+            syncArticleRelatedPosts(slug);
         } else {
             if (titleEl) titleEl.innerHTML = '&nbsp;';
-            if (coverEl) coverEl.style.opacity = '0';
+            if (coverEl) {
+                coverEl.removeAttribute('srcset');
+                coverEl.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1672 941'%3E%3Crect width='100%25' height='100%25' fill='%23111111'/%3E%3C/svg%3E";
+                coverEl.alt = "Loading article...";
+                coverEl.removeAttribute('data-synced-cover');
+                coverEl.style.opacity = '1';
+            }
             if (excerptEl) excerptEl.textContent = '';
             if (bodyEl && !bodyEl.querySelector('#article-loading')) {
                 bodyEl.innerHTML = '<div id="article-loading" style="padding: 40px 0; text-align: center; color: #888;">Loading article...</div>';
@@ -918,8 +959,17 @@ export async function initSharedBlogArticle() {
         }
     }
 
-    // Fetch live post data from Supabase using public anon key and abort signal
-    const supabaseResult = await fetchPostFromSupabase(slug, SUPABASE_ANON_KEY, activeArticleAbortController.signal);
+    // Fetch live post data and published posts from Supabase in parallel
+    const [supabaseResult, publishedResult] = await Promise.all([
+        fetchPostFromSupabase(slug, SUPABASE_ANON_KEY, activeArticleAbortController.signal),
+        (window.__corabinPublishedPosts && window.__corabinPublishedPosts.length > 0)
+            ? Promise.resolve(window.__corabinPublishedPosts)
+            : fetchPublishedPostsFromSupabase().catch(() => [])
+    ]);
+
+    if (publishedResult && publishedResult.length > 0) {
+        window.__corabinPublishedPosts = publishedResult;
+    }
 
     // Verify race safety
     if (requestToken !== activeArticleRequestToken) return;
