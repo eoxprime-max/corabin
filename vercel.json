@@ -45,6 +45,6 @@
     { "source": "/projects/interference", "destination": "/projects/almare", "statusCode": 301 }
   ],
   "rewrites": [
-    { "source": "/blog/:slug", "destination": "/blog/article.html" }
+    { "source": "/blog/:slug", "destination": "/blog/article" }
   ]
 }
