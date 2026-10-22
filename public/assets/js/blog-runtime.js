@@ -108,7 +108,7 @@ export function resolveCurrentSlug() {
     const path = window.location.pathname.replace(/\/+$/, '');
     const segments = path.split('/').filter(Boolean);
     const blogIdx = segments.lastIndexOf('blog');
-    if (blogIdx !== -1 && segments[blogIdx + 1] && segments[blogIdx + 1] !== 'article.html') {
+    if (blogIdx !== -1 && segments[blogIdx + 1] && segments[blogIdx + 1] !== 'article.html' && segments[blogIdx + 1] !== 'article' && segments[blogIdx + 1] !== 'index.html') {
         return segments[blogIdx + 1];
     }
 
@@ -908,6 +908,126 @@ export function extractSlugFromHref(href) {
 }
 
 /**
+ * Injects animation styles for blog cards and images.
+ * Provides hover effects (arrow slide, image zoom) and smooth card entrance animations
+ * while fully respecting prefers-reduced-motion.
+ */
+export function ensureBlogAnimationStyles() {
+    if (typeof document === 'undefined') return;
+    if (document.getElementById('corabin-blog-animations')) return;
+
+    const style = document.createElement('style');
+    style.id = 'corabin-blog-animations';
+    style.textContent = `
+        /* Featured Cards Animations */
+        .framer-7Bi9P {
+            cursor: pointer !important;
+        }
+        .framer-7Bi9P .framer-8piq4i {
+            transition: bottom 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            will-change: bottom, transform;
+        }
+        .framer-7Bi9P:hover .framer-8piq4i,
+        .framer-7Bi9P.hover .framer-8piq4i,
+        .framer-7Bi9P:focus-visible .framer-8piq4i {
+            bottom: 24px !important;
+        }
+        .framer-7Bi9P .framer-vcvfqo img,
+        .framer-7Bi9P [data-framer-background-image-wrapper="true"] img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            will-change: transform;
+        }
+        .framer-7Bi9P:hover .framer-vcvfqo img,
+        .framer-7Bi9P.hover .framer-vcvfqo img,
+        .framer-7Bi9P:focus-visible .framer-vcvfqo img,
+        .framer-7Bi9P:hover [data-framer-background-image-wrapper="true"] img,
+        .framer-7Bi9P.hover [data-framer-background-image-wrapper="true"] img {
+            transform: scale(1.05) !important;
+        }
+
+        /* Regular Cards Animations */
+        .framer-sHlxX {
+            cursor: pointer !important;
+            transition: background-color 0.25s ease, border-color 0.25s ease !important;
+        }
+        .framer-sHlxX .framer-pizjbw {
+            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+            will-change: bottom, transform;
+        }
+        .framer-sHlxX:hover .framer-pizjbw,
+        .framer-sHlxX.hover .framer-pizjbw,
+        .framer-sHlxX:focus-visible .framer-pizjbw {
+            bottom: 20px !important;
+        }
+        .framer-sHlxX .framer-1462w5l img,
+        .framer-sHlxX [data-framer-background-image-wrapper="true"] img {
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            will-change: transform;
+        }
+        .framer-sHlxX:hover .framer-1462w5l img,
+        .framer-sHlxX.hover .framer-1462w5l img,
+        .framer-sHlxX:focus-visible .framer-1462w5l img {
+            transform: scale(1.06) !important;
+        }
+
+        /* Smooth entrance animation for regular cards */
+        @keyframes corabinCardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .framer-ij7w41-container[data-animated="true"] {
+            animation: corabinCardFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation-delay: calc(var(--card-index, 0) * 35ms);
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .framer-7Bi9P .framer-8piq4i,
+            .framer-7Bi9P .framer-vcvfqo img,
+            .framer-7Bi9P [data-framer-background-image-wrapper="true"] img,
+            .framer-sHlxX,
+            .framer-sHlxX .framer-pizjbw,
+            .framer-sHlxX .framer-1462w5l img,
+            .framer-sHlxX [data-framer-background-image-wrapper="true"] img,
+            .framer-ij7w41-container[data-animated="true"] {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+            }
+            .framer-7Bi9P:hover .framer-8piq4i,
+            .framer-7Bi9P.hover .framer-8piq4i {
+                bottom: 24px !important;
+            }
+            .framer-sHlxX:hover .framer-pizjbw,
+            .framer-sHlxX.hover .framer-pizjbw {
+                bottom: 20px !important;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+/**
+ * Attaches pointer and keyboard focus listeners to ensure .hover class is synchronized
+ * for Framer Motion compatibility.
+ */
+export function attachCardHoverHandlers(cardLink) {
+    if (!cardLink || cardLink.__corabinHoverAttached) return;
+    cardLink.__corabinHoverAttached = true;
+
+    cardLink.addEventListener('pointerenter', () => cardLink.classList.add('hover'));
+    cardLink.addEventListener('pointerleave', () => cardLink.classList.remove('hover'));
+    cardLink.addEventListener('focus', () => cardLink.classList.add('hover'));
+    cardLink.addEventListener('blur', () => cardLink.classList.remove('hover'));
+}
+
+/**
  * Selects up to 3 featured posts from all published posts.
  * Strictly requires post.featured === true; does NOT auto-promote unfeatured posts.
  */
@@ -953,13 +1073,11 @@ export function syncFeaturedCard(cardEl, post, options = {}) {
     if (img) {
         const isHero = options.isHero ?? (options.index === 0);
         if (isHero) {
-            if (img.getAttribute('loading') === 'lazy') {
-                img.removeAttribute('loading');
-            }
+            img.setAttribute('loading', 'eager');
+            img.setAttribute('fetchpriority', 'high');
         } else {
-            if (img.getAttribute('loading') !== 'lazy') {
-                img.setAttribute('loading', 'lazy');
-            }
+            img.setAttribute('loading', 'lazy');
+            img.removeAttribute('fetchpriority');
         }
         if (img.getAttribute('decoding') !== 'async') {
             img.setAttribute('decoding', 'async');
@@ -982,6 +1100,8 @@ export function syncFeaturedCard(cardEl, post, options = {}) {
             img.removeAttribute('srcset');
         }
     }
+
+    attachCardHoverHandlers(cardEl);
 }
 
 /**
@@ -1197,10 +1317,11 @@ export function syncRegularCard(cardEl, post) {
             link.setAttribute('href', targetHref);
         }
         link.removeAttribute('data-framer-page-link-current');
+        attachCardHoverHandlers(link);
     }
 
-    // Cover Image
-    const img = cardEl.querySelector('img');
+    // Cover Image (thumbnail in .framer-1462w5l or direct img)
+    const img = cardEl.querySelector('.framer-1462w5l img') || cardEl.querySelector('img');
     if (img) {
         const coverUrl = resolveCloudinaryImageUrl(post.cover_image) || 'https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a';
         if (img.getAttribute('src') !== coverUrl) {
@@ -1262,15 +1383,18 @@ export function cloneRegularCard(post, sampleCard) {
 export function syncRegularListing(container, regularPosts, featuredSlugs, sampleCard) {
     if (!container || !regularPosts || regularPosts.length === 0) return;
 
-    // 1. Preserve a clean sample card template before any pruning occurs
+    // 1. Preserve or restore clean sample card template
     const sampleTemplate = sampleCard
         ? sampleCard.cloneNode(true)
-        : container.querySelector('.framer-ij7w41-container')?.cloneNode(true);
+        : (container.querySelector('.framer-ij7w41-container')?.cloneNode(true) || window.__corabinSampleCard);
     if (!sampleTemplate) return;
+    if (!window.__corabinSampleCard) {
+        window.__corabinSampleCard = sampleTemplate.cloneNode(true);
+    }
 
     const regularSlugs = new Set(regularPosts.map(p => p.slug));
 
-    // 2. Remove cards matching featured slugs (prevents duplicates) or NOT in regularSlugs (instantly removes unpublished or deleted CMS posts)
+    // 2. Remove cards matching featured slugs (prevents duplicates) or NOT in regularSlugs
     container.querySelectorAll('.framer-ij7w41-container').forEach(c => {
         const slug = c.getAttribute('data-post-slug') || extractSlugFromHref(c.querySelector('a')?.getAttribute('href'));
         if (!slug || featuredSlugs?.has(slug) || !regularSlugs.has(slug)) {
@@ -1278,11 +1402,27 @@ export function syncRegularListing(container, regularPosts, featuredSlugs, sampl
         }
     });
 
-    // 3. Identify the Load More button container anchor
+    // 3. Fast-path check: if already in sync with exact slugs and ordering, avoid touching DOM
+    const currentCards = Array.from(container.querySelectorAll('.framer-ij7w41-container'));
+    const isAlreadySynced = currentCards.length === regularPosts.length &&
+        currentCards.every((c, idx) => (c.getAttribute('data-post-slug') || extractSlugFromHref(c.querySelector('a')?.getAttribute('href'))) === regularPosts[idx].slug);
+
+    if (isAlreadySynced) {
+        currentCards.forEach((card) => {
+            syncCardResponsiveVariant(card);
+            attachCardHoverHandlers(card.querySelector('a'));
+        });
+        const loadMore = container.querySelector('.framer-1xy7824');
+        if (loadMore) loadMore.style.display = 'none';
+        return;
+    }
+
+    // 4. Identify the Load More button container anchor
     const loadMore = container.querySelector('.framer-1xy7824');
 
-    // 4. Render or update each regular post in exact reverse-chronological order
-    for (const post of regularPosts) {
+    // 5. Render or update each regular post in exact reverse-chronological order
+    for (let i = 0; i < regularPosts.length; i++) {
+        const post = regularPosts[i];
         let card = container.querySelector(`[data-post-slug="${post.slug}"]`);
         if (!card) {
             for (const c of container.querySelectorAll('.framer-ij7w41-container')) {
@@ -1295,6 +1435,8 @@ export function syncRegularListing(container, regularPosts, featuredSlugs, sampl
 
         if (!card) {
             card = cloneRegularCard(post, sampleTemplate);
+            card.setAttribute('data-animated', 'true');
+            card.style.setProperty('--card-index', String(Math.min(i, 8)));
         } else {
             syncRegularCard(card, post);
         }
@@ -1305,12 +1447,19 @@ export function syncRegularListing(container, regularPosts, featuredSlugs, sampl
             container.appendChild(card);
         }
     }
+
+    // Hide Load More since all published posts are already displayed
+    if (loadMore) {
+        loadMore.style.display = 'none';
+    }
 }
 
 /**
  * Synchronizes the Homepage (#insights / .framer-k7mcxy) featured cards with live Supabase data.
  */
 export async function initHomepageFeatured() {
+    ensureBlogAnimationStyles();
+
     let posts = [];
     try {
         posts = await fetchPublishedPostsFromSupabase();
@@ -1331,16 +1480,25 @@ export async function initHomepageFeatured() {
 
     doSync();
 
+    // Clean up any stale observer from detached elements across SPA navigation
+    if (window.__corabinHomeObserver && window.__corabinHomeObservedEl && !document.body.contains(window.__corabinHomeObservedEl)) {
+        window.__corabinHomeObserver.disconnect();
+        window.__corabinHomeObserver = null;
+        window.__corabinHomeObserverAttached = false;
+    }
+
     // Attach MutationObserver to persist sync across Framer React hydration
-    const targetSection = document.querySelector('.framer-k7mcxy, #insights, .framer-3lukgt') || document.body;
+    const targetSection = document.querySelector('.framer-k7mcxy, #insights, .framer-3lukgt') || document.getElementById('main') || document.body;
     if (targetSection && !window.__corabinHomeObserverAttached) {
         window.__corabinHomeObserverAttached = true;
+        window.__corabinHomeObservedEl = targetSection;
         let isSyncing = false;
-        let debounceTimer;
+        let debounceTimer = null;
         const observer = new MutationObserver(() => {
             if (isSyncing) return;
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
+                if (isSyncing) return;
                 isSyncing = true;
                 try {
                     doSync();
@@ -1351,6 +1509,7 @@ export async function initHomepageFeatured() {
             }, 60);
         });
         observer.observe(targetSection, { childList: true, subtree: true });
+        window.__corabinHomeObserver = observer;
     }
 
     window.addEventListener('resize', () => {
@@ -1363,6 +1522,8 @@ export async function initHomepageFeatured() {
  * Preserves the exact Framer regular card design, layout, and reverse chronological ordering.
  */
 export async function initBlogListing() {
+    ensureBlogAnimationStyles();
+
     let posts = [];
     try {
         posts = await fetchPublishedPostsFromSupabase();
@@ -1383,75 +1544,63 @@ export async function initBlogListing() {
         }
     }
 
-    function waitForRegularContainer() {
-        return new Promise((resolve) => {
-            const check = () => {
-                const container = document.querySelector('.framer-18dht5n');
-                const sample = container?.querySelector('.framer-ij7w41-container');
-                if (container && sample) {
-                    resolve({ container, sample });
-                    return true;
-                }
-                return false;
-            };
+    function syncRegular() {
+        const container = document.querySelector('.framer-18dht5n');
+        if (!container) return false;
 
-            if (check()) return;
+        let sample = window.__corabinSampleCard;
+        if (!sample) {
+            const existing = container.querySelector('.framer-ij7w41-container');
+            if (existing) {
+                sample = existing.cloneNode(true);
+                window.__corabinSampleCard = sample;
+            }
+        }
 
-            let elapsed = 0;
-            const interval = setInterval(() => {
-                elapsed += 100;
-                if (check() || elapsed >= 8000) {
-                    clearInterval(interval);
-                    if (elapsed >= 8000) resolve(null);
-                }
-            }, 100);
-        });
+        if (sample) {
+            syncRegularListing(container, regularPosts, featuredSlugs, sample);
+            return true;
+        }
+        return false;
     }
-
-    syncFeatured();
-
-    const domContext = await waitForRegularContainer();
-    if (!domContext) {
-        console.warn('Regular container .framer-18dht5n not found within timeout.');
-        return;
-    }
-
-    let cachedSample = domContext.sample;
 
     function syncAll() {
         syncFeatured();
-        const container = document.querySelector('.framer-18dht5n');
-        if (container) {
-            if (!cachedSample) {
-                cachedSample = container.querySelector('.framer-ij7w41-container')?.cloneNode(true);
-            }
-            syncRegularListing(container, regularPosts, featuredSlugs, cachedSample);
-        }
+        syncRegular();
     }
 
+    // Immediate sync pass for currently mounted DOM
     syncAll();
 
-    // Timed reconciliations across Framer React hydration lifecycle
-    const TIMED_DELAYS = [50, 150, 300, 600, 1000, 1500, 2500, 4000, 5500, 7000];
-    TIMED_DELAYS.forEach(delay => setTimeout(syncAll, delay));
-    window.addEventListener('load', syncAll);
+    // Re-check once when window finishes loading
+    if (typeof window !== 'undefined') {
+        window.addEventListener('load', syncAll, { once: true });
+        window.addEventListener('resize', () => {
+            syncFeatured();
+            document.querySelectorAll('.framer-ij7w41-container').forEach(syncCardResponsiveVariant);
+        });
+    }
 
-    // Window resize handler
-    window.addEventListener('resize', () => {
-        syncFeatured();
-        document.querySelectorAll('.framer-ij7w41-container').forEach(syncCardResponsiveVariant);
-    });
+    // Clean up any stale observer from detached elements across SPA navigation
+    if (window.__corabinBlogObserver && window.__corabinBlogObservedEl && !document.body.contains(window.__corabinBlogObservedEl)) {
+        window.__corabinBlogObserver.disconnect();
+        window.__corabinBlogObserver = null;
+        window.__corabinBlogObserverAttached = false;
+    }
 
-    // Observer to ensure persistence across Framer React re-renders
+    // Targeted, debounced MutationObserver on #main (or body) to react when Framer React mounts
     const targetEl = document.getElementById('main') || document.body;
     if (targetEl && !window.__corabinBlogObserverAttached) {
         window.__corabinBlogObserverAttached = true;
+        window.__corabinBlogObservedEl = targetEl;
         let isSyncing = false;
-        let debounceTimer;
+        let debounceTimer = null;
+
         const observer = new MutationObserver(() => {
             if (isSyncing) return;
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(() => {
+                if (isSyncing) return;
                 isSyncing = true;
                 try {
                     syncAll();
@@ -1459,9 +1608,11 @@ export async function initBlogListing() {
                     observer.takeRecords();
                     isSyncing = false;
                 }
-            }, 60);
+            }, 50);
         });
+
         observer.observe(targetEl, { childList: true, subtree: true });
+        window.__corabinBlogObserver = observer;
     }
 }
 
