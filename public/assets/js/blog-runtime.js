@@ -125,7 +125,7 @@ export function resolveCurrentSlug() {
  * Fetches published post from Supabase `public.posts` table.
  * Strictly uses the public anon key and filters for status='published'.
  */
-export async function fetchPostFromSupabase(slug, anonKey = SUPABASE_ANON_KEY) {
+export async function fetchPostFromSupabase(slug, anonKey = SUPABASE_ANON_KEY, signal = null) {
     if (!anonKey) {
         return {
             status: 'pending_connection',
@@ -136,13 +136,17 @@ export async function fetchPostFromSupabase(slug, anonKey = SUPABASE_ANON_KEY) {
 
     try {
         const endpoint = `${SUPABASE_PROJECT_URL}/rest/v1/posts?slug=eq.${encodeURIComponent(slug)}&status=eq.published&select=${REQUIRED_ARTICLE_COLUMNS}`;
-        const res = await fetch(endpoint, {
+        const fetchOptions = {
             headers: {
                 'apikey': anonKey,
                 'Authorization': `Bearer ${anonKey}`,
                 'Accept': 'application/json'
             }
-        });
+        };
+        if (signal) {
+            fetchOptions.signal = signal;
+        }
+        const res = await fetch(endpoint, fetchOptions);
 
         if (!res.ok) {
             return {
@@ -166,6 +170,12 @@ export async function fetchPostFromSupabase(slug, anonKey = SUPABASE_ANON_KEY) {
             post: data[0]
         };
     } catch (err) {
+        if (err.name === 'AbortError') {
+            return {
+                status: 'aborted',
+                slug
+            };
+        }
         return {
             status: 'error',
             error: err.message || 'Network error connecting to Supabase REST API.',
@@ -488,9 +498,38 @@ function renderFramerAst(ast) {
     return chunks.join('');
 }
 
+export const ARTICLE_ROOT_SELECTOR = '[data-blog-article-root="true"], div#main[data-blog-slug]';
+
+let activeArticleSlug = null;
+let activeArticleRequestToken = 0;
+let activeArticleAbortController = null;
+let articleTimers = [];
 let isApplyingArticleData = false;
 let articleObserver = null;
 let articleDebounceTimer = null;
+
+export function cleanupArticleRuntime() {
+    if (activeArticleAbortController) {
+        try { activeArticleAbortController.abort(); } catch {}
+        activeArticleAbortController = null;
+    }
+    if (articleObserver) {
+        articleObserver.disconnect();
+        articleObserver = null;
+    }
+    if (articleTimers && articleTimers.length > 0) {
+        articleTimers.forEach(id => clearTimeout(id));
+        articleTimers = [];
+    }
+    if (articleDebounceTimer) {
+        clearTimeout(articleDebounceTimer);
+        articleDebounceTimer = null;
+    }
+    window.__corabinLivePost = null;
+    window.__corabinArticleObserverAttached = false;
+    window.__corabinUnavailableObserverAttached = false;
+    activeArticleSlug = null;
+}
 
 function urlsMatch(attrOrProp, target) {
     if (!attrOrProp || !target) return false;
@@ -523,12 +562,22 @@ function updateMetaTag(selector, attribute, value) {
 /**
  * Synchronizes article DOM elements with authoritative Supabase post data.
  */
-export function applyArticleData(post) {
+export function applyArticleData(post, token = undefined) {
     if (!post || isApplyingArticleData) return;
+
+    // Route verification: ensure current route is an article and matches post.slug
+    const currentSlug = resolveCurrentSlug();
+    if (!currentSlug || currentSlug === 'blog' || currentSlug === 'index.html') return;
+    if (post.slug && post.slug !== currentSlug) return;
+    if (token !== undefined && token !== activeArticleRequestToken) return;
+
+    // Scope strictly to article root
+    const root = document.querySelector(ARTICLE_ROOT_SELECTOR);
+    if (!root) return;
+
     isApplyingArticleData = true;
 
     try {
-        const slug = resolveCurrentSlug();
         const activeTitle = post.title || '';
         const activeDate = post.published_at || post.date || '';
         const activeExcerpt = post.excerpt || post.meta_description || '';
@@ -561,18 +610,17 @@ export function applyArticleData(post) {
             updateMetaTag('meta[property="og:image"]', 'content', resolvedCover);
             updateMetaTag('meta[name="twitter:image"]', 'content', resolvedCover);
         }
-        if (slug) {
-            const canonicalUrl = post.canonical_url || `https://corabin.com/blog/${slug}`;
+        if (currentSlug) {
+            const canonicalUrl = post.canonical_url || `https://corabin.com/blog/${currentSlug}`;
             updateMetaTag('meta[property="og:url"]', 'content', canonicalUrl);
             updateMetaTag('link[rel="canonical"]', 'href', canonicalUrl);
         }
 
-        // Update Cover Image
-        const coverImg = document.getElementById('article-cover-img') ||
-                         document.querySelector('[data-framer-name="Background Image"] img') ||
-                         document.querySelector('.framer-z182eh img') ||
-                         document.querySelector('#hero [data-framer-name="Background Image"] img') ||
-                         document.querySelector('.framer-13t578p img');
+        // Update Cover Image - strictly inside root
+        const coverImg = root.querySelector('#article-cover-img') ||
+                         root.querySelector('.framer-z182eh img') ||
+                         root.querySelector('[data-framer-name="Background Image"] img') ||
+                         root.querySelector('#hero [data-framer-name="Background Image"] img');
         if (coverImg && resolvedCover) {
             if (!urlsMatch(coverImg.getAttribute('src'), resolvedCover) && !urlsMatch(coverImg.src, resolvedCover)) {
                 coverImg.src = resolvedCover;
@@ -592,22 +640,26 @@ export function applyArticleData(post) {
             if (coverImg.getAttribute('data-synced-cover') !== syncedCoverVal) {
                 coverImg.setAttribute('data-synced-cover', syncedCoverVal);
             }
+            // Restore visibility after loading
+            if (coverImg.style.opacity !== '1') {
+                coverImg.style.opacity = '1';
+            }
         }
 
-        // Update Hero Title
-        const titleEl = document.querySelector('#article-title, .framer-1ltkmql h1, [data-framer-name="Heading Wrapper"] h1, #hero h1, h1.framer-text');
+        // Update Hero Title - strictly inside root (removed generic fallbacks like [data-framer-name="Heading Wrapper"] h1 and h1.framer-text)
+        const titleEl = root.querySelector('#article-title') || root.querySelector('.framer-1ltkmql h1');
         if (titleEl && activeTitle && titleEl.textContent.trim() !== activeTitle.trim()) {
             titleEl.textContent = activeTitle;
         }
 
-        // Update Author
-        const authorEl = document.querySelector('#article-author, .framer-y7unnl p, [data-framer-name="Photo"] ~ div p');
+        // Update Author - strictly inside root
+        const authorEl = root.querySelector('#article-author') || root.querySelector('.framer-y7unnl p') || root.querySelector('[data-framer-name="Photo"] ~ div p');
         if (authorEl && activeAuthor && authorEl.textContent.trim() !== activeAuthor.trim()) {
             authorEl.textContent = activeAuthor;
         }
 
-        // Update Author Avatar
-        const authorAvatarImg = document.querySelector('[data-framer-name="Photo"] img');
+        // Update Author Avatar - strictly inside root
+        const authorAvatarImg = root.querySelector('[data-framer-name="Photo"] img');
         if (authorAvatarImg && post.author && typeof post.author === 'object' && post.author.avatar) {
             const avatarUrl = post.author.avatar;
             if (!urlsMatch(authorAvatarImg.getAttribute('src'), avatarUrl) && !urlsMatch(authorAvatarImg.src, avatarUrl)) {
@@ -615,8 +667,8 @@ export function applyArticleData(post) {
             }
         }
 
-        // Update Date
-        const timeEl = document.querySelector('#article-date, .framer-ybkmy time, [data-framer-name="Author Wrapper"] [data-framer-name="Date"] time');
+        // Update Date - strictly inside root
+        const timeEl = root.querySelector('#article-date') || root.querySelector('.framer-ybkmy time');
         if (timeEl && formattedDate) {
             if (activeDate && timeEl.getAttribute('datetime') !== activeDate) {
                 timeEl.dateTime = activeDate;
@@ -625,27 +677,20 @@ export function applyArticleData(post) {
                 timeEl.textContent = formattedDate;
             }
         } else {
-            const datePEl = document.querySelector('.framer-ybkmy p, [data-framer-name="Author Wrapper"] [data-framer-name="Date"] p');
-            if (datePEl && formattedDate) {
-                if (datePEl.textContent.trim() !== formattedDate.trim()) {
-                    datePEl.textContent = formattedDate;
-                }
-            } else {
-                const dateContainer = document.querySelector('.framer-ybkmy, [data-framer-name="Author Wrapper"] [data-framer-name="Date"]');
-                if (dateContainer && formattedDate && dateContainer.textContent.trim() !== formattedDate.trim()) {
-                    dateContainer.textContent = formattedDate;
-                }
+            const datePEl = root.querySelector('.framer-ybkmy p');
+            if (datePEl && formattedDate && datePEl.textContent.trim() !== formattedDate.trim()) {
+                datePEl.textContent = formattedDate;
             }
         }
 
-        // Update Excerpt
-        const excerptEl = document.querySelector('#article-excerpt, .framer-1ig6rss h2, [data-framer-name="Excerpt"] h2, #content h2.framer-text');
+        // Update Excerpt - strictly inside root
+        const excerptEl = root.querySelector('#article-excerpt') || root.querySelector('.framer-1ig6rss h2') || root.querySelector('#content h2.framer-text');
         if (excerptEl && activeExcerpt && excerptEl.textContent.trim() !== activeExcerpt.trim()) {
             excerptEl.textContent = activeExcerpt;
         }
 
-        // Update Body Content
-        const bodyEl = document.querySelector('#article-body-content, .framer-1272rho, #content .framer-1272rho');
+        // Update Body Content - strictly inside root
+        const bodyEl = root.querySelector('#article-body-content') || root.querySelector('.framer-1272rho') || root.querySelector('#content .framer-1272rho');
         const syncKey = (post.updated_at || post.published_at || 'v1') + '_' + (post.content ? post.content.length : 0);
         if (bodyEl && post.content && bodyEl.getAttribute('data-supabase-synced') !== syncKey) {
             const parsedContent = parseArticleContent(post.content);
@@ -656,21 +701,26 @@ export function applyArticleData(post) {
             bodyEl.setAttribute('data-pre-rendered', 'true');
         }
 
-        // Social Share links
-        if (slug) {
-            const shareUrl = `https://corabin.com/blog/${slug}`;
-            const fbShare = document.querySelector('a[aria-label="Share on Facebook"]');
+        // Authentic Framer appear effects are driven by animator.animateAppearEffects.
+        // We preserve native Framer appear transitions without premature inline overrides.
+
+        // Social Share links - strictly inside root
+        if (currentSlug) {
+            const shareUrl = `https://corabin.com/blog/${currentSlug}`;
+            const fbShare = root.querySelector('a[aria-label="Share on Facebook"]');
             const expectedFb = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
             if (fbShare && fbShare.getAttribute('href') !== expectedFb) fbShare.href = expectedFb;
 
-            const xShare = document.querySelector('a[aria-label="Share on X"]');
+            const xShare = root.querySelector('a[aria-label="Share on X"]');
             const expectedX = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(activeTitle)}`;
             if (xShare && xShare.getAttribute('href') !== expectedX) xShare.href = expectedX;
 
-            const liShare = document.querySelector('a[aria-label="Share on LinkedIn"]');
+            const liShare = root.querySelector('a[aria-label="Share on LinkedIn"]');
             const expectedLi = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
             if (liShare && liShare.getAttribute('href') !== expectedLi) liShare.href = expectedLi;
         }
+
+        activeArticleSlug = post.slug;
     } finally {
         if (articleObserver) {
             articleObserver.takeRecords();
@@ -682,13 +732,11 @@ export function applyArticleData(post) {
 export function renderUnavailableState(message = 'The requested article is not currently published or does not exist.') {
     document.title = 'Article Unavailable — Corabin';
 
-    // Disconnect live article observer to prevent overwriting
-    if (articleObserver) {
-        articleObserver.disconnect();
-        articleObserver = null;
-    }
-    window.__corabinLivePost = null;
-    clearTimeout(articleDebounceTimer);
+    cleanupArticleRuntime();
+
+    // Scope strictly to article root
+    const root = document.querySelector(ARTICLE_ROOT_SELECTOR);
+    if (!root) return;
 
     // Update SEO & Social Metadata
     updateMetaTag('meta[name="robots"]', 'content', 'noindex, nofollow');
@@ -708,37 +756,40 @@ export function renderUnavailableState(message = 'The requested article is not c
     }
 
     const applyUnavailableDom = () => {
+        const currentRoot = document.querySelector(ARTICLE_ROOT_SELECTOR);
+        if (!currentRoot) return;
+
         // 1. Update Title to 'Article Unavailable'
-        const titleEl = document.querySelector('#article-title, .framer-1ltkmql h1, [data-framer-name="Heading Wrapper"] h1, #hero h1, h1.framer-text');
+        const titleEl = currentRoot.querySelector('#article-title') || currentRoot.querySelector('.framer-1ltkmql h1');
         if (titleEl && titleEl.textContent !== 'Article Unavailable') {
             titleEl.textContent = 'Article Unavailable';
         }
 
         // 2. Hide Author & Date block
-        const authorWrapper = document.querySelector('.framer-16ganb5, [data-framer-name="Heading Wrapper"] .framer-16ganb5');
+        const authorWrapper = currentRoot.querySelector('.framer-16ganb5, [data-framer-name="Heading Wrapper"] .framer-16ganb5');
         if (authorWrapper && authorWrapper.style.display !== 'none') {
             authorWrapper.style.display = 'none';
         }
 
         // 3. Hide Hero Cover Image & Background
-        const coverWrapper = document.querySelector('.framer-z182eh, [data-framer-name="Background Image"], #hero [data-framer-name="Background Image"]');
+        const coverWrapper = currentRoot.querySelector('.framer-z182eh, [data-framer-name="Background Image"]');
         if (coverWrapper && coverWrapper.style.display !== 'none') {
             coverWrapper.style.display = 'none';
         }
-        const coverImg = document.getElementById('article-cover-img');
+        const coverImg = currentRoot.querySelector('#article-cover-img');
         if (coverImg && coverImg.style.display !== 'none') {
             coverImg.style.display = 'none';
         }
 
         // 4. Update Excerpt to explain unavailability
-        const excerptEl = document.querySelector('#article-excerpt, .framer-1ig6rss h2, [data-framer-name="Excerpt"] h2, #content h2.framer-text');
+        const excerptEl = currentRoot.querySelector('#article-excerpt') || currentRoot.querySelector('.framer-1ig6rss h2');
         if (excerptEl && excerptEl.textContent !== message) {
             excerptEl.textContent = message;
             excerptEl.style.color = 'rgba(0, 0, 0, 0.6)';
         }
 
         // 5. Update Body Content with clear Return to Blog button
-        const bodyEl = document.querySelector('#article-body-content, .framer-1272rho, #content .framer-1272rho');
+        const bodyEl = currentRoot.querySelector('#article-body-content') || currentRoot.querySelector('.framer-1272rho');
         if (bodyEl && !bodyEl.getAttribute('data-unavailable-synced')) {
             bodyEl.innerHTML = `
                 <div class="article-unavailable-container" style="text-align: center; padding: 48px 24px; font-family: Inter, sans-serif;">
@@ -759,44 +810,121 @@ export function renderUnavailableState(message = 'The requested article is not c
     // Attach Framer Hydration Persistence Guard for Unavailable State
     if (!window.__corabinUnavailableObserverAttached) {
         window.__corabinUnavailableObserverAttached = true;
-        const target = document.getElementById('main') || document.body;
-        if (target) {
-            const unavailObserver = new MutationObserver(() => {
-                applyUnavailableDom();
-            });
-            unavailObserver.observe(target, {
-                childList: true,
-                subtree: true
-            });
-        }
-
-        // Timed reconciliation across Framer hydration window
-        [50, 150, 300, 600, 1000, 1500, 2000, 3000].forEach(delay => {
-            setTimeout(applyUnavailableDom, delay);
+        const unavailObserver = new MutationObserver(() => {
+            applyUnavailableDom();
+        });
+        unavailObserver.observe(root, {
+            childList: true,
+            subtree: true
         });
 
-        window.addEventListener('load', applyUnavailableDom);
-        window.addEventListener('resize', applyUnavailableDom);
+        // Track reconciliation timers
+        [50, 150, 300, 600, 1000, 1500, 2000, 3000].forEach(delay => {
+            const tid = setTimeout(applyUnavailableDom, delay);
+            articleTimers.push(tid);
+        });
     }
 }
 
 /**
  * Sets up and mounts the shared article template runtime.
  */
+/**
+ * Synchronizes the related blog posts section at the bottom of the shared article template (.framer-k7mcxy / .framer-3lukgt).
+ * Guarantees that the active article is never recommended, and loads 3 distinct companion articles.
+ */
+export async function syncArticleRelatedPosts(currentSlug) {
+    if (!currentSlug || currentSlug === 'blog' || currentSlug === 'index.html') return;
+    const gridEl = document.querySelector('.framer-k7mcxy .framer-3lukgt') ||
+                   document.querySelector('[data-framer-name="Blog"] .framer-3lukgt') ||
+                   document.querySelector('.framer-k7mcxy');
+    if (!gridEl) return;
+
+    let allPosts = window.__corabinPublishedPosts;
+    if (!allPosts || allPosts.length === 0) {
+        try {
+            allPosts = await fetchPublishedPostsFromSupabase();
+            if (allPosts && allPosts.length > 0) {
+                window.__corabinPublishedPosts = allPosts;
+            }
+        } catch (err) {
+            console.warn('Failed to fetch published posts for related section:', err);
+        }
+    }
+
+    if (!allPosts || allPosts.length === 0) return;
+
+    // Filter out active article so it NEVER recommends itself
+    const eligible = allPosts.filter(p => p.slug && p.slug !== currentSlug);
+    if (eligible.length === 0) return;
+
+    // Pick 3 companion articles: prioritize featured posts, then recent posts
+    const featuredEligible = eligible.filter(p => p.featured === true);
+    const nonFeaturedEligible = eligible.filter(p => p.featured !== true);
+    const relatedPosts = [...featuredEligible, ...nonFeaturedEligible].slice(0, 3);
+
+    const targetGrid = gridEl.classList.contains('framer-3lukgt') ? gridEl : gridEl.querySelector('.framer-3lukgt');
+    if (targetGrid) {
+        syncFeaturedGrid(targetGrid, relatedPosts);
+    }
+}
+
 export async function initSharedBlogArticle() {
     const slug = resolveCurrentSlug();
-    if (!slug) {
+    if (!slug || slug === 'blog' || slug === 'index.html') {
         renderUnavailableState('Please select an article from our blog.');
         return;
     }
 
-    // Immediate sync from preloaded metadata if available
-    if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug) {
-        applyArticleData(window.__PRELOADED_BLOG_POST__);
+    const requestToken = ++activeArticleRequestToken;
+    if (activeArticleAbortController) {
+        try { activeArticleAbortController.abort(); } catch {}
+    }
+    activeArticleAbortController = new AbortController();
+
+    // Clear prior article reconciliation timers
+    articleTimers.forEach(id => clearTimeout(id));
+    articleTimers = [];
+
+    const root = document.querySelector(ARTICLE_ROOT_SELECTOR);
+    if (!root) {
+        // If article root is not yet in DOM, wait briefly once
+        const retryTimer = setTimeout(() => {
+            if (activeArticleRequestToken === requestToken && resolveCurrentSlug() === slug) {
+                initSharedBlogArticle();
+            }
+        }, 50);
+        articleTimers.push(retryTimer);
+        return;
     }
 
-    // Fetch live post data from Supabase using public anon key
-    const supabaseResult = await fetchPostFromSupabase(slug);
+    // Apply immediate loading state if navigating to a different article
+    // This removes previous article's title, excerpt, and cover image flash!
+    if (activeArticleSlug !== slug) {
+        const titleEl = root.querySelector('#article-title') || root.querySelector('.framer-1ltkmql h1');
+        const coverEl = root.querySelector('#article-cover-img');
+        const excerptEl = root.querySelector('#article-excerpt') || root.querySelector('.framer-1ig6rss h2');
+        const bodyEl = root.querySelector('#article-body-content') || root.querySelector('.framer-1272rho');
+
+        if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug) {
+            applyArticleData(window.__PRELOADED_BLOG_POST__, requestToken);
+        } else {
+            if (titleEl) titleEl.innerHTML = '&nbsp;';
+            if (coverEl) coverEl.style.opacity = '0';
+            if (excerptEl) excerptEl.textContent = '';
+            if (bodyEl && !bodyEl.querySelector('#article-loading')) {
+                bodyEl.innerHTML = '<div id="article-loading" style="padding: 40px 0; text-align: center; color: #888;">Loading article...</div>';
+            }
+        }
+    }
+
+    // Fetch live post data from Supabase using public anon key and abort signal
+    const supabaseResult = await fetchPostFromSupabase(slug, SUPABASE_ANON_KEY, activeArticleAbortController.signal);
+
+    // Verify race safety
+    if (requestToken !== activeArticleRequestToken) return;
+    if (resolveCurrentSlug() !== slug) return;
+    if (supabaseResult.status === 'aborted') return;
 
     if (supabaseResult.status === 'success' && supabaseResult.post) {
         const post = supabaseResult.post;
@@ -808,58 +936,70 @@ export async function initSharedBlogArticle() {
         }
 
         window.__corabinLivePost = post;
-        applyArticleData(post);
+        applyArticleData(post, requestToken);
+        syncArticleRelatedPosts(slug);
 
-        // Attach Framer Hydration Persistence Guard
-        if (!window.__corabinArticleObserverAttached) {
-            window.__corabinArticleObserverAttached = true;
+        // Disconnect previous observer
+        if (articleObserver) {
+            articleObserver.disconnect();
+            articleObserver = null;
+        }
 
-            const observer = new MutationObserver(() => {
-                if (isApplyingArticleData) return;
-                clearTimeout(articleDebounceTimer);
-                articleDebounceTimer = setTimeout(() => {
-                    if (window.__corabinLivePost) {
-                        applyArticleData(window.__corabinLivePost);
-                    }
-                }, 50);
-            });
-            articleObserver = observer;
+        const observer = new MutationObserver(() => {
+            if (isApplyingArticleData) return;
+            clearTimeout(articleDebounceTimer);
+            articleDebounceTimer = setTimeout(() => {
+                if (window.__corabinLivePost && resolveCurrentSlug() === slug && requestToken === activeArticleRequestToken) {
+                    applyArticleData(window.__corabinLivePost, requestToken);
+                    syncArticleRelatedPosts(slug);
+                }
+            }, 50);
+        });
+        articleObserver = observer;
 
-            const target = document.getElementById('main') || document.body;
-            observer.observe(target, {
+        const currentRoot = document.querySelector(ARTICLE_ROOT_SELECTOR);
+        if (currentRoot) {
+            observer.observe(currentRoot, {
                 childList: true,
                 subtree: true,
                 attributes: true,
                 attributeFilter: ['src', 'srcset']
             });
-
-            // Timed reconciliation across Framer hydration window
-            [50, 150, 300, 600, 1000, 1500, 2000, 3000, 4500].forEach(delay => {
-                setTimeout(() => {
-                    if (window.__corabinLivePost) {
-                        applyArticleData(window.__corabinLivePost);
-                    }
-                }, delay);
-            });
-
-            // Reapply on window load and resize
-            window.addEventListener('load', () => {
-                if (window.__corabinLivePost) {
-                    applyArticleData(window.__corabinLivePost);
-                }
-            });
-
-            window.addEventListener('resize', () => {
-                if (window.__corabinLivePost) {
-                    applyArticleData(window.__corabinLivePost);
-                }
-            });
         }
+
+        // Timed reconciliation across Framer hydration window (tracked in articleTimers)
+        [50, 150, 300, 600, 1000, 1500, 2500].forEach(delay => {
+            const tid = setTimeout(() => {
+                if (window.__corabinLivePost && resolveCurrentSlug() === slug && requestToken === activeArticleRequestToken) {
+                    applyArticleData(window.__corabinLivePost, requestToken);
+                    syncArticleRelatedPosts(slug);
+                }
+            }, delay);
+            articleTimers.push(tid);
+        });
+
+        // After appear animation duration (1.0s), verify element is not stuck invisible
+        const lateCheckTimer = setTimeout(() => {
+            if (resolveCurrentSlug() === slug && requestToken === activeArticleRequestToken) {
+                const headingWrapper = document.querySelector('.framer-1ekua6s');
+                if (headingWrapper && parseFloat(window.getComputedStyle(headingWrapper).opacity) < 0.05) {
+                    headingWrapper.style.opacity = '1';
+                    headingWrapper.style.transform = 'none';
+                }
+                const coverWrapper = document.querySelector('.framer-z182eh');
+                if (coverWrapper && parseFloat(window.getComputedStyle(coverWrapper).opacity) < 0.05) {
+                    coverWrapper.style.opacity = '0.7';
+                    coverWrapper.style.transform = 'none';
+                }
+            }
+        }, 2000);
+        articleTimers.push(lateCheckTimer);
     } else {
         // Fallback to preloaded post if this is a known post and Supabase fetch failed due to network/offline
         if (window.__PRELOADED_BLOG_POST__ && window.__PRELOADED_BLOG_POST__.slug === slug && supabaseResult.status !== 'not_found') {
             window.__corabinLivePost = window.__PRELOADED_BLOG_POST__;
-            applyArticleData(window.__PRELOADED_BLOG_POST__);
+            applyArticleData(window.__PRELOADED_BLOG_POST__, requestToken);
+            syncArticleRelatedPosts(slug);
             return;
         }
         renderUnavailableState(
@@ -919,58 +1059,29 @@ export function ensureBlogAnimationStyles() {
     const style = document.createElement('style');
     style.id = 'corabin-blog-animations';
     style.textContent = `
-        /* Featured Cards Animations */
-        .framer-7Bi9P {
-            cursor: pointer !important;
+        /* Regular Cards Dynamic Hover & Entrance Animations (Scoped without !important to avoid clashing with Framer Motion) */
+        .framer-18dht5n .framer-sHlxX {
+            cursor: pointer;
+            transition: background-color 0.25s ease, border-color 0.25s ease;
         }
-        .framer-7Bi9P .framer-8piq4i {
-            transition: bottom 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        .framer-18dht5n .framer-sHlxX .framer-pizjbw {
+            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             will-change: bottom, transform;
         }
-        .framer-7Bi9P:hover .framer-8piq4i,
-        .framer-7Bi9P.hover .framer-8piq4i,
-        .framer-7Bi9P:focus-visible .framer-8piq4i {
-            bottom: 24px !important;
+        .framer-18dht5n .framer-sHlxX:hover .framer-pizjbw,
+        .framer-18dht5n .framer-sHlxX:focus-visible .framer-pizjbw {
+            bottom: 20px;
         }
-        .framer-7Bi9P .framer-vcvfqo img,
-        .framer-7Bi9P [data-framer-background-image-wrapper="true"] img {
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        .framer-18dht5n .framer-sHlxX .framer-1462w5l img {
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             will-change: transform;
         }
-        .framer-7Bi9P:hover .framer-vcvfqo img,
-        .framer-7Bi9P.hover .framer-vcvfqo img,
-        .framer-7Bi9P:focus-visible .framer-vcvfqo img,
-        .framer-7Bi9P:hover [data-framer-background-image-wrapper="true"] img,
-        .framer-7Bi9P.hover [data-framer-background-image-wrapper="true"] img {
-            transform: scale(1.05) !important;
+        .framer-18dht5n .framer-sHlxX:hover .framer-1462w5l img,
+        .framer-18dht5n .framer-sHlxX:focus-visible .framer-1462w5l img {
+            transform: scale(1.05);
         }
 
-        /* Regular Cards Animations */
-        .framer-sHlxX {
-            cursor: pointer !important;
-            transition: background-color 0.25s ease, border-color 0.25s ease !important;
-        }
-        .framer-sHlxX .framer-pizjbw {
-            transition: bottom 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-            will-change: bottom, transform;
-        }
-        .framer-sHlxX:hover .framer-pizjbw,
-        .framer-sHlxX.hover .framer-pizjbw,
-        .framer-sHlxX:focus-visible .framer-pizjbw {
-            bottom: 20px !important;
-        }
-        .framer-sHlxX .framer-1462w5l img,
-        .framer-sHlxX [data-framer-background-image-wrapper="true"] img {
-            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
-            will-change: transform;
-        }
-        .framer-sHlxX:hover .framer-1462w5l img,
-        .framer-sHlxX.hover .framer-1462w5l img,
-        .framer-sHlxX:focus-visible .framer-1462w5l img {
-            transform: scale(1.06) !important;
-        }
-
-        /* Smooth entrance animation for regular cards */
+        /* Smooth entrance animation for dynamic regular cards */
         @keyframes corabinCardFadeIn {
             from {
                 opacity: 0;
@@ -988,25 +1099,16 @@ export function ensureBlogAnimationStyles() {
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .framer-7Bi9P .framer-8piq4i,
-            .framer-7Bi9P .framer-vcvfqo img,
-            .framer-7Bi9P [data-framer-background-image-wrapper="true"] img,
-            .framer-sHlxX,
-            .framer-sHlxX .framer-pizjbw,
-            .framer-sHlxX .framer-1462w5l img,
-            .framer-sHlxX [data-framer-background-image-wrapper="true"] img,
+            .framer-18dht5n .framer-sHlxX,
+            .framer-18dht5n .framer-sHlxX .framer-pizjbw,
+            .framer-18dht5n .framer-sHlxX .framer-1462w5l img,
             .framer-ij7w41-container[data-animated="true"] {
                 animation: none !important;
                 transition: none !important;
                 transform: none !important;
             }
-            .framer-7Bi9P:hover .framer-8piq4i,
-            .framer-7Bi9P.hover .framer-8piq4i {
-                bottom: 24px !important;
-            }
-            .framer-sHlxX:hover .framer-pizjbw,
-            .framer-sHlxX.hover .framer-pizjbw {
-                bottom: 20px !important;
+            .framer-18dht5n .framer-sHlxX:hover .framer-pizjbw {
+                bottom: 20px;
             }
         }
     `;
@@ -1213,17 +1315,17 @@ export function syncFeaturedGrid(gridEl, featuredPosts) {
             if (mCards[1]) {
                 if (p2) {
                     syncFeaturedCard(mCards[1], p2, { isHero: false, index: 1 });
-                    setVisible(mCards[1].closest('.ssr-variant'), true);
+                    setVisible(mCards[1].closest('.framer-1o9a060-container, .ssr-variant'), true);
                 } else {
-                    setVisible(mCards[1].closest('.ssr-variant'), false);
+                    setVisible(mCards[1].closest('.framer-1o9a060-container, .ssr-variant'), false);
                 }
             }
             if (mCards[2]) {
                 if (p3) {
                     syncFeaturedCard(mCards[2], p3, { isHero: false, index: 2 });
-                    setVisible(mCards[2].closest('.ssr-variant'), true);
+                    setVisible(mCards[2].closest('.framer-1o9a060-container, .ssr-variant'), true);
                 } else {
-                    setVisible(mCards[2].closest('.ssr-variant'), false);
+                    setVisible(mCards[2].closest('.framer-1o9a060-container, .ssr-variant'), false);
                 }
             }
         }
@@ -1238,17 +1340,17 @@ export function syncFeaturedGrid(gridEl, featuredPosts) {
                 if (v3Cards[0]) {
                     if (p2) {
                         syncFeaturedCard(v3Cards[0], p2, { isHero: false, index: 1 });
-                        setVisible(v3Cards[0].closest('.ssr-variant, div'), true);
+                        setVisible(v3Cards[0].closest('.framer-1jrilsq-container, .ssr-variant, div'), true);
                     } else {
-                        setVisible(v3Cards[0].closest('.ssr-variant, div'), false);
+                        setVisible(v3Cards[0].closest('.framer-1jrilsq-container, .ssr-variant, div'), false);
                     }
                 }
                 if (v3Cards[1]) {
                     if (p3) {
                         syncFeaturedCard(v3Cards[1], p3, { isHero: false, index: 2 });
-                        setVisible(v3Cards[1].closest('.ssr-variant, div'), true);
+                        setVisible(v3Cards[1].closest('.framer-1jrilsq-container, .ssr-variant, div'), true);
                     } else {
-                        setVisible(v3Cards[1].closest('.ssr-variant, div'), false);
+                        setVisible(v3Cards[1].closest('.framer-1jrilsq-container, .ssr-variant, div'), false);
                     }
                 }
             }
@@ -1458,7 +1560,6 @@ export function syncRegularListing(container, regularPosts, featuredSlugs, sampl
  * Synchronizes the Homepage (#insights / .framer-k7mcxy) featured cards with live Supabase data.
  */
 export async function initHomepageFeatured() {
-    ensureBlogAnimationStyles();
 
     let posts = [];
     try {
@@ -1629,6 +1730,9 @@ export function initBlogSystem() {
         return;
     }
 
+    // Leaving or outside article route: completely clean up any lingering article runtime/observers
+    cleanupArticleRuntime();
+
     // 2. Blog Listing Page (/blog/ or /blog/index.html)
     const isBlogListing = pathname === '/blog' ||
                           pathname === '/blog/' ||
@@ -1742,7 +1846,8 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
         });
     }
 
-    // Capturing click listener to prevent any relative link from resolving against /blog/
+    // Capturing click listener to prevent relative link corruption
+    // and safely handle dynamic article routes without Framer client-router collisions
     document.addEventListener('click', (e) => {
         const link = e.target.closest('a[href]');
         if (!link) return;
@@ -1750,6 +1855,18 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
         const clean = sanitizeHref(raw);
         if (clean && clean !== raw) {
             link.setAttribute('href', clean);
+        }
+
+        const effectiveHref = clean || raw;
+        const targetSlug = extractSlugFromHref(effectiveHref);
+        if (targetSlug && targetSlug !== 'blog' && targetSlug !== 'article.html' && targetSlug !== 'article' && targetSlug !== 'index.html') {
+            // All blog article links (both baseline and dynamic CMS posts) must perform full document navigation
+            // to load the shared Framer article template (/blog/article.html) cleanly through the server rewrite.
+            // This prevents Framer client-router collisions, prevents cross-page DOM pollution, and ensures
+            // pristine layout and animation state on every navigation.
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = effectiveHref;
         }
     }, true);
 
@@ -1759,6 +1876,10 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
     const handleRouteChange = () => {
         if (window.location.pathname !== currentPath) {
             currentPath = window.location.pathname;
+            const newSlug = resolveCurrentSlug();
+            if (!newSlug || newSlug === 'blog' || newSlug === 'index.html') {
+                cleanupArticleRuntime();
+            }
             fixDomLinks();
             setTimeout(() => {
                 initBlogSystem();
@@ -1768,6 +1889,16 @@ if (typeof window !== 'undefined' && !window.__corabinRouteListenersAttached) {
     };
 
     window.addEventListener('popstate', handleRouteChange);
+
+    window.addEventListener('pageshow', (event) => {
+        const currentSlug = resolveCurrentSlug();
+        if (!currentSlug || currentSlug === 'blog' || currentSlug === 'index.html') {
+            cleanupArticleRuntime();
+            if (event.persisted) {
+                initBlogSystem();
+            }
+        }
+    });
 
     const origPush = history.pushState;
     if (origPush) {
