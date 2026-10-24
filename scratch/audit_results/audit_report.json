@@ -1,0 +1,438 @@
+{
+  "homepage": {
+    "hasHero": true,
+    "hasFeaturedGrid": true,
+    "cardCount": 3,
+    "cards": [
+      {
+        "href": "./blog/idx-listings-not-showing-google",
+        "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+        "hasImg": true,
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f"
+      },
+      {
+        "href": "./blog/real-estate-agent-website-cost-2026",
+        "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+        "hasImg": true,
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8"
+      },
+      {
+        "href": "./blog/custom-vs-off-the-shelf-choose-wisely",
+        "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown",
+        "hasImg": true,
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a"
+      }
+    ],
+    "hasCorabinAnimationsTagOnHomepage": false
+  },
+  "blogListing": {
+    "heading": "Fresh insights & industry perspectives",
+    "headingCorrect": true,
+    "featuredCount": 3,
+    "featuredCards": [
+      {
+        "href": "/blog/idx-listings-not-showing-google/",
+        "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f"
+      },
+      {
+        "href": "/blog/real-estate-agent-website-cost-2026/",
+        "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8"
+      },
+      {
+        "href": "/blog/technical-debt-friend-or-foe/",
+        "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa"
+      }
+    ],
+    "regularCount": 11,
+    "sampleRegular": [
+      {
+        "href": "/blog/ch-skskmsnsm/",
+        "title": "Ch skskmsnsm",
+        "date": "Oct 20, 2026",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/ch-skskmsnsm-0f85511a"
+      },
+      {
+        "href": "/blog/why-every-real-estate-agent-needs-a-website-in-2026/",
+        "title": "Why Every Real Estate Agent Needs a Website in 2026",
+        "date": "Apr 13, 2026",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/why-every-real-estate-agent-needs-a-website-in-2026-e34ab2c1"
+      },
+      {
+        "href": "/blog/custom-vs-off-the-shelf-choose-wisely/",
+        "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown",
+        "date": "Jan 16, 2025",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a"
+      },
+      {
+        "href": "/blog/design-that-converts-our-approach/",
+        "title": "Conversion-Driven Design: How Top Digital Studios Engineer User Intent",
+        "date": "Jan 9, 2025",
+        "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/design-that-converts-our-approach-80009e6b"
+      }
+    ]
+  },
+  "articles": {
+    "/blog/ch-skskmsnsm/": {
+      "currentSlug": "ch-skskmsnsm",
+      "title": "Ch skskmsnsm",
+      "date": "Oct 20, 2026",
+      "author": "Souvik",
+      "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/ch-skskmsnsm-0f85511a",
+      "coverOpacity": "1",
+      "headingOpacity": "1",
+      "bodyTextLength": 55,
+      "bodyHeadingsSample": [],
+      "hasBlogSection": true,
+      "sectionBadge": "Blog",
+      "sectionHeading": "Our perspectives",
+      "allArticlesLink": "/blog",
+      "totalRenderedCards": 6,
+      "uniqueRelatedCards": [
+        {
+          "href": "/blog/idx-listings-not-showing-google/",
+          "cardSlug": "idx-listings-not-showing-google",
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "date": "Oct 13, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f",
+          "width": 652,
+          "height": 560,
+          "top": 1704
+        },
+        {
+          "href": "/blog/real-estate-agent-website-cost-2026/",
+          "cardSlug": "real-estate-agent-website-cost-2026",
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "date": "Oct 12, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        },
+        {
+          "href": "/blog/technical-debt-friend-or-foe/",
+          "cardSlug": "technical-debt-friend-or-foe",
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "date": "Nov 13, 2024",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        }
+      ],
+      "selfRecommended": false
+    },
+    "/blog/why-every-real-estate-agent-needs-a-website-in-2026/": {
+      "currentSlug": "why-every-real-estate-agent-needs-a-website-in-2026",
+      "title": "Why Every Real Estate Agent Needs a Website in 2026",
+      "date": "Apr 13, 2026",
+      "author": "Souvik",
+      "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/why-every-real-estate-agent-needs-a-website-in-2026-e34ab2c1",
+      "coverOpacity": "1",
+      "headingOpacity": "1",
+      "bodyTextLength": 773,
+      "bodyHeadingsSample": [],
+      "hasBlogSection": true,
+      "sectionBadge": "Blog",
+      "sectionHeading": "Our perspectives",
+      "allArticlesLink": "/blog",
+      "totalRenderedCards": 6,
+      "uniqueRelatedCards": [
+        {
+          "href": "/blog/idx-listings-not-showing-google/",
+          "cardSlug": "idx-listings-not-showing-google",
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "date": "Oct 13, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f",
+          "width": 652,
+          "height": 560,
+          "top": 1912
+        },
+        {
+          "href": "/blog/real-estate-agent-website-cost-2026/",
+          "cardSlug": "real-estate-agent-website-cost-2026",
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "date": "Oct 12, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        },
+        {
+          "href": "/blog/technical-debt-friend-or-foe/",
+          "cardSlug": "technical-debt-friend-or-foe",
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "date": "Nov 13, 2024",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        }
+      ],
+      "selfRecommended": false
+    },
+    "/blog/custom-vs-off-the-shelf-choose-wisely/": {
+      "currentSlug": "custom-vs-off-the-shelf-choose-wisely",
+      "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown",
+      "date": "Jan 16, 2025",
+      "author": "Souvik",
+      "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/custom-vs-off-the-shelf-choose-wisely-edb0902a",
+      "coverOpacity": "1",
+      "headingOpacity": "1",
+      "bodyTextLength": 3630,
+      "bodyHeadingsSample": [
+        "The Strategic Illusion of Off-the-Shelf Simplicity",
+        "When Custom Engineering Becomes a Force Multiplier",
+        "Quantifying the Total Cost of Ownership (TCO)"
+      ],
+      "hasBlogSection": true,
+      "sectionBadge": "Blog",
+      "sectionHeading": "Our perspectives",
+      "allArticlesLink": "/blog",
+      "totalRenderedCards": 6,
+      "uniqueRelatedCards": [
+        {
+          "href": "/blog/idx-listings-not-showing-google/",
+          "cardSlug": "idx-listings-not-showing-google",
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "date": "Oct 13, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f",
+          "width": 652,
+          "height": 560,
+          "top": 3139
+        },
+        {
+          "href": "/blog/real-estate-agent-website-cost-2026/",
+          "cardSlug": "real-estate-agent-website-cost-2026",
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "date": "Oct 12, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        },
+        {
+          "href": "/blog/technical-debt-friend-or-foe/",
+          "cardSlug": "technical-debt-friend-or-foe",
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "date": "Nov 13, 2024",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        }
+      ],
+      "selfRecommended": false
+    },
+    "/blog/design-that-converts-our-approach/": {
+      "currentSlug": "design-that-converts-our-approach",
+      "title": "Conversion-Driven Design: How Top Digital Studios Engineer User Intent",
+      "date": "Jan 9, 2025",
+      "author": "Souvik",
+      "coverSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/design-that-converts-our-approach-80009e6b",
+      "coverOpacity": "1",
+      "headingOpacity": "1",
+      "bodyTextLength": 3156,
+      "bodyHeadingsSample": [
+        "Beyond Surface Visuals: The Science of High-Intent UX",
+        "Cognitive Load Reduction and Visual Cadence",
+        "Micro-Interactions and the Perception of Trust"
+      ],
+      "hasBlogSection": true,
+      "sectionBadge": "Blog",
+      "sectionHeading": "Our perspectives",
+      "allArticlesLink": "/blog",
+      "totalRenderedCards": 6,
+      "uniqueRelatedCards": [
+        {
+          "href": "/blog/idx-listings-not-showing-google/",
+          "cardSlug": "idx-listings-not-showing-google",
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "date": "Oct 13, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/idx-listings-not-showing-google-206d957f",
+          "width": 652,
+          "height": 560,
+          "top": 3117
+        },
+        {
+          "href": "/blog/real-estate-agent-website-cost-2026/",
+          "cardSlug": "real-estate-agent-website-cost-2026",
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "date": "Oct 12, 2026",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/real-estate-agent-website-cost-2026-80f8a7b8",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        },
+        {
+          "href": "/blog/technical-debt-friend-or-foe/",
+          "cardSlug": "technical-debt-friend-or-foe",
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "date": "Nov 13, 2024",
+          "hasImg": true,
+          "imgSrc": "https://res.cloudinary.com/teolzwgc/image/upload/f_auto,q_auto/corabin/blog-covers/technical-debt-friend-or-foe-120bb0fa",
+          "width": 0,
+          "height": 0,
+          "top": 0
+        }
+      ],
+      "selfRecommended": false
+    }
+  },
+  "mobileArticles": {
+    "/blog/ch-skskmsnsm/": {
+      "docWidth": 390,
+      "winWidth": 390,
+      "hasHorizontalOverflow": false,
+      "hasBlogSection": true,
+      "visibleCardCount": 3,
+      "visibleCards": [
+        {
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "width": 350,
+          "height": 336,
+          "top": 1307
+        },
+        {
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "width": 350,
+          "height": 361,
+          "top": 1691
+        },
+        {
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "width": 350,
+          "height": 336,
+          "top": 2100
+        }
+      ]
+    },
+    "/blog/why-every-real-estate-agent-needs-a-website-in-2026/": {
+      "docWidth": 390,
+      "winWidth": 390,
+      "hasHorizontalOverflow": false,
+      "hasBlogSection": true,
+      "visibleCardCount": 3,
+      "visibleCards": [
+        {
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "width": 350,
+          "height": 336,
+          "top": 1884
+        },
+        {
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "width": 350,
+          "height": 361,
+          "top": 2267
+        },
+        {
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "width": 350,
+          "height": 336,
+          "top": 2677
+        }
+      ]
+    },
+    "/blog/custom-vs-off-the-shelf-choose-wisely/": {
+      "docWidth": 390,
+      "winWidth": 390,
+      "hasHorizontalOverflow": false,
+      "hasBlogSection": true,
+      "visibleCardCount": 3,
+      "visibleCards": [
+        {
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "width": 350,
+          "height": 336,
+          "top": 4149
+        },
+        {
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "width": 350,
+          "height": 361,
+          "top": 4533
+        },
+        {
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "width": 350,
+          "height": 336,
+          "top": 4942
+        }
+      ]
+    },
+    "/blog/design-that-converts-our-approach/": {
+      "docWidth": 390,
+      "winWidth": 390,
+      "hasHorizontalOverflow": false,
+      "hasBlogSection": true,
+      "visibleCardCount": 3,
+      "visibleCards": [
+        {
+          "title": "Why Your IDX Listings Aren't Showing Up on Google (and How to Fix It)",
+          "width": 350,
+          "height": 336,
+          "top": 3931
+        },
+        {
+          "title": "How Much Does a Real Estate Agent Website Cost in 2026? A Realistic Price Breakdown for Solo Agents",
+          "width": 350,
+          "height": 361,
+          "top": 4315
+        },
+        {
+          "title": "Technical Debt in Digital Products: Strategic Leverage vs. Architectural Decay",
+          "width": 350,
+          "height": 336,
+          "top": 4724
+        }
+      ]
+    }
+  },
+  "navigationFlow": {
+    "step1": {
+      "heading": "Fresh insights & industry perspectives"
+    },
+    "clickA": {
+      "clicked": true,
+      "href": "/blog/custom-vs-off-the-shelf-choose-wisely/"
+    },
+    "step2": {
+      "pathname": "/blog/custom-vs-off-the-shelf-choose-wisely/",
+      "title": "Custom Web Architecture vs. Commercial Templates: The Enterprise ROI Breakdown"
+    },
+    "step3": {
+      "pathname": "/blog/",
+      "heading": "Fresh insights & industry perspectives"
+    },
+    "clickB": {
+      "clicked": true,
+      "href": "/blog/why-every-real-estate-agent-needs-a-website-in-2026/"
+    },
+    "step4": {
+      "pathname": "/blog/why-every-real-estate-agent-needs-a-website-in-2026/",
+      "title": "Why Every Real Estate Agent Needs a Website in 2026"
+    },
+    "step5": {
+      "pathname": "/blog/",
+      "heading": "Fresh insights & industry perspectives"
+    },
+    "step6": {
+      "pathname": "/blog/why-every-real-estate-agent-needs-a-website-in-2026/",
+      "title": "Why Every Real Estate Agent Needs a Website in 2026"
+    }
+  }
+}

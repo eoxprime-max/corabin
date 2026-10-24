@@ -12,9 +12,11 @@ export class ChromeCDP {
   }
 
   async start() {
+    this.tmpDir = fs.mkdtempSync('/tmp/chrome-cdp-');
     this.chromeProc = spawn('google-chrome', [
       '--headless=new',
       `--remote-debugging-port=${this.port}`,
+      `--user-data-dir=${this.tmpDir}`,
       '--no-first-run',
       '--no-default-browser-check',
       '--disable-background-networking',
@@ -110,6 +112,11 @@ export class ChromeCDP {
     }
     if (this.chromeProc) {
       this.chromeProc.kill();
+    }
+    if (this.tmpDir) {
+      setTimeout(() => {
+        try { fs.rmSync(this.tmpDir, { recursive: true, force: true }); } catch (e) {}
+      }, 500);
     }
   }
 

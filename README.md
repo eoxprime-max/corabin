@@ -85,27 +85,72 @@ The website is engineered as a high-performance static web application designed 
 
 ## Project Structure
 
-```text
-.
-├── vercel.json                 # Vercel deployment configuration (outputDirectory: "public")
-├── _headers                    # Root fallback security & caching headers
-├── _redirects                  # Root fallback 301 redirect rules for legacy project slugs
-├── scripts/
-│   ├── check.sh                # Automated pre-deployment validation suite (verifies public/)
-│   └── dev.sh                  # Local preview server (serves public/ on port 8080)
-├── tools/                      # Content management tools & verification suites
-│   ├── publish_blog11.py       # Blog article publishing workflow (targets public/)
-│   ├── updated_blog_records.json # CMS blog records
-│   └── verify_*.py             # Automated route & DOM verification suites
-├── docs/                       # Organized documentation
-│   ├── architecture/           # System design & changelogs
-│   ├── audits/                 # Production & security audit reports
-│   ├── editorial/              # Editorial strategy & content map
-│   └── logs/                   # Historical diagnostic logs
-├── archive/                    # Non-runtime archives & raw source assets
-│   ├── migrations/             # Historical one-time template migration scripts
-│   └── raw-assets/             # Original branding, source images, legacy chunks & SVG dumps
-├── public/                     # CANONICAL WEBSITE DIRECTORY (served in dev and production)
+```
+Corabin.website/
+├── public/                               ← Production deploy root (Vercel outputDirectory)
+│   ├── assets/
+│   │   ├── js/
+│   │   │   ├── blog-runtime.js           ← Primary entry point (imported by Framer HTML)
+│   │   │   ├── config/                   ← Environment & DOM selector configurations
+│   │   │   │   ├── env.js                ← Environment configs & runtime overrides
+│   │   │   │   └── selectors.js          ← Framer DOM selectors & layout constants
+│   │   │   ├── api/                      ← Scalable API layer
+│   │   │   │   ├── client.js             ← Resilient HTTP client (timeout, abort, status checks)
+│   │   │   │   ├── supabase.js           ← Supabase REST API service for articles
+│   │   │   │   └── cloudinary.js         ← Cloudinary image resolution & responsive srcsets
+│   │   │   ├── state/                    ← Centralized reactive state management
+│   │   │   │   ├── store.js              ← Reactive Pub/Sub state store
+│   │   │   │   └── actions.js            ← State actions, caching, and async workflows
+│   │   │   ├── services/                 ← Pure business logic (zero DOM dependencies)
+│   │   │   │   ├── article-service.js    ← Post filtering, featured/regular split, related posts
+│   │   │   │   └── markdown.js           ← Markdown & Framer AST parsing service
+│   │   │   ├── ui/                       ← Modular UI components & animation controllers
+│   │   │   │   ├── components/
+│   │   │   │   │   ├── card.js           ← Unified blog card component (featured & regular)
+│   │   │   │   │   ├── hero.js           ← Article hero (title, author, date, cover)
+│   │   │   │   │   ├── body.js           ← Article body content renderer
+│   │   │   │   │   ├── share.js          ← Social share links
+│   │   │   │   │   ├── related-posts.js  ← Bottom related posts component
+│   │   │   │   │   └── error-state.js    ← Graceful fallback & unavailable banner
+│   │   │   │   └── animations/
+│   │   │   │       └── card-effects.js   ← Scoped CSS keyframes & hover listeners
+│   │   │   ├── router/                   ← SPA routing & link normalisation
+│   │   │   │   └── router.js
+│   │   │   ├── utils/                    ← Pure utility functions
+│   │   │   │   ├── date.js               ← Date formatting
+│   │   │   │   ├── url.js                ← URL matching, slug parsing
+│   │   │   │   ├── dom.js                ← Safe DOM mutations with change detection
+│   │   │   │   └── logger.js             ← Centralized error logger
+│   │   │   └── modules/                  ← Compatibility facades (keeps check.sh 100% green)
+│   │   ├── fonts/                        ← Onest WOFF2 self-hosted fonts
+│   │   └── images/                       ← Static visual assets
+│   ├── blog/
+│   │   ├── index.html                    ← Framer blog listing page
+│   │   └── article.html                  ← Shared Framer blog article shell
+│   ├── index.html                        ← Framer homepage
+│   ├── 404.html                          ← 404 error page
+│   ├── _headers                          ← Production HTTP headers (Cloudflare/Netlify)
+│   ├── _redirects                        ← Legacy route redirects
+│   ├── robots.txt                        ← SEO crawlers config
+│   └── sitemap.xml                       ← Canonical sitemap
+├── docs/                                 ← Single source of truth documentation
+│   ├── architecture/
+│   │   ├── ARCHITECTURE.md               ← Technical architecture reference (this file)
+│   │   └── CHANGELOG.md                  ← Evolution history
+│   ├── audits/                           ← Audit reports
+│   └── editorial/                        ← Content standards
+├── scripts/                              ← Pre-deploy & automation scripts
+│   ├── check.sh                          ← Pre-deploy 20-point validation suite
+│   └── dev.sh                            ← Local preview runner
+├── tools/                                ← Active developer verification tools
+│   ├── dev_server.py                     ← Local HTTP server with clean URL rewrites
+│   ├── cdp_helper.mjs                    ← Chrome DevTools Protocol test helper
+│   ├── verify_blog_pages.py              ← Headless Chrome 16-route test suite
+│   ├── verify_all_pages.py               ← Comprehensive page checker
+│   └── verify_production_readiness.py    ← Pre-production assertion
+├── archive/                              ← Retired migrations & historical data
+│   └── migrations/                       ← Legacy one-off migration scripts
+├── vercel.json                           ← Vercel deployment & rewrite configuration
 └── README.md
 ```
 
